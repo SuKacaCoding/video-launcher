@@ -12,5 +12,10 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0"/>
         <PackageReference Include="HandyControls" Version="3.4.5"/>
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <None Remove="Properties\IconFont\iconfont.ttf"/>
+        <Resource Include="Properties\IconFont\iconfont.ttf"/>
+    </ItemGroup>
+
 </Project>

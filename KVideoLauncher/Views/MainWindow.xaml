@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
         Title="KVideoLauncher"
         WindowState="Maximized"
@@ -14,5 +15,61 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
 
-    <Grid Margin="5" />
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0" />
+        <ListBox Grid.Column="2" />
+        <ListBox Grid.Column="4" />
+
+        <Grid Grid.Column="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Row="0"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="2" />
+            <StackPanel Grid.Row="2"
+                        Grid.Column="0"
+                        Orientation="Horizontal">
+                <Button hc:IconElement.Geometry="{StaticResource LeftGeometry}"
+                        ToolTip="Previous playlist"
+                        Margin="0 0 5 0" />
+                <Button hc:IconElement.Geometry="{StaticResource RightGeometry}"
+                        ToolTip="Next playlist"
+                        Margin="0 0 5 0" />
+                <Button FontFamily="/Properties/IconFont/#iconfont"
+                        Content="&#xe654;"
+                        FontSize="16"
+                        ToolTip="Current playlist" />
+            </StackPanel>
+
+            <Button Grid.Row="2"
+                    Grid.Column="1"
+                    Style="{StaticResource ButtonPrimary}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="/Properties/IconFont/#iconfont"
+                               FontSize="16"
+                               Text="&#xea82;"
+                               Margin="0 0 5 0" />
+                    <TextBlock Text="Play" />
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
 </Window>
