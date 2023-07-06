@@ -6,9 +6,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <hc:ThemeResources />
+                <hc:ThemeResources UsingSystemTheme="True" />
                 <hc:Theme />
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="IconFontFamily">/Properties/IconFont/#iconfont</FontFamily>
+            <SolidColorBrush x:Key="ListBoxFocusedBackground">#E3F4F4</SolidColorBrush>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

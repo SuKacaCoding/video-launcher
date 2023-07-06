@@ -14,21 +14,59 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="ListBox"
+               BasedOn="{StaticResource ListBoxBaseStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsFocused"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="{StaticResource ListBoxFocusedBackground}" />
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Focusable"
+                    Value="True" />
+        </Style>
+    </Window.Resources>
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"
+                              x:Name="ColDirectories" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*"
+                              x:Name="ColVideos" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"
+                              x:Name="ColPlaylist" />
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Column="0" />
-        <ListBox Grid.Column="2" />
-        <ListBox Grid.Column="4" />
+        <ListBox Grid.Column="0"
+                 x:Name="ListDrives" />
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <ListBox Grid.Row="0"
+                     x:Name="ListPath">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <ListBox Grid.Row="2"
+                     x:Name="ListDirectories" />
+        </Grid>
+
+        <ListBox Grid.Column="4"
+                 x:Name="ListVideos" />
 
         <Grid Grid.Column="6">
             <Grid.RowDefinitions>
@@ -43,7 +81,8 @@
 
             <ListBox Grid.Row="0"
                      Grid.Column="0"
-                     Grid.ColumnSpan="2" />
+                     Grid.ColumnSpan="2"
+                     x:Name="ListPlaylist" />
             <StackPanel Grid.Row="2"
                         Grid.Column="0"
                         Orientation="Horizontal">
@@ -53,7 +92,7 @@
                 <Button hc:IconElement.Geometry="{StaticResource RightGeometry}"
                         ToolTip="Next playlist"
                         Margin="0 0 5 0" />
-                <Button FontFamily="/Properties/IconFont/#iconfont"
+                <Button FontFamily="{StaticResource IconFontFamily}"
                         Content="&#xe654;"
                         FontSize="16"
                         ToolTip="Current playlist" />
@@ -63,7 +102,7 @@
                     Grid.Column="1"
                     Style="{StaticResource ButtonPrimary}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock FontFamily="/Properties/IconFont/#iconfont"
+                    <TextBlock FontFamily="{StaticResource IconFontFamily}"
                                FontSize="16"
                                Text="&#xea82;"
                                Margin="0 0 5 0" />
