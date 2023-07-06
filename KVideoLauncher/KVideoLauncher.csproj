@@ -5,7 +5,7 @@
         <TargetFramework>net7.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <ApplicationIcon>Properties\Icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +16,8 @@
     <ItemGroup>
         <None Remove="Properties\IconFont\iconfont.ttf"/>
         <Resource Include="Properties\IconFont\iconfont.ttf"/>
+        <None Remove="Properties\Icon.ico"/>
+        <Resource Include="Properties\Icon.ico"/>
     </ItemGroup>
 
 </Project>
