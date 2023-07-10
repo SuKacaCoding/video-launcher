@@ -48,8 +48,14 @@
 
         <ListBox Grid.Column="0"
                  x:Name="ListDrives"
-                 ItemsSource="{Binding Drives}"
-                 DisplayMemberPath="Name" />
+                 ItemsSource="{Binding Drives}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"
+                               FontSize="{StaticResource SubHeadFontSize}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
