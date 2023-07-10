@@ -17,7 +17,6 @@ public static class DataFileHelper
 
     static DataFileHelper() =>
         DriveInfos = ReadDataFile(DriveDataFileRelativePath)
-            .ToUpper()
             .Split(Environment.NewLine)
             .Select(driveStr => driveStr.GetDriveInfo())
             .Where(driveInfo => driveInfo is { })!;

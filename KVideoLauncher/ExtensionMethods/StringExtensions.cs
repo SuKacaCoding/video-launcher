@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace KVideoLauncher.ExtensionMethods;
 
@@ -8,8 +9,8 @@ public static class StringExtensions
     {
         try
         {
-            var ret = new DriveInfo(driveStr);
-            return ret;
+            var ret = new DriveInfo(driveStr.ToUpper());
+            return DriveInfo.GetDrives().Any(existingDriveInfo => existingDriveInfo.Name == ret.Name) ? ret : null;
         }
         catch
         {
