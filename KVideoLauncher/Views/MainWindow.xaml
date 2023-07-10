@@ -9,8 +9,8 @@
            Title="KVideoLauncher"
            WindowState="Maximized"
            WindowStartupLocation="CenterScreen"
-           d:DesignWidth="800"
-           d:DesignHeight="450"
+           d:DesignWidth="1080"
+           d:DesignHeight="360"
            SystemBackdropType="Mica"
            PreviewMouseDown="ListBoxMouseDown"
            Icon="/Properties/Icon.ico">
@@ -21,7 +21,7 @@
         <Style TargetType="ListBox"
                BasedOn="{StaticResource ListBoxBaseStyle}">
             <Style.Triggers>
-                <Trigger Property="IsFocused"
+                <Trigger Property="IsKeyboardFocusWithin"
                          Value="True">
                     <Setter Property="Background"
                             Value="{DynamicResource LightPrimaryBrush}" />
@@ -47,7 +47,9 @@
         </Grid.ColumnDefinitions>
 
         <ListBox Grid.Column="0"
-                 x:Name="ListDrives" />
+                 x:Name="ListDrives"
+                 ItemsSource="{Binding Drives}"
+                 DisplayMemberPath="Name" />
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -56,8 +58,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ListBox Grid.Row="0"
-                     x:Name="ListPath">
+            <ListBox Grid.Row="0">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -97,21 +98,33 @@
                         Margin="0 0 5 0" />
                 <Button FontFamily="{StaticResource IconFontFamily}"
                         Content="&#xe654;"
-                        FontSize="16"
+                        FontSize="{StaticResource IconFontSize}"
                         ToolTip="Current playlist" />
             </StackPanel>
 
-            <Button Grid.Row="2"
-                    Grid.Column="1"
-                    Style="{StaticResource ButtonPrimary}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock FontFamily="{StaticResource IconFontFamily}"
-                               FontSize="16"
-                               Text="&#xea82;"
-                               Margin="0 0 5 0" />
-                    <TextBlock Text="Play" />
-                </StackPanel>
-            </Button>
+            <StackPanel Grid.Row="2"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                <Button Style="{StaticResource ButtonDashedPrimary}"
+                        Margin="{StaticResource HorStackPanelChildrenMargin}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="{StaticResource IconFontFamily}"
+                                   FontSize="{StaticResource IconFontSize}"
+                                   Text="&#xea82;"
+                                   Margin="{StaticResource IconFontMargin}" />
+                        <TextBlock Text="Play but don't close" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource ButtonPrimary}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="{StaticResource IconFontFamily}"
+                                   FontSize="{StaticResource IconFontSize}"
+                                   Text="&#xea82;"
+                                   Margin="{StaticResource IconFontMargin}" />
+                        <TextBlock Text="Play" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </hc:Window>
