@@ -16,9 +16,11 @@ public static class DataFileHelper
         (path1: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), path2: "KVideoLauncher");
 
     static DataFileHelper() =>
-        DriveInfos = from driveStr in ReadDataFile(DriveDataFileRelativePath).ToUpper().Split(Environment.NewLine)
-            where driveStr.GetDriveInfo() is { }
-            select driveStr.GetDriveInfo();
+        DriveInfos = ReadDataFile(DriveDataFileRelativePath)
+            .ToUpper()
+            .Split(Environment.NewLine)
+            .Select(driveStr => driveStr.GetDriveInfo())
+            .Where(driveInfo => driveInfo is { })!;
 
     private static string ReadDataFile(string fileRelativePath)
     {
