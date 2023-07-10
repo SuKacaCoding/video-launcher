@@ -34,7 +34,7 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="70" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*"
                               x:Name="ColDirectories" />
@@ -52,7 +52,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"
-                               FontSize="{StaticResource SubHeadFontSize}" />
+                               FontSize="{StaticResource HeadFontSize}" Margin="5" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -98,10 +98,10 @@
                         Orientation="Horizontal">
                 <Button hc:IconElement.Geometry="{StaticResource LeftGeometry}"
                         ToolTip="Previous playlist"
-                        Margin="0 0 5 0" />
+                        Margin="{StaticResource HorStackPanelChildrenMargin}" />
                 <Button hc:IconElement.Geometry="{StaticResource RightGeometry}"
                         ToolTip="Next playlist"
-                        Margin="0 0 5 0" />
+                        Margin="{StaticResource HorStackPanelChildrenMargin}" />
                 <Button FontFamily="{StaticResource IconFontFamily}"
                         Content="&#xe654;"
                         FontSize="{StaticResource IconFontSize}"
