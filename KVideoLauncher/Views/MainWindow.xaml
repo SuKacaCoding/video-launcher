@@ -5,6 +5,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
            xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:i=""
            mc:Ignorable="d"
            Title="KVideoLauncher"
            WindowState="Maximized"
