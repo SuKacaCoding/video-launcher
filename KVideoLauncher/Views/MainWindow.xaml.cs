@@ -56,6 +56,7 @@ public partial class MainWindow : Window
             new List<ListBox>
             {
                 ListDrives,
+                ListFrequent,
                 ListDirectories,
                 ListVideos,
                 ListPlaylist

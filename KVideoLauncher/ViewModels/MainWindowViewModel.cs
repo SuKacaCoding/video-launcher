@@ -1,11 +1,24 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
-using KVideoLauncher.Models;
+using CommunityToolkit.Mvvm.Input;
+using HandyControl.Tools.Extension;
 
 namespace KVideoLauncher.ViewModels;
 
-public class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ObservableObject
 {
-    public ObservableCollection<DriveInfo> Drives { get; } = new(DataFileHelper.DriveInfos);
+    public ObservableCollection<DriveInfo> Drives { get; } = new();
+
+    public MainWindowViewModel()
+    {
+        RefreshDrives();
+    }
+
+    [RelayCommand]
+    private void RefreshDrives()
+    {
+        Drives.Clear();
+        Drives.AddRange(DriveInfo.GetDrives());
+    }
 }

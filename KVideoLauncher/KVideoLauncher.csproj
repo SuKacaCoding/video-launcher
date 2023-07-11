@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0"/>
+        <PackageReference Include="Expression.Blend.Sdk.WPF" Version="1.0.1" />
         <PackageReference Include="HandyControls" Version="3.4.5"/>
     </ItemGroup>
 
@@ -20,5 +21,9 @@
         <Resource Include="Properties\Icon.ico"/>
     </ItemGroup>
 
+
+    <ItemGroup>
+        <Folder Include="Models\"/>
+    </ItemGroup>
 
 </Project>

@@ -9,14 +9,17 @@
            Title="KVideoLauncher"
            WindowState="Maximized"
            WindowStartupLocation="CenterScreen"
-           d:DesignWidth="1080"
-           d:DesignHeight="360"
+           d:DesignWidth="1280"
+           d:DesignHeight="720"
            SystemBackdropType="Mica"
            PreviewMouseDown="ListBoxMouseDown"
            Icon="/Properties/Icon.ico">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding RefreshDrivesCommand}" Gesture="CTRL+R"/>
+    </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="ListBox"
                BasedOn="{StaticResource ListBoxBaseStyle}">
@@ -34,7 +37,7 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*"
                               x:Name="ColDirectories" />
@@ -46,16 +49,66 @@
                               x:Name="ColPlaylist" />
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Column="0"
-                 x:Name="ListDrives"
-                 ItemsSource="{Binding Drives}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}"
-                               FontSize="{StaticResource HeadFontSize}" Margin="5" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="0.618*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Left" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Content="Drives:" />
+                <Button Grid.Column="1"
+                        FontFamily="{StaticResource IconFontFamily}"
+                        FontSize="{StaticResource IconFontSize}"
+                        Content="&#xeafd;"
+                        Command="{Binding RefreshDrivesCommand}" />
+            </Grid>
+            <ListBox Grid.Row="2"
+                     x:Name="ListDrives"
+                     ItemsSource="{Binding Drives}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="{StaticResource HeadFontSize}"
+                                   Margin="5"
+                                   Text="{Binding Path=Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Label Grid.Row="3"
+                   Content="Frequent:" />
+            <ListBox Grid.Row="4"
+                     x:Name="ListFrequent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="{StaticResource HeadFontSize}"
+                                   Margin="5" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Button Grid.Row="6"
+                    Content="Network..."
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource ButtonDashedPrimary}" />
+        </Grid>
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -64,13 +117,8 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ListBox Grid.Row="0">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
+            <ListBox Grid.Row="0"
+                     Style="{DynamicResource StackPanelHorizontalListBox}" />
             <ListBox Grid.Row="2"
                      x:Name="ListDirectories" />
         </Grid>
@@ -105,7 +153,12 @@
                 <Button FontFamily="{StaticResource IconFontFamily}"
                         Content="&#xe654;"
                         FontSize="{StaticResource IconFontSize}"
-                        ToolTip="Current playlist" />
+                        ToolTip="Current playlist"
+                        Margin="{StaticResource HorStackPanelChildrenMargin}" />
+                <Button FontFamily="{StaticResource IconFontFamily}"
+                        Content="&#xe6dc;"
+                        FontSize="{StaticResource IconFontSize}"
+                        ToolTip="Frequently played" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"
