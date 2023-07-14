@@ -11,7 +11,6 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0"/>
         <PackageReference Include="HandyControls" Version="3.4.5"/>
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,7 +22,7 @@
 
 
     <ItemGroup>
-        <Folder Include="Models\"/>
+        <Folder Include="Tools\"/>
     </ItemGroup>
 
 </Project>

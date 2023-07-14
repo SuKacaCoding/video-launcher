@@ -12,7 +12,7 @@ public partial class MainWindow : Window
 {
     private ListBox FocusedListBox
     {
-        get => _verticalListBoxes[_focusedListBoxIndex];
+        get => _focusableListBoxes[_focusedListBoxIndex];
         set
         {
             int indexOfValue = FocusOnListBox(value);
@@ -25,15 +25,14 @@ public partial class MainWindow : Window
         get => _focusedListBoxIndex;
         set
         {
-            _focusedListBoxIndex = value % _verticalListBoxes.Count;
+            _focusedListBoxIndex = value % _focusableListBoxes.Count;
             if (_focusedListBoxIndex < 0)
-                _focusedListBoxIndex += _verticalListBoxes.Count;
+                _focusedListBoxIndex += _focusableListBoxes.Count;
             FocusOnListBox(FocusedListBox);
         }
     }
 
-    private ICommand MoveListBoxFocusLeftCommand { get; }
-    private ICommand MoveListBoxFocusRightCommand { get; }
+    private const int ListBoxWideMoveOffset = 5;
 
     private static readonly GridLength SelectedColumnWidth = new(value: 2, GridUnitType.Star);
     private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
@@ -42,16 +41,17 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _widthAdjustableColumns = new ReadOnlyCollection<ColumnDefinition>
+        _widthAdjustableColumnByListBox = new ReadOnlyDictionary<ListBox, ColumnDefinition>
         (
-            new List<ColumnDefinition>
+            new Dictionary<ListBox, ColumnDefinition>
             {
-                ColDirectories,
-                ColVideos,
-                ColPlaylist
+                { ListDirectories, ColDirectories },
+                { ListVideos, ColVideos },
+                { ListPlaylist, ColPlaylist }
             }
         );
-        _verticalListBoxes = new ReadOnlyCollection<ListBox>
+
+        _focusableListBoxes = new ReadOnlyCollection<ListBox>
         (
             new List<ListBox>
             {
@@ -63,10 +63,7 @@ public partial class MainWindow : Window
             }
         );
 
-        FocusedListBoxIndex = 0;
-
         // Initialize Commands.
-        MoveListBoxFocusLeftCommand = new RelayCommand(MoveListBoxFocusLeft);
         InputBindings.Add
         (
             new KeyBinding
@@ -75,7 +72,6 @@ public partial class MainWindow : Window
                 Command = MoveListBoxFocusLeftCommand
             }
         );
-        MoveListBoxFocusRightCommand = new RelayCommand(MoveListBoxFocusRight);
         InputBindings.Add
         (
             new KeyBinding
@@ -84,6 +80,24 @@ public partial class MainWindow : Window
                 Command = MoveListBoxFocusRightCommand
             }
         );
+        InputBindings.Add
+        (
+            new KeyBinding
+            {
+                Gesture = new KeyGesture(Key.N, ModifierKeys.Control),
+                Command = WideMoveFocusedListBoxSelectionDownCommand
+            }
+        );
+        InputBindings.Add
+        (
+            new KeyBinding
+            {
+                Gesture = new KeyGesture(Key.P, ModifierKeys.Control),
+                Command = WideMoveFocusedListBoxSelectionUpCommand
+            }
+        );
+
+        FocusedListBoxIndex = 0;
     }
 
     private void ListBoxMouseDown(object sender, RoutedEventArgs e)
@@ -94,37 +108,70 @@ public partial class MainWindow : Window
 
     private int FocusOnListBox(ListBox listBox)
     {
-        int indexOfListBox = _verticalListBoxes.IndexOf(listBox);
+        int indexOfListBox = _focusableListBoxes.IndexOf(listBox);
         if (indexOfListBox == -1)
             return -1;
 
-        listBox.Focus();
+        if (listBox.SelectedIndex == -1)
+            listBox.Focus();
+        else
+            FocusOnListBoxSelection(listBox);
 
-        foreach (var column in _widthAdjustableColumns)
+        foreach (var column in _widthAdjustableColumnByListBox.Values)
             column.Width = GeneralColumnWidth;
 
-        if (listBox == ListDirectories)
-            ColDirectories.Width = SelectedColumnWidth;
-        else if (listBox == ListVideos)
-            ColVideos.Width = SelectedColumnWidth;
-        else if (listBox == ListPlaylist)
-            ColPlaylist.Width = SelectedColumnWidth;
+        _widthAdjustableColumnByListBox.TryGetValue(listBox, value: out var selectedColumn);
+        if (selectedColumn is { })
+            selectedColumn.Width = SelectedColumnWidth;
 
         return indexOfListBox;
     }
 
+    [RelayCommand]
     private void MoveListBoxFocusLeft()
     {
         FocusedListBoxIndex--;
     }
 
+    [RelayCommand]
     private void MoveListBoxFocusRight()
     {
         FocusedListBoxIndex++;
     }
 
-    private readonly ReadOnlyCollection<ListBox> _verticalListBoxes;
+    [RelayCommand]
+    private void WideMoveFocusedListBoxSelectionDown()
+    {
+        WideMoveFocusedListBoxSelection(ListBoxWideMoveOffset);
+    }
 
-    private readonly ReadOnlyCollection<ColumnDefinition> _widthAdjustableColumns;
+    [RelayCommand]
+    private void WideMoveFocusedListBoxSelectionUp()
+    {
+        WideMoveFocusedListBoxSelection(-ListBoxWideMoveOffset);
+    }
+
+    private void WideMoveFocusedListBoxSelection(int offset)
+    {
+        int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
+        int itemsCount = FocusedListBox.Items.Count;
+
+        if (targetSelectedIndex >= itemsCount)
+            targetSelectedIndex -= itemsCount;
+        else if (targetSelectedIndex < 0)
+            targetSelectedIndex += itemsCount;
+
+        FocusedListBox.SelectedIndex = targetSelectedIndex;
+        FocusOnListBoxSelection(FocusedListBox);
+    }
+
+    private void FocusOnListBoxSelection(ListBox listBox)
+    {
+        (listBox.ItemContainerGenerator.ContainerFromIndex(listBox.SelectedIndex) as FrameworkElement)?.Focus();
+    }
+
+    private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;
+    private readonly ReadOnlyDictionary<ListBox, ColumnDefinition> _widthAdjustableColumnByListBox;
+
     private int _focusedListBoxIndex;
 }
