@@ -35,16 +35,16 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void ChangeDrive()
     {
-        ChangeDirectory(SelectedDriveName);
+        ChangeDirectory(SelectedDriveName, RefreshDrives);
     }
 
     [RelayCommand]
     private void RefreshDirectory()
     {
-        ChangeDirectory(EnterPath.Instance.Path);
+        ChangeDirectory(EnterPath.Instance.Path, RefreshDrives);
     }
 
-    private void ChangeDirectory(string? directoryPath)
+    private void ChangeDirectory(string? directoryPath, Action directoryNotExistsCallback)
     {
         if (directoryPath is null)
             return;
@@ -55,7 +55,7 @@ public partial class MainWindowViewModel : ObservableObject
                             ?? (Directory.Exists(EnterPath.Instance.Path)
                                 ? EnterPath.Instance.Path
                                 : null);
-            RefreshDrives();
+            directoryNotExistsCallback();
         }
 
         try
