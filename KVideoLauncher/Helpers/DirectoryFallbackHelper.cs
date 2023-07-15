@@ -11,7 +11,7 @@ public static class DirectoryFallbackHelper
 
         while (!Path.IsPathRooted(directoryPath))
         {
-            directoryPath = Path.Combine(directoryPath, path2: "..");
+            directoryPath = Path.Join(directoryPath, path2: "..");
             if (Directory.Exists(directoryPath))
                 return directoryPath;
         }
