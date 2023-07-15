@@ -8,7 +8,7 @@ namespace KVideoLauncher.Helpers;
 
 public static class DirectoryChildrenHelper
 {
-    public static IEnumerable<DirectoryDisplayingInfo> GetHierarchicalDirectoryDisplayingInfos
+    public static IList<DirectoryDisplayingInfo> GetHierarchicalDirectoryDisplayingInfos
         (string directoryPath)
     {
         Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
@@ -17,7 +17,8 @@ public static class DirectoryChildrenHelper
 
         IEnumerable<DirectoryInfo> subdirectories = currentDirectory.EnumerateDirectories().Where
         (
-            info => !(info.Attributes.HasFlag(FileAttributes.System) || info.Attributes.HasFlag(FileAttributes.Hidden))
+            info => !(info.Attributes.HasFlag(FileAttributes.System)
+                      || info.Attributes.HasFlag(FileAttributes.Hidden))
         );
 
         var parentDirectories = new List<DirectoryInfo>();
@@ -51,6 +52,6 @@ public static class DirectoryChildrenHelper
             )
         );
 
-        return ret;
+        return ret.AsReadOnly();
     }
 }
