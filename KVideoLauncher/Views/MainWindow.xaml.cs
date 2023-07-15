@@ -158,7 +158,7 @@ public partial class MainWindow : Window
         FocusOnListBoxSelection(FocusedListBox);
     }
 
-    private void FocusOnListBoxSelection(ListBox listBox)
+    private static void FocusOnListBoxSelection(ListBox listBox)
     {
         (listBox.ItemContainerGenerator.ContainerFromIndex(listBox.SelectedIndex) as FrameworkElement)?.Focus();
     }
