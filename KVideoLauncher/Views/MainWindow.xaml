@@ -36,10 +36,10 @@
             <Setter Property="Focusable"
                     Value="True" />
         </Style>
-        <Style TargetType="Label"
-               BasedOn="{StaticResource {x:Type Label}}">
-            <Setter Property="HorizontalAlignment"
-                    Value="Left" />
+        <Style TargetType="TextBlock"
+               BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
         </Style>
     </Window.Resources>
 
@@ -69,8 +69,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   Content="Drives:" />
+            <TextBlock Grid.Column="0"
+                       Text="Drives:" />
             <Button Grid.Column="1"
                     FontFamily="{StaticResource IconFontFamily}"
                     FontSize="{StaticResource IconFontSize}"
@@ -81,7 +81,9 @@
               Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
                 <RowDefinition Height="0.618*" />
                 <RowDefinition Height="5" />
                 <RowDefinition Height="Auto" />
@@ -106,9 +108,9 @@
                 </hc:Interaction.Triggers>
             </ListBox>
 
-            <Label Grid.Row="1"
-                   Content="Frequent:" />
-            <ListBox Grid.Row="2"
+            <TextBlock Grid.Row="2"
+                       Text="Frequent:" />
+            <ListBox Grid.Row="4"
                      x:Name="ListFrequent">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -118,7 +120,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Button Grid.Row="4"
+            <Button Grid.Row="6"
                     Content="Network..."
                     HorizontalAlignment="Stretch"
                     Style="{StaticResource ButtonDashedPrimary}" />
@@ -131,8 +133,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   Content="Directories:" />
+            <TextBlock Grid.Column="0"
+                       Text="Directories:" />
             <Button Grid.Column="1"
                     FontFamily="{StaticResource IconFontFamily}"
                     FontSize="{StaticResource IconFontSize}"
@@ -159,8 +161,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   Content="Videos:" />
+            <TextBlock Grid.Column="0"
+                       Text="Videos:" />
             <Button Grid.Column="1"
                     FontFamily="{StaticResource IconFontFamily}"
                     FontSize="{StaticResource IconFontSize}"
@@ -170,9 +172,9 @@
                  Grid.Column="4"
                  x:Name="ListVideos" />
 
-        <Label Grid.Row="0"
-               Grid.Column="6"
-               Content="Playlist:" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="6"
+                   Text="Playlist:" />
         <Grid Grid.Row="2"
               Grid.Column="6">
             <Grid.RowDefinitions>
