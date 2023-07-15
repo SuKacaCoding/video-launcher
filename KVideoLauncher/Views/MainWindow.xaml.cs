@@ -120,8 +120,7 @@ public partial class MainWindow : Window
         foreach (var column in _widthAdjustableColumnByListBox.Values)
             column.Width = GeneralColumnWidth;
 
-        _widthAdjustableColumnByListBox.TryGetValue(listBox, value: out var selectedColumn);
-        if (selectedColumn is { })
+        if (_widthAdjustableColumnByListBox.TryGetValue(listBox, value: out var selectedColumn))
             selectedColumn.Width = SelectedColumnWidth;
 
         return indexOfListBox;
