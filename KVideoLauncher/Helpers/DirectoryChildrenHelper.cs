@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using KVideoLauncher.Data;
@@ -10,9 +11,14 @@ public static class DirectoryChildrenHelper
     public static IEnumerable<DirectoryDisplayingInfo> GetHierarchicalDirectoryDisplayingInfos
         (string directoryPath)
     {
+        Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
+
         var currentDirectory = new DirectoryInfo(directoryPath);
 
-        DirectoryInfo[] subdirectories = currentDirectory.GetDirectories();
+        IEnumerable<DirectoryInfo> subdirectories = currentDirectory.EnumerateDirectories().Where
+        (
+            info => !(info.Attributes.HasFlag(FileAttributes.System) || info.Attributes.HasFlag(FileAttributes.Hidden))
+        );
 
         var parentDirectories = new List<DirectoryInfo>();
         while (currentDirectory.Parent?.Parent is { })
