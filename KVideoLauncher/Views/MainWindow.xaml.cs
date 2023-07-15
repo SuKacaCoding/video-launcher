@@ -41,27 +41,21 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _widthAdjustableColumnByListBox = new ReadOnlyDictionary<ListBox, ColumnDefinition>
-        (
-            new Dictionary<ListBox, ColumnDefinition>
-            {
-                { ListDirectories, ColDirectories },
-                { ListVideos, ColVideos },
-                { ListPlaylist, ColPlaylist }
-            }
-        );
+        _widthAdjustableColumnByListBox = new Dictionary<ListBox, ColumnDefinition>
+        {
+            { ListDirectories, ColDirectories },
+            { ListVideos, ColVideos },
+            { ListPlaylist, ColPlaylist }
+        }.AsReadOnly();
 
-        _focusableListBoxes = new ReadOnlyCollection<ListBox>
-        (
-            new List<ListBox>
-            {
-                ListDrives,
-                ListFrequent,
-                ListDirectories,
-                ListVideos,
-                ListPlaylist
-            }
-        );
+        _focusableListBoxes = new List<ListBox>
+        {
+            ListDrives,
+            ListFrequent,
+            ListDirectories,
+            ListVideos,
+            ListPlaylist
+        }.AsReadOnly();
 
         // Initialize Commands.
         InputBindings.Add
