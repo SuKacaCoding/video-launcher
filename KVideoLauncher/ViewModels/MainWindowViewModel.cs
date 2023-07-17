@@ -39,8 +39,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void RefreshDirectory()
     {
-        // TODO: Use RefreshDirectoryStrategy instead. 
-        ChangeDirectory(EnterPath.Instance.Path, EnterDriveStrategy.Instance, RefreshDrives);
+        ChangeDirectory(EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance, RefreshDrives);
     }
 
     private void ChangeDirectory
