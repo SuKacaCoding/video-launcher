@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools.Extension;
 using KVideoLauncher.Data;
 using KVideoLauncher.Helpers;
-using KVideoLauncher.Tools.EntryPathStates;
+using KVideoLauncher.Tools.EnterPathStrategies;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace KVideoLauncher.ViewModels;
@@ -35,16 +35,18 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void ChangeDrive()
     {
-        ChangeDirectory(SelectedDriveName, RefreshDrives);
+        ChangeDirectory(SelectedDriveName, EnterDriveStrategy.Instance, RefreshDrives);
     }
 
     [RelayCommand]
     private void RefreshDirectory()
     {
-        ChangeDirectory(EnterPath.Instance.Path, RefreshDrives);
+        // TODO: Use RefreshDirectoryStrategy instead. 
+        ChangeDirectory(EnterPath.Instance.Path, EnterDriveStrategy.Instance, RefreshDrives);
     }
 
-    private void ChangeDirectory(string? directoryPath, Action directoryNotExistsCallback)
+    private void ChangeDirectory
+        (string? directoryPath, IEnterPathStrategy strategy, Action directoryNotExistsCallback)
     {
         if (directoryPath is null)
             return;
@@ -61,7 +63,7 @@ public partial class MainWindowViewModel : ObservableObject
         try
         {
             EnterPath.Instance.Path = directoryPath;
-            EnterPath.Instance.Reset();
+            EnterPath.Instance.Strategy = strategy;
 
             string? outputPath = EnterPath.Instance.Enter();
 

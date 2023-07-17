@@ -2,15 +2,21 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace KVideoLauncher.Tools.EntryPathStates;
+namespace KVideoLauncher.Tools.EnterPathStrategies;
 
-public class DriveState : IEntryPathState
+public class EnterDriveStrategy : IEnterPathStrategy
 {
+    public static EnterDriveStrategy Instance => LazyInstance.Value;
+    private static readonly Lazy<EnterDriveStrategy> LazyInstance = new();
+
     public string Enter(EnterPath enterPath)
     {
         Debug.Assert(condition: enterPath.Path != null, message: "enterPath.Path != null");
-        if (Directory.GetParent(enterPath.Path) is { })
-            throw new NotImplementedException();
+        Debug.Assert
+        (
+            condition: Directory.GetParent(enterPath.Path) is null,
+            message: "Directory.GetParent(enterPath.Path) is null"
+        );
 
         string normalizedDrivePath = Path.GetFullPath(enterPath.Path);
         bool driveHasLastEnteredPath = enterPath.LastEnteredPathByDrive.TryGetValue
