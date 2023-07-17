@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Security;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools.Extension;
 using KVideoLauncher.Data;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Tools.EnterPathStrategies;
-using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace KVideoLauncher.ViewModels;
 
@@ -77,7 +75,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
         {
-            MessageBox.Show(e.Message, caption: "Exception", icon: MessageBoxImage.Error);
+            ExceptionDisplayHelper.Display(e);
         }
     }
 }
