@@ -92,8 +92,7 @@
             <ListBox Grid.Row="0"
                      x:Name="ListDrives"
                      ItemsSource="{Binding Drives}"
-                     SelectedValuePath="Name"
-                     SelectedValue="{Binding SelectedDriveName,Mode=OneWayToSource}">
+                     SelectedValuePath="Name">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="{StaticResource HeadFontSize}"
@@ -103,7 +102,8 @@
                 </ListBox.ItemTemplate>
                 <hc:Interaction.Triggers>
                     <hc:EventTrigger EventName="SelectionChanged">
-                        <hc:InvokeCommandAction Command="{Binding ChangeDriveCommand}" />
+                        <hc:InvokeCommandAction Command="{Binding ChangeDriveCommand}"
+                                                CommandParameter="{Binding ElementName=ListDrives,Path=SelectedValue}" />
                     </hc:EventTrigger>
                 </hc:Interaction.Triggers>
             </ListBox>

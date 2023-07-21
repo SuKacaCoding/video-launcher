@@ -16,7 +16,6 @@ public partial class MainWindowViewModel : ObservableObject
 {
     public ObservableCollection<DriveInfo> Drives { get; } = new();
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
-    public string? SelectedDriveName { get; set; }
 
     public MainWindowViewModel()
     {
@@ -31,9 +30,9 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void ChangeDrive()
+    private void ChangeDrive(string? driveName)
     {
-        ChangeDirectory(SelectedDriveName, EnterDriveStrategy.Instance, RefreshDrives);
+        ChangeDirectory(driveName, EnterDriveStrategy.Instance, RefreshDrives);
     }
 
     [RelayCommand]
