@@ -1,33 +1,43 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using KVideoLauncher.Data;
 
 namespace KVideoLauncher.Helpers;
 
 public static class DirectoryChildrenHelper
 {
-    public static IList<DirectoryDisplayingInfo> GetHierarchicalDirectoryDisplayingInfos
+    public static async Task<ReadOnlyCollection<DirectoryDisplayingInfo>> GetHierarchicalDirectoryDisplayingInfos
         (string directoryPath)
     {
         Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
 
         var currentDirectory = new DirectoryInfo(directoryPath);
 
-        IEnumerable<DirectoryInfo> subdirectories = currentDirectory.EnumerateDirectories().Where
+        IEnumerable<DirectoryInfo> subdirectories = await Task.Run
         (
-            info => !(info.Attributes.HasFlag(FileAttributes.System)
-                      || info.Attributes.HasFlag(FileAttributes.Hidden))
+            () => currentDirectory.EnumerateDirectories().Where
+            (
+                info => !info.Attributes.HasFlag(FileAttributes.System) &&
+                        !info.Attributes.HasFlag(FileAttributes.Hidden)
+            )
         );
 
         var parentDirectories = new List<DirectoryInfo>();
-        while (currentDirectory.Parent?.Parent is { })
-        {
-            currentDirectory = currentDirectory.Parent;
-            parentDirectories.Add(currentDirectory);
-        }
-
+        await Task.Run
+        (
+            () =>
+            {
+                while (currentDirectory.Parent?.Parent is { })
+                {
+                    currentDirectory = currentDirectory.Parent;
+                    parentDirectories.Add(currentDirectory);
+                }
+            }
+        );
         parentDirectories.Reverse();
 
         var ret = new List<DirectoryDisplayingInfo>();

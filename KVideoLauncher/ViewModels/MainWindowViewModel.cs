@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Security;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools.Extension;
@@ -30,18 +31,14 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void ChangeDrive(string? driveName)
-    {
-        ChangeDirectory(driveName, EnterDriveStrategy.Instance, RefreshDrives);
-    }
+    private Task ChangeDrive(string? driveName) => ChangeDirectory
+        (driveName, EnterDriveStrategy.Instance, RefreshDrives);
 
     [RelayCommand]
-    private void RefreshDirectory()
-    {
-        ChangeDirectory(EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance, RefreshDrives);
-    }
+    private Task RefreshDirectory() => ChangeDirectory
+        (EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance, RefreshDrives);
 
-    private void ChangeDirectory
+    private async Task ChangeDirectory
         (string? directoryPath, IEnterPathStrategy strategy, Action directoryNotExistsCallback)
     {
         if (directoryPath is null)
@@ -68,7 +65,7 @@ public partial class MainWindowViewModel : ObservableObject
                 return;
 
             IEnumerable<DirectoryDisplayingInfo> displayingInfos =
-                DirectoryChildrenHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath);
+                await DirectoryChildrenHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath);
             Directories.AddRange(displayingInfos);
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
