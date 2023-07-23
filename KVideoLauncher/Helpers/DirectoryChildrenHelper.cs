@@ -40,11 +40,11 @@ public static class DirectoryChildrenHelper
             depth += 2;
         }
 
-        using IEnumerator<DirectoryInfo> e = await Task.Run
+        using IEnumerator<DirectoryInfo> subdirectoriesEnumerator = await Task.Run
             (() => currentDirectory.EnumerateDirectories().GetEnumerator());
-        while (await Task.Run(() => e.MoveNext()))
+        while (await Task.Run(() => subdirectoriesEnumerator.MoveNext()))
         {
-            var subdirectory = e.Current;
+            var subdirectory = subdirectoriesEnumerator.Current;
 
             if (!subdirectory.Attributes.HasFlag(FileAttributes.System) &&
                 !subdirectory.Attributes.HasFlag(FileAttributes.Hidden))
