@@ -136,10 +136,15 @@
             <TextBlock Grid.Column="0"
                        Text="Directories:" />
             <Button Grid.Column="1"
-                    FontFamily="{StaticResource IconFontFamily}"
-                    FontSize="{StaticResource IconFontSize}"
-                    Content="&#xeafd;"
-                    Command="{Binding RefreshDirectoryCommand}" />
+                    Command="{Binding RefreshDirectoryCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="{StaticResource IconFontFamily}"
+                               FontSize="{StaticResource IconFontSize}"
+                               Text="&#xeafd;"
+                               Margin="{StaticResource IconFontMargin}" />
+                    <TextBlock Text="Refresh both directories and videos" />
+                </StackPanel>
+            </Button>
         </Grid>
         <ListBox Grid.Row="2"
                  Grid.Column="2"
@@ -176,10 +181,6 @@
 
             <TextBlock Grid.Column="0"
                        Text="Videos:" />
-            <Button Grid.Column="1"
-                    FontFamily="{StaticResource IconFontFamily}"
-                    FontSize="{StaticResource IconFontSize}"
-                    Content="&#xeafd;" />
         </Grid>
         <ListBox Grid.Row="2"
                  Grid.Column="4"
