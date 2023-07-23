@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using KVideoLauncher.Data;
 
@@ -10,60 +8,50 @@ namespace KVideoLauncher.Helpers;
 
 public static class DirectoryChildrenHelper
 {
-    public static async Task<ReadOnlyCollection<DirectoryDisplayingInfo>> GetHierarchicalDirectoryDisplayingInfos
+    public static async IAsyncEnumerable<DirectoryDisplayingInfo> GetHierarchicalDirectoryDisplayingInfos
         (string directoryPath)
     {
         Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
 
         var currentDirectory = new DirectoryInfo(directoryPath);
 
-        IEnumerable<DirectoryInfo> subdirectories = await Task.Run
-        (
-            () => currentDirectory.EnumerateDirectories().Where
-            (
-                info => !info.Attributes.HasFlag(FileAttributes.System) &&
-                        !info.Attributes.HasFlag(FileAttributes.Hidden)
-            )
-        );
-
         var parentDirectories = new List<DirectoryInfo>();
+        var parentDirectoryPointer = currentDirectory;
         await Task.Run
         (
             () =>
             {
-                while (currentDirectory.Parent is { })
+                while (parentDirectoryPointer.Parent is { })
                 {
-                    parentDirectories.Add(currentDirectory);
-                    currentDirectory = currentDirectory.Parent;
+                    parentDirectories.Add(parentDirectoryPointer);
+                    parentDirectoryPointer = parentDirectoryPointer.Parent;
                 }
 
-                parentDirectories.Add(currentDirectory);
+                parentDirectories.Add(parentDirectoryPointer);
             }
         );
         parentDirectories.Reverse();
 
-        var ret = new List<DirectoryDisplayingInfo>();
         int depth = 0;
-
         foreach (var parentDirectory in parentDirectories)
         {
-            ret.Add
-            (
-                new DirectoryDisplayingInfo
-                    (displayName: $"{new string(c: ' ', depth)}{parentDirectory.Name}", parentDirectory)
-            );
+            yield return new DirectoryDisplayingInfo
+                (displayName: $"{new string(c: ' ', depth)}{parentDirectory.Name}", parentDirectory);
             depth += 2;
         }
 
-        ret.AddRange
-        (
-            subdirectories.Select
-            (
-                subdirectory => new DirectoryDisplayingInfo
-                    (displayName: $"{new string(c: ' ', depth)}{subdirectory.Name}", subdirectory)
-            )
-        );
+        using IEnumerator<DirectoryInfo> e = await Task.Run
+            (() => currentDirectory.EnumerateDirectories().GetEnumerator());
+        while (await Task.Run(() => e.MoveNext()))
+        {
+            var subdirectory = e.Current;
 
-        return ret.AsReadOnly();
+            if (!subdirectory.Attributes.HasFlag(FileAttributes.System) &&
+                !subdirectory.Attributes.HasFlag(FileAttributes.Hidden))
+            {
+                yield return new DirectoryDisplayingInfo
+                    (displayName: $"{new string(c: ' ', depth)}{subdirectory.Name}", subdirectory);
+            }
+        }
     }
 }

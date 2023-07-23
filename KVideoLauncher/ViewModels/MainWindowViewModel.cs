@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Security;
@@ -70,9 +69,9 @@ public partial class MainWindowViewModel : ObservableObject
             if (outputPath is null)
                 return;
 
-            IEnumerable<DirectoryDisplayingInfo> displayingInfos =
-                await DirectoryChildrenHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath);
-            Directories.AddRange(displayingInfos);
+            await foreach (var displayingInfo
+                           in DirectoryChildrenHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath))
+                Directories.Add(displayingInfo);
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
         {
