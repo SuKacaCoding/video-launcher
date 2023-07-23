@@ -152,6 +152,12 @@
                                Text="{Binding DisplayName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="MouseDoubleClick">
+                    <hc:InvokeCommandAction Command="{Binding ChangeDirectoryCommand}"
+                                            CommandParameter="{Binding ElementName=ListDirectories,Path=SelectedItem}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
         </ListBox>
 
         <Grid Grid.Column="4"

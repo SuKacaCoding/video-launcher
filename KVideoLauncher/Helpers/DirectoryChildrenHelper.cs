@@ -31,11 +31,13 @@ public static class DirectoryChildrenHelper
         (
             () =>
             {
-                while (currentDirectory.Parent?.Parent is { })
+                while (currentDirectory.Parent is { })
                 {
-                    currentDirectory = currentDirectory.Parent;
                     parentDirectories.Add(currentDirectory);
+                    currentDirectory = currentDirectory.Parent;
                 }
+
+                parentDirectories.Add(currentDirectory);
             }
         );
         parentDirectories.Reverse();

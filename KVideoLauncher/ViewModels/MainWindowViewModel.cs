@@ -31,15 +31,21 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task ChangeDrive(string? driveName) => ChangeDirectory
-        (driveName, EnterDriveStrategy.Instance, RefreshDrives);
+    private Task ChangeDrive(string? driveName) => CommonChangeDirectory
+        (driveName, EnterDriveStrategy.Instance);
 
     [RelayCommand]
-    private Task RefreshDirectory() => ChangeDirectory
-        (EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance, RefreshDrives);
+    private Task RefreshDirectory() => CommonChangeDirectory
+        (EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance);
 
-    private async Task ChangeDirectory
-        (string? directoryPath, IEnterPathStrategy strategy, Action directoryNotExistsCallback)
+    [RelayCommand]
+    private Task ChangeDirectory
+        (object? parameter) => parameter is DirectoryDisplayingInfo info
+        ? CommonChangeDirectory(info.Directory.FullName, EnterDirectoryStrategy.Instance)
+        : Task.CompletedTask;
+
+    private async Task CommonChangeDirectory
+        (string? directoryPath, IEnterPathStrategy strategy)
     {
         if (directoryPath is null)
             return;
@@ -50,7 +56,7 @@ public partial class MainWindowViewModel : ObservableObject
                             ?? (Directory.Exists(EnterPath.Instance.Path)
                                 ? EnterPath.Instance.Path
                                 : null);
-            directoryNotExistsCallback();
+            DirectoryNotExistsCallback();
         }
 
         try
@@ -72,5 +78,10 @@ public partial class MainWindowViewModel : ObservableObject
         {
             ExceptionDisplayHelper.Display(e);
         }
+    }
+
+    private void DirectoryNotExistsCallback()
+    {
+        RefreshDrives();
     }
 }
