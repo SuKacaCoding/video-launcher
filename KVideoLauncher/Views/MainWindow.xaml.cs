@@ -78,7 +78,7 @@ public partial class MainWindow : Window
         (
             new KeyBinding
             {
-                Gesture = new KeyGesture(Key.N, ModifierKeys.Control),
+                Gesture = new KeyGesture(Key.N, modifiers: ModifierKeys.Control | ModifierKeys.Shift),
                 Command = WideMoveFocusedListBoxSelectionDownCommand
             }
         );
@@ -86,7 +86,7 @@ public partial class MainWindow : Window
         (
             new KeyBinding
             {
-                Gesture = new KeyGesture(Key.P, ModifierKeys.Control),
+                Gesture = new KeyGesture(Key.P, modifiers: ModifierKeys.Control | ModifierKeys.Shift),
                 Command = WideMoveFocusedListBoxSelectionUpCommand
             }
         );
