@@ -70,7 +70,7 @@ public partial class MainWindowViewModel : ObservableObject
                 return;
 
             await foreach (var displayingInfo
-                           in DirectoryChildrenHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath))
+                           in DirectoryDisplayingHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath))
                 Directories.Add(displayingInfo);
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)

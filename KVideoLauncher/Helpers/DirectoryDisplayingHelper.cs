@@ -6,7 +6,7 @@ using KVideoLauncher.Data;
 
 namespace KVideoLauncher.Helpers;
 
-public static class DirectoryChildrenHelper
+public static class DirectoryDisplayingHelper
 {
     public static async IAsyncEnumerable<DirectoryDisplayingInfo> GetHierarchicalDirectoryDisplayingInfos
         (string directoryPath)
