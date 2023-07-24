@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Window = HandyControl.Controls.Window;
@@ -107,6 +108,18 @@ public partial class MainWindow : Window
             }
         );
 
+        AddHandler
+        (
+            Selector.SelectionChangedEvent, handler: new RoutedEventHandler
+            (
+                (_, e) =>
+                {
+                    if (e.Source is ListBox listBox)
+                        FocusOnListBoxSelection(listBox);
+                }
+            )
+        );
+
         FocusedListBoxIndex = 0;
     }
 
@@ -183,7 +196,6 @@ public partial class MainWindow : Window
             targetSelectedIndex += itemsCount;
 
         FocusedListBox.SelectedIndex = targetSelectedIndex;
-        FocusOnListBoxSelection(FocusedListBox);
     }
 
     private static void FocusOnListBoxSelection(ListBox listBox)
