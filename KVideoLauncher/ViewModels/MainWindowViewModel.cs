@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Security;
@@ -69,8 +70,20 @@ public partial class MainWindowViewModel : ObservableObject
             if (outputPath is null)
                 return;
 
-            await foreach (var displayingInfo
-                           in DirectoryDisplayingHelper.GetHierarchicalDirectoryDisplayingInfos(outputPath))
+            DirectoryDisplayingHelper.SetCurrentDirectory(outputPath);
+
+            IAsyncEnumerable<DirectoryDisplayingInfo> parentInfos =
+                DirectoryDisplayingHelper.GetHierarchicalParentInfos();
+            int parentLevelCount = 0;
+            await foreach (var displayingInfo in parentInfos)
+            {
+                Directories.Add(displayingInfo);
+                parentLevelCount++;
+            }
+
+            ListDirectorySelectedIndex = parentLevelCount;
+             
+            await foreach (var displayingInfo in DirectoryDisplayingHelper.GetIndentedChildrenInfos())
                 Directories.Add(displayingInfo);
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
@@ -83,4 +96,6 @@ public partial class MainWindowViewModel : ObservableObject
     {
         RefreshDrives();
     }
+
+    [ObservableProperty] private int _listDirectorySelectedIndex;
 }

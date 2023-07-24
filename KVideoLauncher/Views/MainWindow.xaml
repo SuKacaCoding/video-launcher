@@ -149,7 +149,8 @@
         <ListBox Grid.Row="2"
                  Grid.Column="2"
                  x:Name="ListDirectories"
-                 ItemsSource="{Binding Directories}">
+                 ItemsSource="{Binding Directories}"
+                 SelectedIndex="{Binding ListDirectorySelectedIndex}">
             <ListBox.InputBindings>
                 <KeyBinding Gesture="CTRL+ENTER"
                             Command="{Binding ChangeDirectoryCommand}"
