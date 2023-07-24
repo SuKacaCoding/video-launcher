@@ -90,6 +90,22 @@ public partial class MainWindow : Window
                 Command = WideMoveFocusedListBoxSelectionUpCommand
             }
         );
+        InputBindings.Add
+        (
+            new KeyBinding
+            {
+                Gesture = new KeyGesture(Key.N, ModifierKeys.Control),
+                Command = PreciselyMoveFocusedListBoxSelectionDownCommand
+            }
+        );
+        InputBindings.Add
+        (
+            new KeyBinding
+            {
+                Gesture = new KeyGesture(Key.P, ModifierKeys.Control),
+                Command = PreciselyMoveFocusedListBoxSelectionUpCommand
+            }
+        );
 
         FocusedListBoxIndex = 0;
     }
@@ -135,16 +151,28 @@ public partial class MainWindow : Window
     [RelayCommand]
     private void WideMoveFocusedListBoxSelectionDown()
     {
-        WideMoveFocusedListBoxSelection(ListBoxWideMoveOffset);
+        CommonMoveFocusedListBoxSelection(ListBoxWideMoveOffset);
     }
 
     [RelayCommand]
     private void WideMoveFocusedListBoxSelectionUp()
     {
-        WideMoveFocusedListBoxSelection(-ListBoxWideMoveOffset);
+        CommonMoveFocusedListBoxSelection(-ListBoxWideMoveOffset);
     }
 
-    private void WideMoveFocusedListBoxSelection(int offset)
+    [RelayCommand]
+    private void PreciselyMoveFocusedListBoxSelectionDown()
+    {
+        CommonMoveFocusedListBoxSelection(1);
+    }
+
+    [RelayCommand]
+    private void PreciselyMoveFocusedListBoxSelectionUp()
+    {
+        CommonMoveFocusedListBoxSelection(-1);
+    }
+
+    private void CommonMoveFocusedListBoxSelection(int offset)
     {
         int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
         int itemsCount = FocusedListBox.Items.Count;
