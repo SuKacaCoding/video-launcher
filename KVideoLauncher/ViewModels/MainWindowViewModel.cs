@@ -13,6 +13,7 @@ using KVideoLauncher.Tools.EnterPathStrategies;
 
 namespace KVideoLauncher.ViewModels;
 
+// TODO: Add a command that can go back to the root directory.
 public partial class MainWindowViewModel : ObservableObject
 {
     public ObservableCollection<DriveInfo> Drives { get; } = new();
@@ -43,6 +44,10 @@ public partial class MainWindowViewModel : ObservableObject
         (object? parameter) => parameter is DirectoryDisplayingInfo info
         ? CommonChangeDirectory(info.Directory.FullName, EnterDirectoryStrategy.Instance)
         : Task.CompletedTask;
+
+    [RelayCommand]
+    private Task GoBackToRootDirectory() => CommonChangeDirectory
+        (EnterPath.Instance.Path, GoBackToRootPathStrategy.Instance);
 
     private async Task CommonChangeDirectory
         (string? directoryPath, IEnterPathStrategy strategy)
@@ -82,7 +87,7 @@ public partial class MainWindowViewModel : ObservableObject
             }
 
             ListDirectorySelectedIndex = parentLevelCount;
-             
+
             await foreach (var displayingInfo in DirectoryDisplayingHelper.GetIndentedChildrenInfos())
                 Directories.Add(displayingInfo);
         }

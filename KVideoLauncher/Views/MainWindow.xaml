@@ -22,6 +22,8 @@
                     Gesture="CTRL+R" />
         <KeyBinding Command="{Binding RefreshDirectoryCommand}"
                     Gesture="CTRL+SHIFT+R" />
+        <KeyBinding Command="{Binding GoBackToRootDirectoryCommand}"
+                    Gesture="CTRL+ALT+R" />
     </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="ListBox"
