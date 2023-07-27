@@ -1,6 +1,8 @@
-﻿namespace KVideoLauncher.Tools.EnterPathStrategies;
+﻿using System.Threading.Tasks;
+
+namespace KVideoLauncher.Tools.EnterPathStrategies;
 
 public interface IEnterPathStrategy
 {
-    string Enter(EnterPath enterPath);
+    Task<string> Enter(EnterPath enterPath);
 }

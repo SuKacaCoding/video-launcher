@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Security;
 using System.Threading.Tasks;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools.Extension;
@@ -13,7 +14,6 @@ using KVideoLauncher.Tools.EnterPathStrategies;
 
 namespace KVideoLauncher.ViewModels;
 
-// TODO: Add a command that can go back to the root directory.
 public partial class MainWindowViewModel : ObservableObject
 {
     public ObservableCollection<DriveInfo> Drives { get; } = new();
@@ -69,11 +69,9 @@ public partial class MainWindowViewModel : ObservableObject
             EnterPath.Instance.Path = directoryPath;
             EnterPath.Instance.Strategy = strategy;
 
-            string? outputPath = EnterPath.Instance.Enter();
+            string outputPath = await EnterPath.Instance.Enter();
 
             Directories.Clear();
-            if (outputPath is null)
-                return;
 
             DirectoryDisplayingHelper.SetCurrentDirectory(outputPath);
 
@@ -100,6 +98,13 @@ public partial class MainWindowViewModel : ObservableObject
     private void DirectoryNotExistsCallback()
     {
         RefreshDrives();
+    }
+
+    [RelayCommand]
+    private async Task Exit()
+    {
+        await SettingsInfo.SaveInstanceAsync();
+        Application.Current.Shutdown();
     }
 
     [ObservableProperty] private int _listDirectorySelectedIndex;

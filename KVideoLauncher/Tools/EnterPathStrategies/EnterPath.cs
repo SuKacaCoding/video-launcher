@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
@@ -8,7 +8,11 @@ public class EnterPath
     public IEnterPathStrategy? Strategy { set; private get; }
     public string? Path { get; set; }
     public static EnterPath Instance { get; } = new();
-    public Dictionary<string, string> LastEnteredPathByDrive { get; } = new(StringComparer.OrdinalIgnoreCase);
 
-    public string? Enter() => Path is null ? null : Strategy?.Enter(this);
+    public Task<string> Enter()
+    {
+        Debug.Assert(condition: Path is { }, message: "Path is { }");
+        Debug.Assert(condition: Strategy is { }, message: "Strategy is { }");
+        return Strategy.Enter(this);
+    }
 }

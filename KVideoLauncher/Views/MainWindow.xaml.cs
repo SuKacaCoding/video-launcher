@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -189,6 +190,11 @@ public partial class MainWindow : Window
     private static void FocusOnListBoxSelection(ListBox listBox)
     {
         (listBox.ItemContainerGenerator.ContainerFromIndex(listBox.SelectedIndex) as FrameworkElement)?.Focus();
+    }
+
+    private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
+    {
+        e.Cancel = true;
     }
 
     private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;

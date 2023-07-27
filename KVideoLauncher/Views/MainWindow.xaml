@@ -13,7 +13,8 @@
            d:DesignHeight="720"
            SystemBackdropType="Mica"
            PreviewMouseDown="ListBoxMouseDown"
-           Icon="/Properties/Icon.ico">
+           Icon="/Properties/Icon.ico"
+           Closing="MainWindow_OnClosing">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -44,6 +45,12 @@
                     Value="Center" />
         </Style>
     </Window.Resources>
+
+    <hc:Interaction.Triggers>
+        <hc:EventTrigger EventName="Closing">
+            <hc:InvokeCommandAction Command="{Binding ExitCommand}" />
+        </hc:EventTrigger>
+    </hc:Interaction.Triggers>
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
