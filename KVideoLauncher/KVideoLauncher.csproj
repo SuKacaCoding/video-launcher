@@ -9,49 +9,49 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
-        <PackageReference Include="HandyControls" Version="3.4.5" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0"/>
+        <PackageReference Include="HandyControls" Version="3.4.5"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Properties\IconFont\iconfont.ttf" />
-        <Resource Include="Properties\IconFont\iconfont.ttf" />
-        <None Remove="Properties\Icon.ico" />
-        <Resource Include="Properties\Icon.ico" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <Folder Include="Tools\" />
+        <None Remove="Properties\IconFont\iconfont.ttf"/>
+        <Resource Include="Properties\IconFont\iconfont.ttf"/>
+        <None Remove="Properties\Icon.ico"/>
+        <Resource Include="Properties\Icon.ico"/>
     </ItemGroup>
 
 
     <ItemGroup>
-      <Compile Update="Properties\Lang\Labels.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Labels.resx</DependentUpon>
-      </Compile>
+        <Folder Include="Tools\"/>
     </ItemGroup>
 
 
     <ItemGroup>
-      <EmbeddedResource Update="Properties\Lang\Labels.zh-cn.resx">
-        <Generator></Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Lang\Labels.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Labels.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <Compile Update="Properties\Lang\Labels.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Labels.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
-  
-<!--    <ItemGroup>-->
-<!--      <Page Include="Properties\DesignTimeResources.xaml"-->
-<!--            Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">-->
-<!--        <Generator>MSBuild:Compile</Generator>-->
-<!--        <SubType>Designer</SubType>-->
-<!--        <ContainsDesignTimeResources>true</ContainsDesignTimeResources>-->
-<!--      </Page>-->
-<!--    </ItemGroup>-->
+
+
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Lang\Labels.zh-cn.resx">
+            <Generator></Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Lang\Labels.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <!--    <ItemGroup>-->
+    <!--      <Page Include="Properties\DesignTimeResources.xaml"-->
+    <!--            Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">-->
+    <!--        <Generator>MSBuild:Compile</Generator>-->
+    <!--        <SubType>Designer</SubType>-->
+    <!--        <ContainsDesignTimeResources>true</ContainsDesignTimeResources>-->
+    <!--      </Page>-->
+    <!--    </ItemGroup>-->
 
 </Project>

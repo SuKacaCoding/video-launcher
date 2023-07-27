@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
