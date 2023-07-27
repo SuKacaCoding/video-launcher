@@ -5,6 +5,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
            xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
            mc:Ignorable="d"
            Title="KVideoLauncher"
            WindowState="Maximized"
@@ -54,7 +55,7 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="140" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*"
                               x:Name="ColDirectories" />
@@ -79,7 +80,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Text="Drives:" />
+                       Text="{x:Static l:Labels.Drives}" />
             <Button Grid.Column="1"
                     FontFamily="{StaticResource IconFontFamily}"
                     FontSize="{StaticResource IconFontSize}"
@@ -118,7 +119,7 @@
             </ListBox>
 
             <TextBlock Grid.Row="2"
-                       Text="Frequent:" />
+                       Text="{x:Static l:Labels.Frequent}" />
             <ListBox Grid.Row="4"
                      x:Name="ListFrequent">
                 <ListBox.ItemTemplate>
@@ -130,7 +131,7 @@
             </ListBox>
 
             <Button Grid.Row="6"
-                    Content="Network..."
+                    Content="{x:Static l:Labels.NetworkSmb}"
                     HorizontalAlignment="Stretch"
                     Style="{StaticResource ButtonDashedPrimary}" />
         </Grid>
@@ -143,7 +144,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Text="Directories:" />
+                       Text="{x:Static l:Labels.Directories}" />
             <Button Grid.Column="1"
                     Command="{Binding RefreshDirectoryCommand}">
                 <StackPanel Orientation="Horizontal">
@@ -151,7 +152,7 @@
                                FontSize="{StaticResource IconFontSize}"
                                Text="&#xeafd;"
                                Margin="{StaticResource IconFontMargin}" />
-                    <TextBlock Text="Refresh both directories and videos" />
+                    <TextBlock Text="{x:Static l:Labels.RefreshBothDirectoriesAndVideos}" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -190,7 +191,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Text="Videos:" />
+                       Text="{x:Static l:Labels.Videos}" />
         </Grid>
         <ListBox Grid.Row="2"
                  Grid.Column="4"
@@ -198,7 +199,7 @@
 
         <TextBlock Grid.Row="0"
                    Grid.Column="6"
-                   Text="Playlist:" />
+                   Text="{x:Static l:Labels.Playlist}" />
         <Grid Grid.Row="2"
               Grid.Column="6">
             <Grid.RowDefinitions>
@@ -219,20 +220,20 @@
                         Grid.Column="0"
                         Orientation="Horizontal">
                 <Button hc:IconElement.Geometry="{StaticResource LeftGeometry}"
-                        ToolTip="Previous playlist"
+                        ToolTip="{x:Static l:Labels.PreviousPlaylist}"
                         Margin="{StaticResource HorStackPanelChildrenMargin}" />
                 <Button hc:IconElement.Geometry="{StaticResource RightGeometry}"
-                        ToolTip="Next playlist"
+                        ToolTip="{x:Static l:Labels.NextPlaylist}"
                         Margin="{StaticResource HorStackPanelChildrenMargin}" />
                 <Button FontFamily="{StaticResource IconFontFamily}"
                         Content="&#xe654;"
                         FontSize="{StaticResource IconFontSize}"
-                        ToolTip="Current playlist"
+                        ToolTip="{x:Static l:Labels.CurrentPlaylist}"
                         Margin="{StaticResource HorStackPanelChildrenMargin}" />
                 <Button FontFamily="{StaticResource IconFontFamily}"
                         Content="&#xe6dc;"
                         FontSize="{StaticResource IconFontSize}"
-                        ToolTip="Frequently played" />
+                        ToolTip="{x:Static l:Labels.FrequentlyPlayed}" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"
@@ -245,7 +246,7 @@
                                    FontSize="{StaticResource IconFontSize}"
                                    Text="&#xea82;"
                                    Margin="{StaticResource IconFontMargin}" />
-                        <TextBlock Text="Play but don't close" />
+                        <TextBlock Text="{x:Static l:Labels.PlayButDoNotClose}" />
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource ButtonPrimary}">
@@ -254,7 +255,7 @@
                                    FontSize="{StaticResource IconFontSize}"
                                    Text="&#xea82;"
                                    Margin="{StaticResource IconFontMargin}" />
-                        <TextBlock Text="Play" />
+                        <TextBlock Text="{x:Static l:Labels.Play}" />
                     </StackPanel>
                 </Button>
             </StackPanel>

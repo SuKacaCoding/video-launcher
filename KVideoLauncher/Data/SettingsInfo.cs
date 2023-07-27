@@ -9,7 +9,6 @@ namespace KVideoLauncher.Data;
 public class SettingsInfo
 {
     public Dictionary<string, string> LastEnteredPathByDrive { get; set; } = new(StringComparer.OrdinalIgnoreCase);
-    public string? Language { get; set; }
     private const string SettingsFileName = "settings.json";
 
     private static SettingsInfo? s_instance;
