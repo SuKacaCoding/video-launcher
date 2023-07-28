@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <hc:ThemeResources UsingSystemTheme="True" />
+                <hc:ThemeResources UsingWindowsAppTheme="True" />
                 <hc:Theme />
             </ResourceDictionary.MergedDictionaries>
             <FontFamily x:Key="IconFontFamily">/Properties/IconFont/#iconfont</FontFamily>

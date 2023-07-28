@@ -9,11 +9,13 @@ public static class DirectoryDisplayingHelper
 {
     private static int s_depth;
     private static DirectoryInfo? s_currentDirectory;
+    private static bool s_depthIsUpToDate;
 
     public static void SetCurrentDirectory(string directoryPath)
     {
         Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
         s_currentDirectory = new DirectoryInfo(directoryPath);
+        s_depthIsUpToDate = false;
     }
 
     public static async IAsyncEnumerable<DirectoryDisplayingInfo> GetHierarchicalParentInfos()
@@ -44,11 +46,14 @@ public static class DirectoryDisplayingHelper
                 (displayName: $"{new string(c: ' ', s_depth)}{parentDirectory.Name}", parentDirectory);
             s_depth += 2;
         }
+
+        s_depthIsUpToDate = true;
     }
 
     public static async IAsyncEnumerable<DirectoryDisplayingInfo> GetIndentedChildrenInfos()
     {
         Debug.Assert(condition: s_currentDirectory is { }, message: "s_currentDirectory is { }");
+        Debug.Assert(s_depthIsUpToDate, message: "s_depthIsUpToDate");
 
         using IEnumerator<DirectoryInfo> subdirectoriesEnumerator = await Task.Run
             (() => s_currentDirectory.EnumerateDirectories().GetEnumerator());
