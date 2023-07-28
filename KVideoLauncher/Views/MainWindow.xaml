@@ -195,7 +195,9 @@
         </Grid>
         <ListBox Grid.Row="2"
                  Grid.Column="4"
-                 x:Name="ListVideos" />
+                 x:Name="ListVideos"
+                 ItemsSource="{Binding Files}"
+                 DisplayMemberPath="DisplayName" />
 
         <TextBlock Grid.Row="0"
                    Grid.Column="6"

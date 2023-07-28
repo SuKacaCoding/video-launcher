@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using KVideoLauncher.Data;
+using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
@@ -18,7 +19,7 @@ public static class DirectoryDisplayingHelper
         s_depthIsUpToDate = false;
     }
 
-    public static async IAsyncEnumerable<DirectoryDisplayingInfo> GetHierarchicalParentInfos()
+    public static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateHierarchicalParentInfosAsync()
     {
         Debug.Assert(condition: s_currentDirectory is { }, message: "s_currentDirectory is { }");
 
@@ -50,7 +51,7 @@ public static class DirectoryDisplayingHelper
         s_depthIsUpToDate = true;
     }
 
-    public static async IAsyncEnumerable<DirectoryDisplayingInfo> GetIndentedChildrenInfos()
+    public static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateIndentedChildrenInfosAsync()
     {
         Debug.Assert(condition: s_currentDirectory is { }, message: "s_currentDirectory is { }");
         Debug.Assert(s_depthIsUpToDate, message: "s_depthIsUpToDate");
@@ -61,8 +62,7 @@ public static class DirectoryDisplayingHelper
         {
             var subdirectory = subdirectoriesEnumerator.Current;
 
-            if (!subdirectory.Attributes.HasFlag(FileAttributes.System) &&
-                !subdirectory.Attributes.HasFlag(FileAttributes.Hidden))
+            if (subdirectory.IsCommon())
             {
                 yield return new DirectoryDisplayingInfo
                     (displayName: $"{new string(c: ' ', s_depth)}{subdirectory.Name}", subdirectory);

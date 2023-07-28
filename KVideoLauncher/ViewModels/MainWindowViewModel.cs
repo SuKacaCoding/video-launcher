@@ -17,6 +17,7 @@ public partial class MainWindowViewModel : ObservableObject
 {
     public ObservableCollection<DriveInfo> Drives { get; } = new();
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
+    public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
 
     public MainWindowViewModel()
     {
@@ -31,24 +32,24 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private Task ChangeDrive(string? driveName) => CommonChangeDirectory
+    private Task ChangeDriveAsync(string? driveName) => CommonChangeDirectoryAsync
         (driveName, EnterDriveStrategy.Instance);
 
     [RelayCommand]
-    private Task RefreshDirectory() => CommonChangeDirectory
+    private Task RefreshDirectoryAsync() => CommonChangeDirectoryAsync
         (EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance);
 
     [RelayCommand]
-    private Task ChangeDirectory
+    private Task ChangeDirectoryAsync
         (object? parameter) => parameter is DirectoryDisplayingInfo info
-        ? CommonChangeDirectory(info.Directory.FullName, EnterDirectoryStrategy.Instance)
+        ? CommonChangeDirectoryAsync(info.Directory.FullName, EnterDirectoryStrategy.Instance)
         : Task.CompletedTask;
 
     [RelayCommand]
-    private Task GoBackToRootDirectory() => CommonChangeDirectory
+    private Task GoBackToRootDirectoryAsync() => CommonChangeDirectoryAsync
         (EnterPath.Instance.Path, GoBackToRootPathStrategy.Instance);
 
-    private async Task CommonChangeDirectory
+    private async Task CommonChangeDirectoryAsync
         (string? directoryPath, IEnterPathStrategy strategy)
     {
         if (directoryPath is null)
@@ -71,11 +72,12 @@ public partial class MainWindowViewModel : ObservableObject
             string outputPath = await EnterPath.Instance.Enter();
 
             Directories.Clear();
+            Files.Clear();
 
             DirectoryDisplayingHelper.SetCurrentDirectory(outputPath);
 
             IAsyncEnumerable<DirectoryDisplayingInfo> parentInfos =
-                DirectoryDisplayingHelper.GetHierarchicalParentInfos();
+                DirectoryDisplayingHelper.EnumerateHierarchicalParentInfosAsync();
             int parentLevelCount = 0;
             await foreach (var displayingInfo in parentInfos)
             {
@@ -85,8 +87,11 @@ public partial class MainWindowViewModel : ObservableObject
 
             ListDirectorySelectedIndex = parentLevelCount;
 
-            await foreach (var displayingInfo in DirectoryDisplayingHelper.GetIndentedChildrenInfos())
+            await foreach (var displayingInfo in DirectoryDisplayingHelper.EnumerateIndentedChildrenInfosAsync())
                 Directories.Add(displayingInfo);
+
+            await foreach (var displayingInfo in FileDisplayingHelper.EnumerateFilesInDirectoryAsync(outputPath))
+                Files.Add(displayingInfo);
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
         {
@@ -100,7 +105,7 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Exit()
+    private async Task ExitAsync()
     {
         await SettingsInfo.SaveInstanceAsync();
         Application.Current.Shutdown();

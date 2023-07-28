@@ -4,5 +4,5 @@ namespace KVideoLauncher.Tools.EnterPathStrategies;
 
 public interface IEnterPathStrategy
 {
-    Task<string> Enter(EnterPath enterPath);
+    Task<string> EnterAsync(EnterPath enterPath);
 }

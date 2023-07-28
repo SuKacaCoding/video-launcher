@@ -12,6 +12,6 @@ public class EnterPath
     {
         Debug.Assert(condition: Path is { }, message: "Path is { }");
         Debug.Assert(condition: Strategy is { }, message: "Strategy is { }");
-        return Strategy.Enter(this);
+        return Strategy.EnterAsync(this);
     }
 }
