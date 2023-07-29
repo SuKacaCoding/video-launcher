@@ -9,6 +9,12 @@ public class SettingsModel
 {
     public Dictionary<string, string> LastEnteredPathByDrive { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
+    public IEnumerable<string> VideoFileExtensions { get; set; } =
+        new[] { "avi", "flv", "mkv", "mov", "mp4", "rm", "rmvb", "ts", "ps", "wmv" }.AsReadOnly();
+
+    public IEnumerable<string> SubtitleFileExtensions { get; set; } =
+        new[] { "srt", "sub", "idx", "ass" }.AsReadOnly();
+
     private static readonly string SettingsDirectoryPath = Path.Join
     (
         path1: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -46,8 +52,8 @@ public class SettingsModel
         }
     }
 
-    /// <exception cref="UnauthorizedAccessException"/>
-    /// <exception cref="IOException"/>
+    /// <exception cref="UnauthorizedAccessException" />
+    /// <exception cref="IOException" />
     public static async Task SaveInstanceAsync()
     {
         Directory.CreateDirectory(SettingsDirectoryPath);
