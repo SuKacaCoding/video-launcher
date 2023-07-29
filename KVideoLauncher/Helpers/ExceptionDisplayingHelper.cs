@@ -4,7 +4,7 @@ using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace KVideoLauncher.Helpers;
 
-public static class ExceptionDisplayHelper
+public static class ExceptionDisplayingHelper
 {
     public static void Display(Exception ex)
     {

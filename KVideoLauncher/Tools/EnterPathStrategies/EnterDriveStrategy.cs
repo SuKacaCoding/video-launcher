@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using KVideoLauncher.Data;
+using KVideoLauncher.Models;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
@@ -18,7 +18,7 @@ public class EnterDriveStrategy : IEnterPathStrategy
             message: "Directory.GetParent(enterPath.Path) is null"
         );
 
-        var settingsInfo = await SettingsInfo.GetInstanceAsync();
+        var settingsInfo = await SettingsModel.GetInstanceAsync();
 
         string normalizedDrivePath = Path.GetFullPath(enterPath.Path);
         bool driveHasLastEnteredPath = settingsInfo.LastEnteredPathByDrive.TryGetValue

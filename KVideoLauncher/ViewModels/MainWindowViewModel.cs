@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools.Extension;
 using KVideoLauncher.Data;
 using KVideoLauncher.Helpers;
+using KVideoLauncher.Models;
 using KVideoLauncher.Tools.EnterPathStrategies;
 
 namespace KVideoLauncher.ViewModels;
@@ -95,7 +96,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
         {
-            ExceptionDisplayHelper.Display(e);
+            ExceptionDisplayingHelper.Display(e);
         }
     }
 
@@ -107,7 +108,15 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ExitAsync()
     {
-        await SettingsInfo.SaveInstanceAsync();
+        try
+        {
+            await SettingsModel.SaveInstanceAsync();
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
+
         Application.Current.Shutdown();
     }
 

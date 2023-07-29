@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using KVideoLauncher.Data;
+using KVideoLauncher.Models;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
@@ -14,7 +14,7 @@ public class EnterDirectoryStrategy : IEnterPathStrategy
         Debug.Assert(condition: enterPath.Path != null, message: "enterPath.Path != null");
         string normalizedPath = Path.GetFullPath(enterPath.Path);
 
-        (await SettingsInfo.GetInstanceAsync()).LastEnteredPathByDrive[Directory.GetDirectoryRoot(normalizedPath)] =
+        (await SettingsModel.GetInstanceAsync()).LastEnteredPathByDrive[Directory.GetDirectoryRoot(normalizedPath)] =
             normalizedPath;
 
         return normalizedPath;
