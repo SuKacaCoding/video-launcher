@@ -56,6 +56,9 @@ public class SettingsModel
     /// <exception cref="IOException" />
     public static async Task SaveInstanceAsync()
     {
+        if (s_instance is null)
+            return;
+
         Directory.CreateDirectory(SettingsDirectoryPath);
 
         await using var createStream = File.Create(SettingsFilePath);

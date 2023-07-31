@@ -53,6 +53,9 @@
         <hc:EventTrigger EventName="Closing">
             <hc:InvokeCommandAction Command="{Binding ExitCommand}" />
         </hc:EventTrigger>
+        <hc:EventTrigger EventName="Loaded">
+            <hc:InvokeCommandAction Command="{Binding InitializeDataCommand}" />
+        </hc:EventTrigger>
     </hc:Interaction.Triggers>
 
     <Grid Margin="5">

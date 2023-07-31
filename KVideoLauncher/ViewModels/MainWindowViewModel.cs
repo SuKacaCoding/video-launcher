@@ -20,7 +20,8 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
 
-    public MainWindowViewModel()
+    [RelayCommand]
+    private void InitializeData()
     {
         RefreshDrives();
     }
