@@ -91,7 +91,7 @@ public partial class MainWindowViewModel : ObservableObject
             await foreach (var displayingInfo in DirectoryDisplayingHelper.EnumerateIndentedChildrenInfosAsync())
                 Directories.Add(displayingInfo);
 
-            await foreach (var displayingInfo in FileDisplayingHelper.EnumerateFilesInDirectoryAsync(outputPath))
+            await foreach (var displayingInfo in FileDisplayingHelper.EnumerateVideosInDirectoryAsync(outputPath))
                 Files.Add(displayingInfo);
         }
         catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)

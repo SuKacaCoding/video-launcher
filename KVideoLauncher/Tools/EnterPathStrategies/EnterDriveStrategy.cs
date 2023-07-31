@@ -18,16 +18,16 @@ public class EnterDriveStrategy : IEnterPathStrategy
             message: "Directory.GetParent(enterPath.Path) is null"
         );
 
-        var settingsInfo = await SettingsModel.GetInstanceAsync();
+        var settings = await SettingsModel.GetInstanceAsync();
 
         string normalizedDrivePath = Path.GetFullPath(enterPath.Path);
-        bool driveHasLastEnteredPath = settingsInfo.LastEnteredPathByDrive.TryGetValue
+        bool driveHasLastEnteredPath = settings.LastEnteredPathByDrive.TryGetValue
             (normalizedDrivePath, value: out string? ret);
 
         if (driveHasLastEnteredPath)
             return ret!;
 
-        settingsInfo.LastEnteredPathByDrive[normalizedDrivePath] = normalizedDrivePath;
+        settings.LastEnteredPathByDrive[normalizedDrivePath] = normalizedDrivePath;
         return normalizedDrivePath;
     }
 }

@@ -10,10 +10,10 @@ public class SettingsModel
     public Dictionary<string, string> LastEnteredPathByDrive { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     public IEnumerable<string> VideoFileExtensions { get; set; } =
-        new[] { "avi", "flv", "mkv", "mov", "mp4", "rm", "rmvb", "ts", "ps", "wmv" }.AsReadOnly();
+        new[] { ".AVI", ".FLV", ".MKV", ".MOV", ".MP4", ".RM", ".RMVB", ".TS", ".PS", ".WMV" }.AsReadOnly();
 
     public IEnumerable<string> SubtitleFileExtensions { get; set; } =
-        new[] { "srt", "sub", "idx", "ass" }.AsReadOnly();
+        new[] { ".SRT", ".SUB", ".IDX", ".ASS" }.AsReadOnly();
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (
