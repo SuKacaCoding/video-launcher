@@ -6,6 +6,7 @@
            xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
            xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
+           xmlns:converters="clr-namespace:KVideoLauncher.Tools.Converters"
            mc:Ignorable="d"
            Title="KVideoLauncher"
            WindowState="Maximized"
@@ -45,6 +46,7 @@
             <Setter Property="VerticalAlignment"
                     Value="Center" />
         </Style>
+        <converters:FileDisplayingTypeToIconFontStringConverter x:Key="FileDisplayType2IconFont" />
     </Window.Resources>
 
     <hc:Interaction.Triggers>
@@ -196,8 +198,28 @@
         <ListBox Grid.Row="2"
                  Grid.Column="4"
                  x:Name="ListFiles"
-                 ItemsSource="{Binding Files}"
-                 DisplayMemberPath="DisplayName" />
+                 ItemsSource="{Binding Files}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   Grid.Column="0"
+                                   FontSize="{StaticResource HeadFontSize}"
+                                   FontFamily="{StaticResource IconFontFamily}"
+                                   Text="{Binding DisplayingType, Converter={StaticResource FileDisplayType2IconFont}}"
+                                   Foreground="{DynamicResource DarkPrimaryBrush}" />
+                        <TextBlock FontSize="{StaticResource SubHeadFontSize}"
+                                   Grid.Column="1"
+                                   Text="{Binding DisplayName}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <TextBlock Grid.Row="0"
                    Grid.Column="6"
