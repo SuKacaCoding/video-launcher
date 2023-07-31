@@ -45,7 +45,7 @@ public partial class MainWindow : Window
         _widthAdjustableColumnByListBox = new Dictionary<ListBox, ColumnDefinition>
         {
             { ListDirectories, ColDirectories },
-            { ListVideos, ColVideos },
+            { ListFiles, ColFiles },
             { ListPlaylist, ColPlaylist }
         }.AsReadOnly();
 
@@ -54,7 +54,7 @@ public partial class MainWindow : Window
             ListDrives,
             ListFrequent,
             ListDirectories,
-            ListVideos,
+            ListFiles,
             ListPlaylist
         }.AsReadOnly();
 

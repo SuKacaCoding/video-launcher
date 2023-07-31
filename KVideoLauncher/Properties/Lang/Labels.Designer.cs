@@ -96,6 +96,15 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Files:.
+        /// </summary>
+        public static string Files {
+            get {
+                return ResourceManager.GetString("Files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frequent:.
         /// </summary>
         public static string Frequent {
@@ -168,20 +177,11 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh both directories and videos.
+        ///   Looks up a localized string similar to Refresh both directories and files.
         /// </summary>
-        public static string RefreshBothDirectoriesAndVideos {
+        public static string RefreshBothDirectoriesAndFiles {
             get {
-                return ResourceManager.GetString("RefreshBothDirectoriesAndVideos", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Videos:.
-        /// </summary>
-        public static string Videos {
-            get {
-                return ResourceManager.GetString("Videos", resourceCulture);
+                return ResourceManager.GetString("RefreshBothDirectoriesAndFiles", resourceCulture);
             }
         }
     }

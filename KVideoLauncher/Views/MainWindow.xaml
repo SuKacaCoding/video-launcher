@@ -61,7 +61,7 @@
                               x:Name="ColDirectories" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*"
-                              x:Name="ColVideos" />
+                              x:Name="ColFiles" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*"
                               x:Name="ColPlaylist" />
@@ -152,7 +152,7 @@
                                FontSize="{StaticResource IconFontSize}"
                                Text="&#xeafd;"
                                Margin="{StaticResource IconFontMargin}" />
-                    <TextBlock Text="{x:Static l:Labels.RefreshBothDirectoriesAndVideos}" />
+                    <TextBlock Text="{x:Static l:Labels.RefreshBothDirectoriesAndFiles}" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -191,11 +191,11 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Text="{x:Static l:Labels.Videos}" />
+                       Text="{x:Static l:Labels.Files}" />
         </Grid>
         <ListBox Grid.Row="2"
                  Grid.Column="4"
-                 x:Name="ListVideos"
+                 x:Name="ListFiles"
                  ItemsSource="{Binding Files}"
                  DisplayMemberPath="DisplayName" />
 

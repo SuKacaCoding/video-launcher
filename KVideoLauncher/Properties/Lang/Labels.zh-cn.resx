@@ -58,7 +58,8 @@
               : using a System.ComponentModel.TypeConverter
               : and then encoded with base64 encoding.
       -->
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+                id="root"
                 xmlns="">
         <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
@@ -138,10 +139,10 @@
     <data name="PreviousPlaylist" xml:space="preserve">
     <value>上一个播放列表</value>
   </data>
-    <data name="RefreshBothDirectoriesAndVideos" xml:space="preserve">
-    <value>刷新目录和视频</value>
-  </data>
-    <data name="Videos" xml:space="preserve">
-    <value>视频：</value>
-  </data>
+    <data name="RefreshBothDirectoriesAndFiles" xml:space="preserve">
+        <value>刷新目录和文件</value>
+    </data>
+    <data name="Files" xml:space="preserve">
+        <value>文件：</value>
+    </data>
 </root>
