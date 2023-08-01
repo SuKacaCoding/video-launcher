@@ -44,7 +44,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private Task ChangeDirectoryAsync
         (object? parameter) => parameter is DirectoryDisplayingInfo info
-        ? CommonChangeDirectoryAsync(info.Directory.FullName, EnterDirectoryStrategy.Instance)
+        ? CommonChangeDirectoryAsync(info.Directory, EnterDirectoryStrategy.Instance)
         : Task.CompletedTask;
 
     [RelayCommand]

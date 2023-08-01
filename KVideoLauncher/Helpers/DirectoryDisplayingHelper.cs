@@ -44,7 +44,7 @@ public static class DirectoryDisplayingHelper
         foreach (var parentDirectory in parentDirectories)
         {
             yield return new DirectoryDisplayingInfo
-                (displayName: $"{new string(c: ' ', s_depth)}{parentDirectory.Name}", parentDirectory);
+                (displayName: $"{new string(c: ' ', s_depth)}{parentDirectory.Name}", parentDirectory.FullName);
             s_depth += 2;
         }
 
@@ -65,7 +65,7 @@ public static class DirectoryDisplayingHelper
             if (subdirectory.IsCommon())
             {
                 yield return new DirectoryDisplayingInfo
-                    (displayName: $"{new string(c: ' ', s_depth)}{subdirectory.Name}", subdirectory);
+                    (displayName: $"{new string(c: ' ', s_depth)}{subdirectory.Name}", subdirectory.FullName);
             }
         }
     }

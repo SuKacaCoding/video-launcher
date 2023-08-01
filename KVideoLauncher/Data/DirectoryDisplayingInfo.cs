@@ -1,13 +1,11 @@
-﻿using System.IO;
-
-namespace KVideoLauncher.Data;
+﻿namespace KVideoLauncher.Data;
 
 public class DirectoryDisplayingInfo
 {
     public string DisplayName { get; }
-    public DirectoryInfo Directory { get; }
+    public string Directory { get; }
 
-    public DirectoryDisplayingInfo(string displayName, DirectoryInfo directory)
+    public DirectoryDisplayingInfo(string displayName, string directory)
     {
         DisplayName = displayName;
         Directory = directory;
