@@ -45,9 +45,9 @@ public static class FileDisplayingHelper
                     subtitle => subtitle.Name.StartsWith
                         (value: Path.GetFileNameWithoutExtension(video.Name), StringComparison.OrdinalIgnoreCase)
                 ))
-                yield return new FileDisplayingInfo(video.Name, video, FileDisplayingType.VideoWithSubtitle);
+                yield return new FileDisplayingInfo(video.Name, video.FullName, FileDisplayingType.VideoWithSubtitle);
             else
-                yield return new FileDisplayingInfo(video.Name, video, FileDisplayingType.Video);
+                yield return new FileDisplayingInfo(video.Name, video.FullName, FileDisplayingType.Video);
         }
     }
 }

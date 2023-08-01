@@ -1,15 +1,14 @@
-﻿using System.IO;
-using KVideoLauncher.Data.Enums;
+﻿using KVideoLauncher.Data.Enums;
 
 namespace KVideoLauncher.Data;
 
 public class FileDisplayingInfo
 {
     public string DisplayName { get; }
-    public FileInfo File { get; }
+    public string File { get; }
     public FileDisplayingType DisplayingType { get; }
 
-    public FileDisplayingInfo(string displayName, FileInfo file, FileDisplayingType displayingType)
+    public FileDisplayingInfo(string displayName, string file, FileDisplayingType displayingType)
     {
         DisplayName = displayName;
         File = file;
