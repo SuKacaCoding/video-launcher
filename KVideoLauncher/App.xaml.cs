@@ -1,17 +1,14 @@
-﻿using KVideoLauncher.Views;
-using System.Windows;
+﻿using System.Windows;
+using KVideoLauncher.Views;
 
 namespace KVideoLauncher;
 
 /// <summary>
-/// Interaction logic for App.xaml
+///     Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application
 {
-    public App()
-    {
-        InitializeComponent();
-    }
+    public App() => InitializeComponent();
 
     public void Activate()
     {
