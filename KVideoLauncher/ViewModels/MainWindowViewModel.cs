@@ -97,19 +97,21 @@ public partial class MainWindowViewModel : ObservableObject
 
             DirectoryDisplayingHelper.SetCurrentDirectory(outputPath);
 
-            IAsyncEnumerable<DirectoryDisplayingInfo> parentInfos =
-                DirectoryDisplayingHelper.EnumerateHierarchicalParentInfosAsync();
             int parentLevelCount = 0;
-            await foreach (var displayingInfo in parentInfos)
+            int firstChildDirectoryIndex = 0;
+            await foreach (var displayingInfo in DirectoryDisplayingHelper.EnumerateInfosAsync())
             {
+                if (displayingInfo is null)
+                {
+                    firstChildDirectoryIndex = parentLevelCount;
+                    continue;
+                }
+
                 Directories.Add(displayingInfo);
                 parentLevelCount++;
             }
 
-            ListDirectorySelectedIndex = parentLevelCount;
-
-            await foreach (var displayingInfo in DirectoryDisplayingHelper.EnumerateIndentedChildrenInfosAsync())
-                Directories.Add(displayingInfo);
+            ListDirectorySelectedIndex = firstChildDirectoryIndex;
 
             await foreach (var displayingInfo in FileDisplayingHelper.EnumerateVideosInDirectoryAsync(outputPath))
                 Files.Add(displayingInfo);

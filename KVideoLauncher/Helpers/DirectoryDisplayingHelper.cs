@@ -6,7 +6,6 @@ using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
-// TODO: Join `EnumerateHierarchicalParentInfosAsync` and `EnumerateIndentedChildrenInfosAsync` into one method.
 public static class DirectoryDisplayingHelper
 {
     private static int s_depth;
@@ -20,7 +19,19 @@ public static class DirectoryDisplayingHelper
         s_depthIsUpToDate = false;
     }
 
-    public static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateHierarchicalParentInfosAsync()
+    /// <remarks>
+    ///     Yield returns null as a separator between parent and child infos.
+    /// </remarks>
+    public static async IAsyncEnumerable<DirectoryDisplayingInfo?> EnumerateInfosAsync()
+    {
+        await foreach (var info in EnumerateHierarchicalParentInfosAsync())
+            yield return info;
+        yield return null;
+        await foreach (var info in EnumerateIndentedChildrenInfosAsync())
+            yield return info;
+    }
+
+    private static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateHierarchicalParentInfosAsync()
     {
         Debug.Assert(condition: s_currentDirectory is { }, message: "s_currentDirectory is { }");
 
@@ -53,9 +64,9 @@ public static class DirectoryDisplayingHelper
     }
 
     /// <remarks>
-    /// Make sure <code>EnumerateHierarchicalParentInfosAsync</code> is called before if the current directory is changed."
+    ///     Make sure <code>EnumerateHierarchicalParentInfosAsync</code> is called before if the current directory is changed."
     /// </remarks>
-    public static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateIndentedChildrenInfosAsync()
+    private static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateIndentedChildrenInfosAsync()
     {
         Debug.Assert(condition: s_currentDirectory is { }, message: "s_currentDirectory is { }");
         Debug.Assert(s_depthIsUpToDate, message: "s_depthIsUpToDate");
