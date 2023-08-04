@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,11 +20,24 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<DriveInfo> Drives { get; } = new();
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
+    public ObservableCollection<FrequentDirectoryDisplayingInfo> FrequentDirectories { get; } = new();
+    private const int PinnedDirectoriesMaxCount = 7;
 
     [RelayCommand]
-    private void InitializeData()
+    private async Task InitializeData()
     {
+        var settings = await SettingsModel.GetInstanceAsync();
+
         RefreshDrives();
+
+        _pinnedDirectories.AddRange
+        (
+            settings.PinnedDirectories
+                .Where(info => Directory.Exists(info.Directory))
+                .Take(PinnedDirectoriesMaxCount)
+                .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
+        );
+        FrequentDirectories.AddRange(_pinnedDirectories);
     }
 
     [RelayCommand]
@@ -66,6 +80,11 @@ public partial class MainWindowViewModel : ObservableObject
             DirectoryNotExistsCallback();
         }
 
+        await ChangeDirectoryCoreAsync(directoryPath, strategy);
+    }
+
+    private async Task ChangeDirectoryCoreAsync(string? directoryPath, IEnterPathStrategy strategy)
+    {
         try
         {
             EnterPath.Instance.Path = directoryPath;
@@ -107,7 +126,7 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task ExitAsync()
+    private static async Task ExitAsync()
     {
         try
         {
@@ -120,6 +139,8 @@ public partial class MainWindowViewModel : ObservableObject
 
         Application.Current.Shutdown();
     }
+
+    private readonly List<FrequentDirectoryDisplayingInfo> _pinnedDirectories = new(PinnedDirectoriesMaxCount);
 
     [ObservableProperty] private int _listDirectorySelectedIndex;
 }

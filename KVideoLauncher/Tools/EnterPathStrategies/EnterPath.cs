@@ -8,10 +8,11 @@ public class EnterPath
     public string? Path { get; set; }
     public static EnterPath Instance { get; } = new();
 
-    public Task<string> Enter()
+    public async Task<string> Enter()
     {
         Debug.Assert(condition: Path is { }, message: "Path is { }");
         Debug.Assert(condition: Strategy is { }, message: "Strategy is { }");
-        return Strategy.EnterAsync(this);
+        Path = await Strategy.EnterAsync(this);
+        return Path;
     }
 }

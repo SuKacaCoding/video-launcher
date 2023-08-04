@@ -6,6 +6,7 @@ using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
+// TODO: Join `EnumerateHierarchicalParentInfosAsync` and `EnumerateIndentedChildrenInfosAsync` into one method.
 public static class DirectoryDisplayingHelper
 {
     private static int s_depth;
@@ -51,6 +52,9 @@ public static class DirectoryDisplayingHelper
         s_depthIsUpToDate = true;
     }
 
+    /// <remarks>
+    /// Make sure <code>EnumerateHierarchicalParentInfosAsync</code> is called before if the current directory is changed."
+    /// </remarks>
     public static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateIndentedChildrenInfosAsync()
     {
         Debug.Assert(condition: s_currentDirectory is { }, message: "s_currentDirectory is { }");

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using KVideoLauncher.Data;
 
 namespace KVideoLauncher.Models;
 
@@ -14,6 +16,9 @@ public class SettingsModel
 
     public IEnumerable<string> SubtitleFileExtensions { get; set; } =
         new[] { ".SRT", ".SUB", ".IDX", ".ASS" }.AsReadOnly();
+
+    public IEnumerable<DirectoryDisplayingInfo> PinnedDirectories { get; set; } =
+        Enumerable.Empty<DirectoryDisplayingInfo>();
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (

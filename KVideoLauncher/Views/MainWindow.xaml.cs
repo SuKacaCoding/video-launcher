@@ -35,7 +35,7 @@ public partial class MainWindow : Window
 
     private const int ListBoxWideMoveOffset = 5;
 
-    private static readonly GridLength SelectedColumnWidth = new(value: 2, GridUnitType.Star);
+    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
     private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
 
     public MainWindow()

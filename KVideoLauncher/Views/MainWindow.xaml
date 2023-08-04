@@ -47,6 +47,7 @@
                     Value="Center" />
         </Style>
         <converters:FileDisplayingTypeToIconFontStringConverter x:Key="FileDisplayType2IconFont" />
+        <converters:FrequentDirectoryDisplayingInfoIsPinnedToIconFontStringConverter x:Key="IsPinned2IconFont" />
     </Window.Resources>
 
     <hc:Interaction.Triggers>
@@ -60,7 +61,7 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="165" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition x:Name="ColDirectories"
                               Width="*" />
@@ -89,17 +90,16 @@
             <Button Grid.Column="1"
                     Command="{Binding RefreshDrivesCommand}"
                     Content="&#xeafd;"
-                    FontFamily="{StaticResource IconFontFamily}"
-                    FontSize="{StaticResource IconFontSize}" />
+                    ContentTemplate="{StaticResource IconFontButtonTemplate}" />
         </Grid>
         <Grid Grid.Row="2"
               Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="0.618*" />
                 <RowDefinition Height="5" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="5" />
-                <RowDefinition Height="0.618*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="5" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -126,11 +126,24 @@
             <TextBlock Grid.Row="2"
                        Text="{x:Static l:Labels.Frequent}" />
             <ListBox x:Name="ListFrequent"
-                     Grid.Row="4">
+                     Grid.Row="4"
+                     ItemsSource="{Binding FrequentDirectories}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Margin="5"
-                                   FontSize="{StaticResource HeadFontSize}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource IconFontColWidth}" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"
+                                       Text="{Binding IsPinned,Converter={StaticResource IsPinned2IconFont}}" />
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="{StaticResource SubHeadFontSize}"
+                                       Text="{Binding DisplayName}" />
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -154,8 +167,7 @@
                     Command="{Binding RefreshDirectoryCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="{StaticResource IconFontMargin}"
-                               FontFamily="{StaticResource IconFontFamily}"
-                               FontSize="{StaticResource IconFontSize}"
+                               Style="{StaticResource ButtonIconFontTextBlockStyle}"
                                Text="&#xeafd;" />
                     <TextBlock Text="{x:Static l:Labels.RefreshBothDirectoriesAndFiles}" />
                 </StackPanel>
@@ -206,15 +218,12 @@
                 <DataTemplate>
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="{StaticResource IconFontColWidth}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0"
-                                   HorizontalAlignment="Center"
-                                   FontFamily="{StaticResource IconFontFamily}"
-                                   FontSize="{StaticResource HeadFontSize}"
-                                   Foreground="{DynamicResource DarkPrimaryBrush}"
+                                   Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"
                                    Text="{Binding DisplayingType, Converter={StaticResource FileDisplayType2IconFont}}" />
                         <TextBlock Grid.Column="1"
                                    FontSize="{StaticResource SubHeadFontSize}"
@@ -254,12 +263,10 @@
                         ToolTip="{x:Static l:Labels.NextPlaylist}" />
                 <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
                         Content="&#xe654;"
-                        FontFamily="{StaticResource IconFontFamily}"
-                        FontSize="{StaticResource IconFontSize}"
+                        ContentTemplate="{StaticResource IconFontButtonTemplate}"
                         ToolTip="{x:Static l:Labels.CurrentPlaylist}" />
                 <Button Content="&#xe6dc;"
-                        FontFamily="{StaticResource IconFontFamily}"
-                        FontSize="{StaticResource IconFontSize}"
+                        ContentTemplate="{StaticResource IconFontButtonTemplate}"
                         ToolTip="{x:Static l:Labels.FrequentlyPlayed}" />
             </StackPanel>
 
@@ -270,8 +277,7 @@
                         Style="{StaticResource ButtonDashedPrimary}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="{StaticResource IconFontMargin}"
-                                   FontFamily="{StaticResource IconFontFamily}"
-                                   FontSize="{StaticResource IconFontSize}"
+                                   Style="{StaticResource ButtonIconFontTextBlockStyle}"
                                    Text="&#xea82;" />
                         <TextBlock Text="{x:Static l:Labels.PlayButDoNotClose}" />
                     </StackPanel>
@@ -279,8 +285,7 @@
                 <Button Style="{StaticResource ButtonPrimary}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="{StaticResource IconFontMargin}"
-                                   FontFamily="{StaticResource IconFontFamily}"
-                                   FontSize="{StaticResource IconFontSize}"
+                                   Style="{StaticResource ButtonIconFontTextBlockStyle}"
                                    Text="&#xea82;" />
                         <TextBlock Text="{x:Static l:Labels.Play}" />
                     </StackPanel>
