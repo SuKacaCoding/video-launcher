@@ -26,7 +26,7 @@
                 <Setter Property="FontSize"
                         Value="{StaticResource HeadFontSize}" />
                 <Setter Property="Foreground"
-                        Value="{DynamicResource DarkPrimaryBrush}" />
+                        Value="{DynamicResource InfoBrush}" />
             </Style>
             <Style x:Key="ButtonIconFontTextBlockStyle"
                    BasedOn="{StaticResource {x:Type TextBlock}}"

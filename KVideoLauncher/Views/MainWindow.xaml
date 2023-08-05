@@ -146,6 +146,12 @@
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <hc:Interaction.Triggers>
+                    <hc:EventTrigger EventName="SelectionChanged">
+                        <hc:InvokeCommandAction Command="{Binding ChangeDirectoryCommand}"
+                                                CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}" />
+                    </hc:EventTrigger>
+                </hc:Interaction.Triggers>
             </ListBox>
 
             <Button Grid.Row="6"

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using KVideoLauncher.Data;
@@ -55,6 +56,7 @@ public class SettingsModel
             s_instance = new SettingsModel();
             return s_instance;
         }
+        // TODO: Catch JsonException.
     }
 
     /// <exception cref="UnauthorizedAccessException" />
@@ -68,6 +70,10 @@ public class SettingsModel
 
         await using var createStream = File.Create(SettingsFilePath);
         await JsonSerializer.SerializeAsync
-            (createStream, s_instance, options: new JsonSerializerOptions { WriteIndented = true });
+        (
+            createStream, s_instance,
+            options: new JsonSerializerOptions
+                { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+        );
     }
 }
