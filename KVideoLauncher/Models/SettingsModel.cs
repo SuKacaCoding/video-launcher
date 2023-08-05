@@ -5,6 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using KVideoLauncher.Data;
+using KVideoLauncher.Helpers;
 
 namespace KVideoLauncher.Models;
 
@@ -51,12 +52,12 @@ public class SettingsModel
 
             return s_instance;
         }
-        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException or JsonException)
         {
+            ExceptionDisplayingHelper.Display(ex);
             s_instance = new SettingsModel();
             return s_instance;
         }
-        // TODO: Catch JsonException.
     }
 
     /// <exception cref="UnauthorizedAccessException" />
