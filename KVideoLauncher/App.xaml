@@ -40,6 +40,7 @@
                 <TextBlock Text="{Binding}"
                            Style="{StaticResource ButtonIconFontTextBlockStyle}" />
             </DataTemplate>
+            <SolidColorBrush x:Key="TranslucentBackgroundBrush" Color="{DynamicResource MainContentBackgroundColor}" Opacity="0.618"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

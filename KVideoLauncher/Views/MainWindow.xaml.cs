@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using HandyControl.Tools;
 using Window = HandyControl.Controls.Window;
 
 namespace KVideoLauncher.Views;
@@ -42,6 +43,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        this.Apply(BackdropType.Acrylic);
+        
         _widthAdjustableColumnByListBox = new Dictionary<ListBox, ColumnDefinition>
         {
             { ListDirectories, ColDirectories },
