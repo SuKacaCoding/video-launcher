@@ -116,9 +116,9 @@ public partial class MainWindowViewModel : ObservableObject
             await foreach (var displayingInfo in FileDisplayingHelper.EnumerateVideosInDirectoryAsync(outputPath))
                 Files.Add(displayingInfo);
         }
-        catch (Exception e) when (e is SecurityException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
         {
-            ExceptionDisplayingHelper.Display(e);
+            ExceptionDisplayingHelper.Display(ex);
         }
     }
 
@@ -130,14 +130,7 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private static async Task ExitAsync()
     {
-        try
-        {
-            await SettingsModel.SaveInstanceAsync();
-        }
-        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
-        {
-            ExceptionDisplayingHelper.Display(ex);
-        }
+        await SettingsModel.SaveInstanceAsync();
 
         Application.Current.Shutdown();
     }

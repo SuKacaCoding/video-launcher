@@ -60,21 +60,26 @@ public class SettingsModel
         }
     }
 
-    /// <exception cref="UnauthorizedAccessException" />
-    /// <exception cref="IOException" />
     public static async Task SaveInstanceAsync()
     {
         if (s_instance is null)
             return;
 
-        Directory.CreateDirectory(SettingsDirectoryPath);
+        try
+        {
+            Directory.CreateDirectory(SettingsDirectoryPath);
 
-        await using var createStream = File.Create(SettingsFilePath);
-        await JsonSerializer.SerializeAsync
-        (
-            createStream, s_instance,
-            options: new JsonSerializerOptions
-                { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
-        );
+            await using var createStream = File.Create(SettingsFilePath);
+            await JsonSerializer.SerializeAsync
+            (
+                createStream, s_instance,
+                options: new JsonSerializerOptions
+                    { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+            );
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
     }
 }
