@@ -64,7 +64,8 @@ public static class DirectoryDisplayingHelper
     }
 
     /// <remarks>
-    ///     Make sure <code>EnumerateHierarchicalParentInfosAsync</code> is called before if the current directory is changed."
+    ///     Make sure <see cref="EnumerateHierarchicalParentInfosAsync" /> is called before if the current directory is
+    ///     changed.
     /// </remarks>
     private static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateIndentedChildrenInfosAsync()
     {
