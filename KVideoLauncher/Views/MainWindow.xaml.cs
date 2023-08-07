@@ -44,7 +44,7 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         this.Apply(BackdropType.Acrylic);
-        
+
         _widthAdjustableColumnByListBox = new Dictionary<ListBox, ColumnDefinition>
         {
             { ListDirectories, ColDirectories },
@@ -181,9 +181,8 @@ public partial class MainWindow : Window
         int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
         int itemsCount = FocusedListBox.Items.Count;
 
-        if (targetSelectedIndex >= itemsCount)
-            targetSelectedIndex -= itemsCount;
-        else if (targetSelectedIndex < 0)
+        targetSelectedIndex %= itemsCount;
+        if (targetSelectedIndex < 0)
             targetSelectedIndex += itemsCount;
 
         FocusedListBox.SelectedIndex = targetSelectedIndex;
