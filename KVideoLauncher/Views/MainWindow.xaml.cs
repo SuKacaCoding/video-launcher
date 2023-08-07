@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools;
+using KVideoLauncher.Extensions;
 using Window = HandyControl.Controls.Window;
 
 namespace KVideoLauncher.Views;
@@ -27,9 +28,7 @@ public partial class MainWindow : Window
         get => _focusedListBoxIndex;
         set
         {
-            _focusedListBoxIndex = value % _focusableListBoxes.Count;
-            if (_focusedListBoxIndex < 0)
-                _focusedListBoxIndex += _focusableListBoxes.Count;
+            _focusedListBoxIndex = value.MathMod(_focusableListBoxes.Count);
             FocusOnListBox(FocusedListBox);
         }
     }
@@ -181,9 +180,7 @@ public partial class MainWindow : Window
         int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
         int itemsCount = FocusedListBox.Items.Count;
 
-        targetSelectedIndex %= itemsCount;
-        if (targetSelectedIndex < 0)
-            targetSelectedIndex += itemsCount;
+        targetSelectedIndex = targetSelectedIndex.MathMod(itemsCount);
 
         FocusedListBox.SelectedIndex = targetSelectedIndex;
         FocusOnListBoxSelection(FocusedListBox);
