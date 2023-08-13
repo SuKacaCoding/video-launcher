@@ -13,16 +13,17 @@
 
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-        <PackageReference Include="HandyControls" Version="3.4.5" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="HandyControls" Version="3.4.5"/>
+        <PackageReference Include="Nito.AsyncEx" Version="5.1.2"/>
     </ItemGroup>
 
 
     <ItemGroup>
-        <None Remove="Properties\icon.ico" />
-        <None Remove="Properties\IconFont\iconfont.ttf" />
-        <Resource Include="Properties\icon.ico" />
-        <Resource Include="Properties\IconFont\iconfont.ttf" />
+        <None Remove="Properties\icon.ico"/>
+        <None Remove="Properties\IconFont\iconfont.ttf"/>
+        <Resource Include="Properties\icon.ico"/>
+        <Resource Include="Properties\IconFont\iconfont.ttf"/>
     </ItemGroup>
 
 

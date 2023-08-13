@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,6 +14,7 @@ using KVideoLauncher.Data;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Models;
 using KVideoLauncher.Tools.EnterPathStrategies;
+using Nito.AsyncEx;
 
 namespace KVideoLauncher.ViewModels;
 
@@ -21,7 +24,17 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
     public ObservableCollection<FrequentDirectoryDisplayingInfo> FrequentDirectories { get; } = new();
+
     private const int PinnedDirectoriesMaxCount = 7;
+
+    private static readonly string SettingsDirectoryPath = Path.Join
+    (
+        path1: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        path2: "KVideoLauncher"
+    );
+
+    private static readonly string SettingsFilePath = Path.Join
+        (SettingsDirectoryPath, path2: "Settings.json");
 
     [RelayCommand]
     private async Task InitializeData()
@@ -135,7 +148,52 @@ public partial class MainWindowViewModel : ObservableObject
         Application.Current.Shutdown();
     }
 
+    public async Task SaveSettingsAsync()
+    {
+        if (!_settings.IsStarted)
+            return;
+
+        try
+        {
+            Directory.CreateDirectory(SettingsDirectoryPath);
+
+            await using var createStream = File.Create(SettingsFilePath);
+            await JsonSerializer.SerializeAsync
+            (
+                createStream, _settings,
+                options: new JsonSerializerOptions
+                    { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+            );
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
+    }
+
     private readonly List<FrequentDirectoryDisplayingInfo> _pinnedDirectories = new(PinnedDirectoriesMaxCount);
+
+    private readonly AsyncLazy<SettingsModel> _settings = new
+    (
+        async () =>
+        {
+            if (!Path.Exists(SettingsFilePath))
+                return new SettingsModel();
+
+            try
+            {
+                await using var openStream = File.OpenRead(SettingsFilePath);
+                var settingsModel = await JsonSerializer.DeserializeAsync<SettingsModel>
+                    (openStream, options: new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return settingsModel ?? new SettingsModel();
+            }
+            catch (Exception ex)when (ex is UnauthorizedAccessException or IOException)
+            {
+                ExceptionDisplayingHelper.Display(ex);
+                return new SettingsModel();
+            }
+        }
+    );
 
     [ObservableProperty] private int _listDirectorySelectedIndex;
 }
