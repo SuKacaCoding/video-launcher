@@ -5,13 +5,17 @@ using System.Threading.Tasks;
 using KVideoLauncher.Data;
 using KVideoLauncher.Data.Enums;
 using KVideoLauncher.Extensions;
-using KVideoLauncher.Models;
 
 namespace KVideoLauncher.Helpers;
 
 public static class FileDisplayingHelper
 {
-    public static async IAsyncEnumerable<FileDisplayingInfo> EnumerateVideosInDirectoryAsync(string directoryPath)
+    public static async IAsyncEnumerable<FileDisplayingInfo> EnumerateVideosInDirectoryAsync
+    (
+        string directoryPath,
+        IEnumerable<string> videoFileExtensions,
+        IEnumerable<string> subtitleFileExtensions
+    )
     {
         Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
 
@@ -24,16 +28,15 @@ public static class FileDisplayingHelper
                 return commonFiles as FileInfo[] ?? commonFiles.ToArray();
             }
         );
-        var settings = await SettingsModel.GetInstanceAsync();
 
         IEnumerable<FileInfo> videos = files.Where
         (
-            info => settings.VideoFileExtensions.Any
+            info => videoFileExtensions.Any
                 (extension => string.Equals(extension, info.Extension, StringComparison.OrdinalIgnoreCase))
         );
         IEnumerable<FileInfo> subtitles = files.Where
         (
-            info => settings.SubtitleFileExtensions.Any
+            info => subtitleFileExtensions.Any
                 (extension => string.Equals(extension, info.Extension, StringComparison.OrdinalIgnoreCase))
         );
         subtitles = subtitles as FileInfo[] ?? subtitles.ToArray();

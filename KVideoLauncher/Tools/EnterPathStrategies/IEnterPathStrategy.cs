@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
 public interface IEnterPathStrategy
 {
-    Task<string> EnterAsync(EnterPath enterPath);
+    string EnterAsync(EnterPath enterPath, Dictionary<string, string> lastEnteredPathByDrive);
 }

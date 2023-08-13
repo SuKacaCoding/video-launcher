@@ -1,6 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using KVideoLauncher.Models;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
@@ -9,13 +8,12 @@ public class EnterDirectoryStrategy : IEnterPathStrategy
     public static EnterDirectoryStrategy Instance => LazyInstance.Value;
     private static readonly Lazy<EnterDirectoryStrategy> LazyInstance = new();
 
-    public async Task<string> EnterAsync(EnterPath enterPath)
+    public string EnterAsync(EnterPath enterPath, Dictionary<string, string> lastEnteredPathByDrive)
     {
         Debug.Assert(condition: enterPath.Path != null, message: "enterPath.Path != null");
         string normalizedPath = Path.GetFullPath(enterPath.Path);
 
-        (await SettingsModel.GetInstanceAsync()).LastEnteredPathByDrive[Directory.GetDirectoryRoot(normalizedPath)] =
-            normalizedPath;
+        lastEnteredPathByDrive[Directory.GetDirectoryRoot(normalizedPath)] = normalizedPath;
 
         return normalizedPath;
     }

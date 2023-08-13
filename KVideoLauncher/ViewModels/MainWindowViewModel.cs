@@ -39,16 +39,14 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task InitializeData()
     {
-        var settings = await SettingsModel.GetInstanceAsync();
-
         RefreshDrives();
 
         _pinnedDirectories.AddRange
         (
-            settings.PinnedDirectories
-                .Where(info => Directory.Exists(info.Directory))
-                .Take(PinnedDirectoriesMaxCount)
-                .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
+            (await _settings).PinnedDirectories
+            .Where(info => Directory.Exists(info.Directory))
+            .Take(PinnedDirectoriesMaxCount)
+            .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
         );
         FrequentDirectories.AddRange(_pinnedDirectories);
     }
@@ -103,7 +101,7 @@ public partial class MainWindowViewModel : ObservableObject
             EnterPath.Instance.Path = directoryPath;
             EnterPath.Instance.Strategy = strategy;
 
-            string outputPath = await EnterPath.Instance.Enter();
+            string outputPath = EnterPath.Instance.Enter((await _settings).LastEnteredPathByDrive);
 
             Directories.Clear();
             Files.Clear();
@@ -126,7 +124,12 @@ public partial class MainWindowViewModel : ObservableObject
 
             ListDirectorySelectedIndex = firstChildDirectoryIndex;
 
-            await foreach (var displayingInfo in FileDisplayingHelper.EnumerateVideosInDirectoryAsync(outputPath))
+            await foreach (var displayingInfo in FileDisplayingHelper.EnumerateVideosInDirectoryAsync
+                           (
+                               outputPath,
+                               (await _settings).VideoFileExtensions,
+                               (await _settings).SubtitleFileExtensions
+                           ))
                 Files.Add(displayingInfo);
         }
         catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
@@ -141,14 +144,14 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private static async Task ExitAsync()
+    private async Task ExitAsync()
     {
-        await SettingsModel.SaveInstanceAsync();
+        await SaveSettingsAsync();
 
         Application.Current.Shutdown();
     }
 
-    public async Task SaveSettingsAsync()
+    private async Task SaveSettingsAsync()
     {
         if (!_settings.IsStarted)
             return;
@@ -160,7 +163,7 @@ public partial class MainWindowViewModel : ObservableObject
             await using var createStream = File.Create(SettingsFilePath);
             await JsonSerializer.SerializeAsync
             (
-                createStream, _settings,
+                createStream, value: await _settings,
                 options: new JsonSerializerOptions
                     { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
             );

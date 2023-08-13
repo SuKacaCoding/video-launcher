@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
@@ -8,11 +8,11 @@ public class EnterPath
     public string? Path { get; set; }
     public static EnterPath Instance { get; } = new();
 
-    public async Task<string> Enter()
+    public string Enter(Dictionary<string, string> lastEnteredPathByDrive)
     {
         Debug.Assert(condition: Path is { }, message: "Path is { }");
         Debug.Assert(condition: Strategy is { }, message: "Strategy is { }");
-        Path = await Strategy.EnterAsync(this);
+        Path = Strategy.EnterAsync(enterPath: this, lastEnteredPathByDrive);
         return Path;
     }
 }
