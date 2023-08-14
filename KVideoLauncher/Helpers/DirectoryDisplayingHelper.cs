@@ -78,7 +78,7 @@ public static class DirectoryDisplayingHelper
         {
             var subdirectory = subdirectoriesEnumerator.Current;
 
-            if (subdirectory.IsCommon())
+            if (subdirectory.IsGeneral())
             {
                 yield return new DirectoryDisplayingInfo
                     (displayName: $"{new string(c: ' ', s_depth)}{subdirectory.Name}", subdirectory.FullName);

@@ -24,7 +24,7 @@ public static class FileDisplayingHelper
         (
             () =>
             {
-                IEnumerable<FileInfo> commonFiles = directoryInfo.EnumerateFiles().Where(info => info.IsCommon());
+                IEnumerable<FileInfo> commonFiles = directoryInfo.EnumerateFiles().Where(info => info.IsGeneral());
                 return commonFiles as FileInfo[] ?? commonFiles.ToArray();
             }
         );
