@@ -62,7 +62,7 @@
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="165" />
+            <ColumnDefinition Width="0.85*" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition x:Name="ColDirectories"
                               Width="*" />
@@ -160,10 +160,9 @@
                 </hc:Interaction.Triggers>
             </ListBox>
 
-            <Button Grid.Row="6"
-                    HorizontalAlignment="Stretch"
-                    Content="{x:Static l:Labels.NetworkSmb}"
-                    Style="{StaticResource ButtonDashedPrimary}" />
+            <ToggleButton Grid.Row="6"
+                          HorizontalAlignment="Stretch"
+                          Content="{x:Static l:Labels.NetworkSmb}" />
         </Grid>
 
         <Grid Grid.Row="0"
