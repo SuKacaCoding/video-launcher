@@ -273,13 +273,9 @@
                 <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
                         hc:IconElement.Geometry="{StaticResource RightGeometry}"
                         ToolTip="{x:Static l:Labels.NextPlaylist}" />
-                <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
-                        Content="&#xe654;"
+                <Button Content="&#xe654;"
                         ContentTemplate="{StaticResource IconFontButtonTemplate}"
                         ToolTip="{x:Static l:Labels.CurrentPlaylist}" />
-                <Button Content="&#xe6dc;"
-                        ContentTemplate="{StaticResource IconFontButtonTemplate}"
-                        ToolTip="{x:Static l:Labels.FrequentlyPlayed}" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"

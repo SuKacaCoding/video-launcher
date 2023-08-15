@@ -114,15 +114,6 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frequently played.
-        /// </summary>
-        public static string FrequentlyPlayed {
-            get {
-                return ResourceManager.GetString("FrequentlyPlayed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Network (SMB)....
         /// </summary>
         public static string NetworkSmb {
