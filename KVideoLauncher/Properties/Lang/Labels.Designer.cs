@@ -175,5 +175,14 @@ namespace KVideoLauncher.Properties.Lang {
                 return ResourceManager.GetString("RefreshBothDirectoriesAndFiles", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target directory doesn&apos;t exist..
+        /// </summary>
+        public static string TargetDirectoryDoesNotExist {
+            get {
+                return ResourceManager.GetString("TargetDirectoryDoesNotExist", resourceCulture);
+            }
+        }
     }
 }

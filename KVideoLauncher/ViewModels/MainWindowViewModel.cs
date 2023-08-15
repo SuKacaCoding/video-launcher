@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using KVideoLauncher.Data;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Models;
+using KVideoLauncher.Properties.Lang;
 using KVideoLauncher.Tools.EnterPathStrategies;
 using Nito.AsyncEx;
 
@@ -137,7 +139,6 @@ public partial class MainWindowViewModel : ObservableObject
             return;
         if (!Directory.Exists(directoryPath))
         {
-            // TODO: Show a notification when fallback.
             directoryPath = DirectoryFallbackHelper.Fallback(directoryPath)
                             ?? (Directory.Exists(EnterPath.Instance.Path)
                                 ? EnterPath.Instance.Path
@@ -197,6 +198,8 @@ public partial class MainWindowViewModel : ObservableObject
     private void DirectoryNotExistsCallback()
     {
         RefreshDrives();
+
+        Growl.InfoGlobal(Labels.TargetDirectoryDoesNotExist);
     }
 
     [RelayCommand]
