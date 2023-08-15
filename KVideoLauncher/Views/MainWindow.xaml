@@ -112,7 +112,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Margin="5"
-                                   FontSize="{StaticResource HeadFontSize}"
+                                   FontSize="{StaticResource ListBoxItemTextFontSize}"
                                    Text="{Binding Path=Name}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -147,7 +147,7 @@
                                        Text="{Binding IsPinned,Converter={StaticResource IsPinned2IconFont}}" />
                             <TextBlock Grid.Column="1"
                                        Margin="5"
-                                       FontSize="{StaticResource SubHeadFontSize}"
+                                       FontSize="{StaticResource ListBoxItemTextFontSize}"
                                        Text="{Binding DisplayName}" />
                         </Grid>
                     </DataTemplate>
@@ -199,7 +199,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Margin="5"
-                               FontSize="{StaticResource SubHeadFontSize}"
+                               FontSize="{StaticResource ListBoxItemTextFontSize}"
                                Text="{Binding DisplayName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -238,7 +238,7 @@
                                    Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"
                                    Text="{Binding DisplayingType, Converter={StaticResource FileDisplayType2IconFont}}" />
                         <TextBlock Grid.Column="1"
-                                   FontSize="{StaticResource SubHeadFontSize}"
+                                   FontSize="{StaticResource ListBoxItemTextFontSize}"
                                    Text="{Binding DisplayName}" />
                     </Grid>
                 </DataTemplate>

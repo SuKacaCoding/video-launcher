@@ -11,6 +11,7 @@
             </ResourceDictionary.MergedDictionaries>
             <FontFamily x:Key="IconFontFamily">/Properties/IconFont/#iconfont</FontFamily>
             <sys:Double x:Key="IconFontSize">16</sys:Double>
+            <sys:Double x:Key="ListBoxItemTextFontSize">24</sys:Double>
             <Thickness x:Key="IconFontMargin">0 0 5 0</Thickness>
             <Thickness x:Key="HorStackPanelChildrenMargin">0 0 5 0</Thickness>
             <GridLength x:Key="IconFontColWidth">30</GridLength>
@@ -24,7 +25,7 @@
                 <Setter Property="FontFamily"
                         Value="{StaticResource IconFontFamily}" />
                 <Setter Property="FontSize"
-                        Value="{StaticResource HeadFontSize}" />
+                        Value="{StaticResource ListBoxItemTextFontSize}" />
                 <Setter Property="Foreground"
                         Value="{DynamicResource InfoBrush}" />
             </Style>
@@ -40,7 +41,9 @@
                 <TextBlock Text="{Binding}"
                            Style="{StaticResource ButtonIconFontTextBlockStyle}" />
             </DataTemplate>
-            <SolidColorBrush x:Key="TranslucentBackgroundBrush" Color="{DynamicResource MainContentBackgroundColor}" Opacity="0.618"/>
+            <SolidColorBrush x:Key="TranslucentBackgroundBrush"
+                             Color="{DynamicResource MainContentBackgroundColor}"
+                             Opacity="0.618" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
