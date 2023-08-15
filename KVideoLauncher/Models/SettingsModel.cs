@@ -7,6 +7,7 @@ namespace KVideoLauncher.Models;
 public class SettingsModel
 {
     public Dictionary<string, string> LastEnteredPathByDrive { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, int> EntryFrequencyByPath { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     public IEnumerable<string> VideoFileExtensions { get; set; } =
         new[] { ".AVI", ".FLV", ".MKV", ".MOV", ".MP4", ".RM", ".RMVB", ".TS", ".PS", ".WMV" }.AsReadOnly();

@@ -8,11 +8,12 @@ public class EnterPath
     public string? Path { get; set; }
     public static EnterPath Instance { get; } = new();
 
-    public string Enter(Dictionary<string, string> lastEnteredPathByDrive)
+    public string? Enter(Dictionary<string, string> lastEnteredPathByDrive)
     {
-        Debug.Assert(condition: Path is { }, message: "Path is { }");
+        if (Path is null)
+            return null;
         Debug.Assert(condition: Strategy is { }, message: "Strategy is { }");
-        Path = Strategy.EnterAsync(enterPath: this, lastEnteredPathByDrive);
+        Path = Strategy.Enter(enterPath: this, lastEnteredPathByDrive);
         return Path;
     }
 }

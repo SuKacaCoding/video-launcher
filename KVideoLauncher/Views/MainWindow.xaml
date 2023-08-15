@@ -129,6 +129,11 @@
             <ListBox x:Name="ListFrequent"
                      Grid.Row="4"
                      ItemsSource="{Binding FrequentDirectories}">
+                <ListBox.InputBindings>
+                    <KeyBinding Command="{Binding ChangeDirectoryCommand}"
+                                CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}"
+                                Gesture="CTRL+ENTER" />
+                </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -148,7 +153,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <hc:Interaction.Triggers>
-                    <hc:EventTrigger EventName="SelectionChanged">
+                    <hc:EventTrigger EventName="MouseDoubleClick">
                         <hc:InvokeCommandAction Command="{Binding ChangeDirectoryCommand}"
                                                 CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}" />
                     </hc:EventTrigger>

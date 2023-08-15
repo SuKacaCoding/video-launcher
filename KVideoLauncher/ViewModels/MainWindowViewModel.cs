@@ -25,7 +25,9 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
     public ObservableCollection<FrequentDirectoryDisplayingInfo> FrequentDirectories { get; } = new();
 
-    private const int PinnedDirectoriesMaxCount = 7;
+    private const int PinnedDirectoriesMaxCount = 5;
+    private const int FrequentlyEnteredDirectoriesMaxCount = 7;
+    private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (
@@ -48,7 +50,7 @@ public partial class MainWindowViewModel : ObservableObject
             .Take(PinnedDirectoriesMaxCount)
             .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
         );
-        FrequentDirectories.AddRange(_pinnedDirectories);
+        await UpdateFrequentDirectoriesAsync();
     }
 
     [RelayCommand]
@@ -67,10 +69,62 @@ public partial class MainWindowViewModel : ObservableObject
         (EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance);
 
     [RelayCommand]
-    private Task ChangeDirectoryAsync
-        (object? parameter) => parameter is DirectoryDisplayingInfo info
-        ? CommonChangeDirectoryAsync(info.Directory, EnterDirectoryStrategy.Instance)
-        : Task.CompletedTask;
+    private async Task ChangeDirectoryAsync(object? parameter)
+    {
+        if (parameter is not DirectoryDisplayingInfo info)
+            return;
+
+        await CommonChangeDirectoryAsync(info.Directory, EnterDirectoryStrategy.Instance);
+        await UpdateFrequentDirectoriesAsync();
+    }
+
+    private async Task UpdateFrequentDirectoriesAsync()
+    {
+        string? currentDirectory = EnterPath.Instance.Path;
+
+        if (currentDirectory is { })
+        {
+            var settings = await _settings;
+            settings.EntryFrequencyByPath[currentDirectory] =
+                (settings.EntryFrequencyByPath.TryGetValue
+                    (currentDirectory, value: out int frequency)
+                    ? frequency
+                    : 0) + 1;
+        }
+
+        PriorityQueue<string, int> priorityQueue = await GetMaxPriorityQueueFromPathEntryFrequenciesAsync();
+
+        _frequentlyEnteredDirectories.Clear();
+        while (priorityQueue.Count > 0 &&
+               _frequentlyEnteredDirectories.Count < FrequentlyEnteredDirectoriesMaxCount)
+        {
+            string directoryPath = priorityQueue.Dequeue();
+            var directoryInfo = new DirectoryInfo(directoryPath);
+            _frequentlyEnteredDirectories.Add
+            (
+                new FrequentDirectoryDisplayingInfo
+                (
+                    directoryInfo.Name, directoryPath, isPinned: false
+                )
+            );
+        }
+
+        FrequentDirectories.Clear();
+        FrequentDirectories.AddRange(_pinnedDirectories);
+        FrequentDirectories.AddRange(_frequentlyEnteredDirectories);
+    }
+
+    private async Task<PriorityQueue<string, int>> GetMaxPriorityQueueFromPathEntryFrequenciesAsync()
+    {
+        var settings = await _settings;
+
+        var priorityQueue = new PriorityQueue<string, int>(Comparer<int>.Create((a, b) => b - a));
+        foreach (KeyValuePair<string, int> pathFrequencyPair
+                 in settings.EntryFrequencyByPath.Where
+                     (pathFrequencyPair => Directory.Exists(pathFrequencyPair.Key)))
+            priorityQueue.Enqueue(pathFrequencyPair.Key, pathFrequencyPair.Value);
+        return priorityQueue;
+    }
 
     [RelayCommand]
     private Task GoBackToRootDirectoryAsync() => CommonChangeDirectoryAsync
@@ -101,10 +155,12 @@ public partial class MainWindowViewModel : ObservableObject
             EnterPath.Instance.Path = directoryPath;
             EnterPath.Instance.Strategy = strategy;
 
-            string outputPath = EnterPath.Instance.Enter((await _settings).LastEnteredPathByDrive);
-
             Directories.Clear();
             Files.Clear();
+
+            string? outputPath = EnterPath.Instance.Enter((await _settings).LastEnteredPathByDrive);
+            if (outputPath is null)
+                return;
 
             DirectoryDisplayingHelper.SetCurrentDirectory(outputPath);
 
@@ -151,10 +207,30 @@ public partial class MainWindowViewModel : ObservableObject
         Application.Current.Shutdown();
     }
 
+    private async Task RemoveRedundantPairsInPathEntryFrequenciesAsync()
+    {
+        var settings = await _settings;
+        var newEntryFrequencyByPath = new Dictionary<string, int>();
+        Dictionary<string, int> oldEntryFrequencyByPath = settings.EntryFrequencyByPath;
+        PriorityQueue<string, int> priorityQueue = await GetMaxPriorityQueueFromPathEntryFrequenciesAsync();
+        for (int i = 0; i < StoredFrequentlyEnteredDirectoriesMaxCount; i++)
+        {
+            if (priorityQueue.Count == 0)
+                break;
+
+            string directoryPath = priorityQueue.Dequeue();
+            newEntryFrequencyByPath[directoryPath] = oldEntryFrequencyByPath[directoryPath];
+        }
+
+        settings.EntryFrequencyByPath = newEntryFrequencyByPath;
+    }
+
     private async Task SaveSettingsAsync()
     {
         if (!_settings.IsStarted)
             return;
+
+        await RemoveRedundantPairsInPathEntryFrequenciesAsync();
 
         try
         {
@@ -173,6 +249,9 @@ public partial class MainWindowViewModel : ObservableObject
             ExceptionDisplayingHelper.Display(ex);
         }
     }
+
+    private readonly List<FrequentDirectoryDisplayingInfo> _frequentlyEnteredDirectories =
+        new(FrequentlyEnteredDirectoriesMaxCount);
 
     private readonly List<FrequentDirectoryDisplayingInfo> _pinnedDirectories = new(PinnedDirectoriesMaxCount);
 
