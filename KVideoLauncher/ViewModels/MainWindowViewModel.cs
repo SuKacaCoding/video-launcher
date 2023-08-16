@@ -225,7 +225,8 @@ public partial class MainWindowViewModel : ObservableObject
             newEntryFrequencyByPath[directoryPath] = oldEntryFrequencyByPath[directoryPath];
         }
 
-        settings.EntryFrequencyByPath = newEntryFrequencyByPath;
+        settings.EntryFrequencyByPath.Clear();
+        settings.EntryFrequencyByPath.AddRange(newEntryFrequencyByPath);
     }
 
     private async Task SaveSettingsAsync()
