@@ -8,7 +8,7 @@ public class EnterPath
     public string? Path { get; set; }
     public static EnterPath Instance { get; } = new();
 
-    public string? Enter(Dictionary<string, string> lastEnteredPathByDrive)
+    public string? Enter(IDictionary<string, string> lastEnteredPathByDrive)
     {
         if (Path is null)
             return null;

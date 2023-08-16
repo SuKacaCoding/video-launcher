@@ -214,7 +214,7 @@ public partial class MainWindowViewModel : ObservableObject
     {
         var settings = await _settings;
         var newEntryFrequencyByPath = new Dictionary<string, int>();
-        Dictionary<string, int> oldEntryFrequencyByPath = settings.EntryFrequencyByPath;
+        IDictionary<string, int> oldEntryFrequencyByPath = settings.EntryFrequencyByPath;
         PriorityQueue<string, int> priorityQueue = await GetMaxPriorityQueueFromPathEntryFrequenciesAsync();
         for (int i = 0; i < StoredFrequentlyEnteredDirectoriesMaxCount; i++)
         {

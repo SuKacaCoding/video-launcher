@@ -5,9 +5,9 @@ using System.Text.Json.Serialization;
 namespace KVideoLauncher.Tools.Converters;
 
 public class CaseInsensitiveDictionaryJsonConverter<TValue>
-    : JsonConverter<Dictionary<string, TValue>>
+    : JsonConverter<IDictionary<string, TValue>>
 {
-    public override Dictionary<string, TValue> Read
+    public override IDictionary<string, TValue> Read
         (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var dict = (IDictionary<string, TValue>?)JsonSerializer
@@ -17,7 +17,7 @@ public class CaseInsensitiveDictionaryJsonConverter<TValue>
             : new Dictionary<string, TValue>(StringComparer.OrdinalIgnoreCase);
     }
 
-    public override void Write(Utf8JsonWriter writer, Dictionary<string, TValue> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, IDictionary<string, TValue> value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize
         (
