@@ -274,7 +274,7 @@
                         ToolTip="{x:Static l:Labels.NextPlaylist}" />
                 <Button Content="&#xe654;"
                         ContentTemplate="{StaticResource IconFontButtonTemplate}"
-                        ToolTip="{x:Static l:Labels.CurrentPlaylist}" />
+                        ToolTip="{x:Static l:Labels.LatestPlaylist}" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"

@@ -60,15 +60,6 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current playlist.
-        /// </summary>
-        public static string CurrentPlaylist {
-            get {
-                return ResourceManager.GetString("CurrentPlaylist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Directories:.
         /// </summary>
         public static string Directories {
@@ -110,6 +101,15 @@ namespace KVideoLauncher.Properties.Lang {
         public static string Frequent {
             get {
                 return ResourceManager.GetString("Frequent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latest playlist.
+        /// </summary>
+        public static string LatestPlaylist {
+            get {
+                return ResourceManager.GetString("LatestPlaylist", resourceCulture);
             }
         }
         

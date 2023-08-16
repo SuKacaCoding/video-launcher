@@ -102,9 +102,9 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="CurrentPlaylist" xml:space="preserve">
-    <value>Current playlist</value>
-  </data>
+    <data name="LatestPlaylist" xml:space="preserve">
+        <value>Latest playlist</value>
+    </data>
     <data name="Directories" xml:space="preserve">
     <value>Directories:</value>
   </data>
