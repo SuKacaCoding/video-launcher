@@ -164,7 +164,7 @@ public partial class MainWindowViewModel : ObservableObject
             Directories.Clear();
             Files.Clear();
 
-            string? outputPath = EnterPath.Instance.Enter((await _settings).LastEnteredPathByDrive);
+            string? outputPath = await EnterPath.Instance.Enter((await _settings).LastEnteredPathByDrive);
             if (outputPath is null)
                 return;
 
