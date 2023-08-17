@@ -60,7 +60,7 @@ public partial class MainWindowViewModel : ObservableObject
     private void RefreshDrives()
     {
         Drives.Clear();
-        Drives.AddRange(DriveInfo.GetDrives());
+        Drives.AddRange(DriveInfo.GetDrives().Where(info => info.IsReady));
     }
 
     [RelayCommand]
@@ -147,7 +147,7 @@ public partial class MainWindowViewModel : ObservableObject
                                 ? EnterPath.Instance.Path
                                 : null);
             DirectoryNotExistsCallback();
-            await ChangeDirectoryCoreAsync(directoryPath,DirectlyEnterDirectoryStrategy.Instance);
+            await ChangeDirectoryCoreAsync(directoryPath, DirectlyEnterDirectoryStrategy.Instance);
             return;
         }
 
