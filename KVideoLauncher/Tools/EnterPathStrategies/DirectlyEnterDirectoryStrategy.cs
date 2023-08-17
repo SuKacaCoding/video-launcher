@@ -3,10 +3,10 @@ using System.IO;
 
 namespace KVideoLauncher.Tools.EnterPathStrategies;
 
-public class RefreshDirectoryStrategy : IEnterPathStrategy
+public class DirectlyEnterDirectoryStrategy : IEnterPathStrategy
 {
-    public static RefreshDirectoryStrategy Instance => LazyInstance.Value;
-    private static readonly Lazy<RefreshDirectoryStrategy> LazyInstance = new();
+    public static DirectlyEnterDirectoryStrategy Instance => LazyInstance.Value;
+    private static readonly Lazy<DirectlyEnterDirectoryStrategy> LazyInstance = new();
 
     public string Enter(EnterPath enterPath, IDictionary<string, string> lastEnteredPathByDrive)
     {

@@ -17,7 +17,8 @@ public static class FileDisplayingHelper
         IEnumerable<string> subtitleFileExtensions
     )
     {
-        Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
+        Debug.Assert
+            (condition: await directoryPath.DirectoryExistsAsync(), message: "await directoryPath.DirectoryExists()");
 
         var directoryInfo = new DirectoryInfo(directoryPath);
         IEnumerable<FileInfo> files = await Task.Run

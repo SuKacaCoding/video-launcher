@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using KVideoLauncher.Data;
+using KVideoLauncher.Extensions;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Models;
 using KVideoLauncher.Properties.Lang;
@@ -47,8 +48,8 @@ public partial class MainWindowViewModel : ObservableObject
 
         _pinnedDirectories.AddRange
         (
-            (await _settings).PinnedDirectories
-            .Where(info => Directory.Exists(info.Directory))
+            (await (await _settings).PinnedDirectories
+                .WhereAsync(info => info.Directory.DirectoryExistsAsync()))
             .Take(PinnedDirectoriesMaxCount)
             .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
         );
@@ -68,7 +69,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private Task RefreshDirectoryAsync() => CommonChangeDirectoryAsync
-        (EnterPath.Instance.Path, RefreshDirectoryStrategy.Instance);
+        (EnterPath.Instance.Path, DirectlyEnterDirectoryStrategy.Instance);
 
     [RelayCommand]
     private async Task ChangeDirectoryAsync(object? parameter)
@@ -121,10 +122,12 @@ public partial class MainWindowViewModel : ObservableObject
         var settings = await _settings;
 
         var priorityQueue = new PriorityQueue<string, int>(Comparer<int>.Create((a, b) => b - a));
-        foreach (KeyValuePair<string, int> pathFrequencyPair
-                 in settings.EntryFrequencyByPath.Where
-                     (pathFrequencyPair => Directory.Exists(pathFrequencyPair.Key)))
-            priorityQueue.Enqueue(pathFrequencyPair.Key, pathFrequencyPair.Value);
+        foreach (KeyValuePair<string, int> pathFrequencyPair in settings.EntryFrequencyByPath)
+        {
+            if (await pathFrequencyPair.Key.DirectoryExistsAsync())
+                priorityQueue.Enqueue(pathFrequencyPair.Key, pathFrequencyPair.Value);
+        }
+
         return priorityQueue;
     }
 
@@ -137,13 +140,15 @@ public partial class MainWindowViewModel : ObservableObject
     {
         if (directoryPath is null)
             return;
-        if (!Directory.Exists(directoryPath))
+        if (!await directoryPath.DirectoryExistsAsync())
         {
-            directoryPath = DirectoryFallbackHelper.Fallback(directoryPath)
-                            ?? (Directory.Exists(EnterPath.Instance.Path)
+            directoryPath = await DirectoryFallbackHelper.FallbackAsync(directoryPath)
+                            ?? (await EnterPath.Instance.Path.DirectoryExistsAsync()
                                 ? EnterPath.Instance.Path
                                 : null);
             DirectoryNotExistsCallback();
+            await ChangeDirectoryCoreAsync(directoryPath,DirectlyEnterDirectoryStrategy.Instance);
+            return;
         }
 
         await ChangeDirectoryCoreAsync(directoryPath, strategy);
@@ -163,7 +168,7 @@ public partial class MainWindowViewModel : ObservableObject
             if (outputPath is null)
                 return;
 
-            DirectoryDisplayingHelper.SetCurrentDirectory(outputPath);
+            await DirectoryDisplayingHelper.SetCurrentDirectoryAsync(outputPath);
 
             int parentLevelCount = 0;
             int firstChildDirectoryIndex = 0;
@@ -263,7 +268,7 @@ public partial class MainWindowViewModel : ObservableObject
     (
         async () =>
         {
-            if (!Path.Exists(SettingsFilePath))
+            if (!await SettingsFilePath.FileExistsAsync())
                 return new SettingsModel();
 
             try

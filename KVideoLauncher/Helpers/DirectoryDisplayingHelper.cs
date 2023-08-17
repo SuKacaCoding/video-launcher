@@ -12,9 +12,10 @@ public static class DirectoryDisplayingHelper
     private static DirectoryInfo? s_currentDirectory;
     private static bool s_depthIsUpToDate;
 
-    public static void SetCurrentDirectory(string directoryPath)
+    public static async Task SetCurrentDirectoryAsync(string directoryPath)
     {
-        Debug.Assert(condition: Directory.Exists(directoryPath), message: "Directory.Exists(directoryPath)");
+        Debug.Assert
+            (condition: await directoryPath.DirectoryExistsAsync(), message: "await directoryPath.DirectoryExists()");
         s_currentDirectory = new DirectoryInfo(directoryPath);
         s_depthIsUpToDate = false;
     }

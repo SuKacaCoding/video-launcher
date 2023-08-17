@@ -13,7 +13,7 @@ public class SettingsModel
     [JsonConverter(typeof(CaseInsensitiveDictionaryJsonConverter<string>))]
     public IDictionary<string, string> LastEnteredPathByDrive { get; init; } =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-    
+
     [JsonConverter(typeof(CaseInsensitiveDictionaryJsonConverter<int>))]
     public IDictionary<string, int> EntryFrequencyByPath { get; init; } =
         new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);

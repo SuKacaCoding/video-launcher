@@ -1,17 +1,20 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
+using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
 public static class DirectoryFallbackHelper
 {
-    public static string? Fallback(string directoryPath)
+    public static async Task<string?> FallbackAsync(string directoryPath)
     {
-        Debug.Assert(condition: !Directory.Exists(directoryPath), message: "!Directory.Exists(directoryPath)");
+        Debug.Assert
+            (condition: !await directoryPath.DirectoryExistsAsync(), message: "!await directoryPath.DirectoryExists()");
 
         while (!Path.IsPathRooted(directoryPath))
         {
             directoryPath = Path.Join(directoryPath, path2: "..");
-            if (Directory.Exists(directoryPath))
+            if (await directoryPath.DirectoryExistsAsync())
                 return directoryPath;
         }
 
