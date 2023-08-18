@@ -27,6 +27,7 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
     public ObservableCollection<FrequentDirectoryDisplayingInfo> FrequentDirectories { get; } = new();
+    public ObservableCollection<FileDisplayingInfo> Playlist { get; } = new();
 
     private const int PinnedDirectoriesMaxCount = 5;
     private const int FrequentlyEnteredDirectoriesMaxCount = 7;
