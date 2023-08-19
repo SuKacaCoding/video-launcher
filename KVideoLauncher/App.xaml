@@ -18,32 +18,24 @@
             <Style x:Key="ListBoxItemIconFontTextBlockStyle"
                    BasedOn="{StaticResource {x:Type TextBlock}}"
                    TargetType="TextBlock">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="HorizontalAlignment"
-                        Value="Center" />
-                <Setter Property="FontFamily"
-                        Value="{StaticResource IconFontFamily}" />
-                <Setter Property="FontSize"
-                        Value="{StaticResource ListBoxItemTextFontSize}" />
-                <Setter Property="Foreground"
-                        Value="{DynamicResource InfoBrush}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="FontFamily" Value="{StaticResource IconFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource ListBoxItemTextFontSize}" />
+                <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
             </Style>
             <Style x:Key="ButtonIconFontTextBlockStyle"
                    BasedOn="{StaticResource {x:Type TextBlock}}"
                    TargetType="TextBlock">
-                <Setter Property="FontFamily"
-                        Value="{StaticResource IconFontFamily}" />
-                <Setter Property="FontSize"
-                        Value="{StaticResource IconFontSize}" />
+                <Setter Property="FontFamily" Value="{StaticResource IconFontFamily}" />
+                <Setter Property="FontSize" Value="{StaticResource IconFontSize}" />
             </Style>
             <DataTemplate x:Key="IconFontButtonTemplate">
-                <TextBlock Text="{Binding}"
-                           Style="{StaticResource ButtonIconFontTextBlockStyle}" />
+                <TextBlock Style="{StaticResource ButtonIconFontTextBlockStyle}" Text="{Binding}" />
             </DataTemplate>
             <SolidColorBrush x:Key="TranslucentBackgroundBrush"
-                             Color="{DynamicResource MainContentBackgroundColor}"
-                             Opacity="0.618" />
+                             Opacity="0.618"
+                             Color="{DynamicResource MainContentBackgroundColor}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
