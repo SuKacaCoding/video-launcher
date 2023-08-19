@@ -128,7 +128,8 @@
                        Text="{x:Static l:Labels.Frequent}" />
             <ListBox x:Name="ListFrequent"
                      Grid.Row="4"
-                     ItemsSource="{Binding FrequentDirectories}">
+                     ItemsSource="{Binding FrequentDirectories}"
+                     HorizontalContentAlignment="Stretch">
                 <ListBox.InputBindings>
                     <KeyBinding Command="{Binding ChangeDirectoryCommand}"
                                 CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}"
@@ -142,6 +143,13 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
+                            <Grid.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=ListBox},Path=DataContext.ChangeDirectoryCommand}"
+                                    CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}"
+                                    Gesture="LeftDoubleClick" />
+                            </Grid.InputBindings>
+
                             <TextBlock Grid.Column="0"
                                        Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"
                                        Text="{Binding IsPinned,Converter={StaticResource IsPinned2IconFont}}" />
@@ -152,12 +160,6 @@
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                <hc:Interaction.Triggers>
-                    <hc:EventTrigger EventName="MouseDoubleClick">
-                        <hc:InvokeCommandAction Command="{Binding ChangeDirectoryCommand}"
-                                                CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}" />
-                    </hc:EventTrigger>
-                </hc:Interaction.Triggers>
             </ListBox>
 
             <ToggleButton Grid.Row="6"
@@ -188,7 +190,8 @@
                  Grid.Row="2"
                  Grid.Column="2"
                  ItemsSource="{Binding Directories}"
-                 SelectedIndex="{Binding ListDirectorySelectedIndex}">
+                 SelectedIndex="{Binding ListDirectorySelectedIndex}"
+                 HorizontalContentAlignment="Stretch">
             <ListBox.InputBindings>
                 <KeyBinding Command="{Binding ChangeDirectoryCommand}"
                             CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}"
@@ -197,18 +200,20 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Margin="5"
-                               FontSize="{StaticResource ListBoxItemTextFontSize}"
-                               Text="{Binding DisplayName}" />
+                    <hc:SimplePanel>
+                        <hc:SimplePanel.InputBindings>
+                            <MouseBinding
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=ListBox},Path=DataContext.ChangeDirectoryCommand}"
+                                CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
+                        </hc:SimplePanel.InputBindings>
+                        
+                        <TextBlock Margin="5"
+                                   FontSize="{StaticResource ListBoxItemTextFontSize}"
+                                   Text="{Binding DisplayName}" />
+                    </hc:SimplePanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
-            <hc:Interaction.Triggers>
-                <hc:EventTrigger EventName="MouseDoubleClick">
-                    <hc:InvokeCommandAction Command="{Binding ChangeDirectoryCommand}"
-                                            CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}" />
-                </hc:EventTrigger>
-            </hc:Interaction.Triggers>
         </ListBox>
 
         <Grid Grid.Row="0"
