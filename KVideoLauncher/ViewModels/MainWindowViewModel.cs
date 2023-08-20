@@ -23,15 +23,32 @@ namespace KVideoLauncher.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
+    #region Binding properties
+
+    [ObservableProperty] private int _listDirectorySelectedIndex;
+
+    [ObservableProperty] private int _listPlaylistSelectedIndex = -1;
+
+    [ObservableProperty] private int _listFilesSelectedIndex;
+
+    #endregion
+
+    #region ObservableCollections
+
     public ObservableCollection<DriveInfo> Drives { get; } = new();
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
     public ObservableCollection<FrequentDirectoryDisplayingInfo> FrequentDirectories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Playlist { get; } = new();
 
+    #endregion
+
+    #region Constants
+
     private const int PinnedDirectoriesMaxCount = 5;
     private const int FrequentlyEnteredDirectoriesMaxCount = 7;
     private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
+    private const int HistoricalPlaylistsMaxCount = 30;
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (
@@ -42,19 +59,30 @@ public partial class MainWindowViewModel : ObservableObject
     private static readonly string SettingsFilePath = Path.Join
         (SettingsDirectoryPath, path2: "Settings.json");
 
+    #endregion
+
+    #region RelayCommanmds
+
     [RelayCommand]
     private async Task InitializeData()
     {
+        var settings = await _settings;
+
         RefreshDrives();
 
         _pinnedDirectories.AddRange
         (
-            (await (await _settings).PinnedDirectories
+            (await settings.PinnedDirectories
                 .WhereAsync(info => info.Directory.DirectoryExistsAsync()))
             .Take(PinnedDirectoriesMaxCount)
             .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
         );
         await UpdateFrequentDirectoriesAsync();
+
+        foreach (IEnumerable<FileDisplayingInfo> playlist in settings.HistoricalPlaylists)
+            _historicalPlaylists.Add(playlist.ToList());
+        _historicalPlaylists.Add(new List<FileDisplayingInfo>());
+        _currentPlaylistIndex = _historicalPlaylists.Count - 1;
     }
 
     [RelayCommand]
@@ -73,14 +101,45 @@ public partial class MainWindowViewModel : ObservableObject
         (EnterPath.Instance.Path, DirectlyEnterDirectoryStrategy.Instance);
 
     [RelayCommand]
-    private async Task ChangeDirectoryAsync(object? parameter)
+    private async Task ChangeDirectoryAsync(DirectoryDisplayingInfo? info)
     {
-        if (parameter is not DirectoryDisplayingInfo info)
+        if (info is null)
             return;
 
         await CommonChangeDirectoryAsync(info.Directory, EnterDirectoryStrategy.Instance);
         await UpdateFrequentDirectoriesAsync();
     }
+
+    [RelayCommand]
+    private Task GoBackToRootDirectoryAsync() => CommonChangeDirectoryAsync
+        (EnterPath.Instance.Path, GoBackToRootPathStrategy.Instance);
+
+    [RelayCommand]
+    private void InsertIntoCurrentPlaylist(FileDisplayingInfo? info)
+    {
+        if (info is null)
+            return;
+
+        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex + 1;
+        _historicalPlaylists[_currentPlaylistIndex].Insert(newListPlaylistSelectedIndex, info);
+        Playlist.Clear();
+        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
+
+        ListFilesSelectedIndex = (ListFilesSelectedIndex + 1).MathMod(Files.Count);
+    }
+
+    [RelayCommand]
+    private async Task ExitAsync()
+    {
+        await SaveSettingsAsync();
+
+        Application.Current.Shutdown();
+    }
+
+    #endregion
+
+    #region Private methods
 
     private async Task UpdateFrequentDirectoriesAsync()
     {
@@ -131,10 +190,6 @@ public partial class MainWindowViewModel : ObservableObject
 
         return priorityQueue;
     }
-
-    [RelayCommand]
-    private Task GoBackToRootDirectoryAsync() => CommonChangeDirectoryAsync
-        (EnterPath.Instance.Path, GoBackToRootPathStrategy.Instance);
 
     private async Task CommonChangeDirectoryAsync
         (string? directoryPath, IEnterPathStrategy strategy)
@@ -208,14 +263,6 @@ public partial class MainWindowViewModel : ObservableObject
         Growl.InfoGlobal(Labels.TargetDirectoryDoesNotExist);
     }
 
-    [RelayCommand]
-    private async Task ExitAsync()
-    {
-        await SaveSettingsAsync();
-
-        Application.Current.Shutdown();
-    }
-
     private async Task RemoveRedundantPairsInPathEntryFrequenciesAsync()
     {
         var settings = await _settings;
@@ -260,8 +307,16 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    #endregion
+
+    #region Private fields
+
+    private int _currentPlaylistIndex;
+
     private readonly List<FrequentDirectoryDisplayingInfo> _frequentlyEnteredDirectories =
         new(FrequentlyEnteredDirectoriesMaxCount);
+
+    private readonly List<List<FileDisplayingInfo>> _historicalPlaylists = new();
 
     private readonly List<FrequentDirectoryDisplayingInfo> _pinnedDirectories = new(PinnedDirectoriesMaxCount);
 
@@ -287,5 +342,5 @@ public partial class MainWindowViewModel : ObservableObject
         }
     );
 
-    [ObservableProperty] private int _listDirectorySelectedIndex;
+    #endregion
 }

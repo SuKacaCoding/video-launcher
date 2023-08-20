@@ -21,7 +21,7 @@ public static class DirectoryDisplayingHelper
     }
 
     /// <remarks>
-    ///     Yield returns null as a separator between parent and child infos.
+    ///     Yield returns <see langword="null" /> as a separator between parent and child infos.
     /// </remarks>
     public static async IAsyncEnumerable<DirectoryDisplayingInfo?> EnumerateInfosAsync()
     {

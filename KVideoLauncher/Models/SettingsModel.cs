@@ -18,7 +18,8 @@ public class SettingsModel
     public IDictionary<string, int> EntryFrequencyByPath { get; init; } =
         new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-    public IEnumerable<IEnumerable<string>> HistoricalPlaylists { get; set; } = Enumerable.Empty<IEnumerable<string>>();
+    public IEnumerable<IEnumerable<FileDisplayingInfo>> HistoricalPlaylists { get; set; } =
+        Enumerable.Empty<IEnumerable<FileDisplayingInfo>>();
 
     #endregion
 

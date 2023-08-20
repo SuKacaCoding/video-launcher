@@ -51,7 +51,7 @@
         </hc:EventTrigger>
     </hc:Interaction.Triggers>
 
-    <Grid Margin="5">
+    <Grid Margin="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.85*" />
             <ColumnDefinition Width="5" />
@@ -205,7 +205,14 @@
         <ListBox x:Name="ListFiles"
                  Grid.Row="2"
                  Grid.Column="4"
-                 ItemsSource="{Binding Files}">
+                 HorizontalContentAlignment="Stretch"
+                 ItemsSource="{Binding Files}"
+                 SelectedIndex="{Binding ListFilesSelectedIndex}">
+            <ListBox.InputBindings>
+                <KeyBinding Command="{Binding InsertIntoCurrentPlaylistCommand}"
+                            CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
+                            Gesture="CTRL+L" />
+            </ListBox.InputBindings>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="5">
@@ -213,6 +220,12 @@
                             <ColumnDefinition Width="{StaticResource IconFontColWidth}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+
+                        <Grid.InputBindings>
+                            <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.InsertIntoCurrentPlaylistCommand}"
+                                          CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
+                                          Gesture="LeftDoubleClick" />
+                        </Grid.InputBindings>
 
                         <TextBlock Grid.Column="0"
                                    Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"
@@ -225,9 +238,17 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="6"
-                   Text="{x:Static l:Labels.Playlist}" />
+        <Grid Grid.Row="0" Grid.Column="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Playlist}" />
+            <Button Grid.Column="1"
+                    Content="&#xeafd;"
+                    ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+        </Grid>
         <Grid Grid.Row="2" Grid.Column="6">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -242,7 +263,27 @@
             <ListBox x:Name="ListPlaylist"
                      Grid.Row="0"
                      Grid.Column="0"
-                     Grid.ColumnSpan="2" />
+                     Grid.ColumnSpan="2"
+                     ItemsSource="{Binding Playlist}"
+                     SelectedIndex="{Binding ListPlaylistSelectedIndex}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource IconFontColWidth}" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"
+                                       Text="{Binding DisplayingType, Converter={StaticResource FileDisplayType2IconFont}}" />
+                            <TextBlock Grid.Column="1"
+                                       FontSize="{StaticResource ListBoxItemTextFontSize}"
+                                       Text="{Binding DisplayName}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <StackPanel Grid.Row="2"
                         Grid.Column="0"
                         Orientation="Horizontal">
