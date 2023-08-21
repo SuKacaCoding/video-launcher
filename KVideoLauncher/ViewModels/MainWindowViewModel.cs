@@ -49,6 +49,7 @@ public partial class MainWindowViewModel : ObservableObject
     private const int FrequentlyEnteredDirectoriesMaxCount = 7;
     private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
     private const int HistoricalPlaylistsMaxCount = 30;
+    private const int PlaylistFilesMaxCount = 50;
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (
@@ -119,6 +120,11 @@ public partial class MainWindowViewModel : ObservableObject
     {
         if (info is null)
             return;
+        if (_historicalPlaylists[_currentPlaylistIndex].Count == PlaylistFilesMaxCount)
+        {
+            Growl.InfoGlobal(Labels.PlaylistFilesCountHasReachedLimit);
+            return;
+        }
 
         int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex + 1;
         _historicalPlaylists[_currentPlaylistIndex].Insert(newListPlaylistSelectedIndex, info);

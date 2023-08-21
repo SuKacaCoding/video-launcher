@@ -159,6 +159,15 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PlaylistFilesCountHasReachedLimit {
+            get {
+                return ResourceManager.GetString("PlaylistFilesCountHasReachedLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Previous playlist.
         /// </summary>
         public static string PreviousPlaylist {
