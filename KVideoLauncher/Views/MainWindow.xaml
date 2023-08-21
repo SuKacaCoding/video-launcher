@@ -202,6 +202,7 @@
 
             <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Files}" />
         </Grid>
+        <!--  TODO: Ability to add all the files to the playlist.  -->
         <ListBox x:Name="ListFiles"
                  Grid.Row="2"
                  Grid.Column="4"
@@ -261,12 +262,17 @@
             </Grid.ColumnDefinitions>
 
             <!--  TODO: Add "Move up" and "Move down" menu items.  -->
+            <!--  TODO: Ability to find the location of the selected file.  -->
             <ListBox x:Name="ListPlaylist"
                      Grid.Row="0"
                      Grid.Column="0"
                      Grid.ColumnSpan="2"
+                     HorizontalContentAlignment="Stretch"
                      ItemsSource="{Binding Playlist}"
                      SelectedIndex="{Binding ListPlaylistSelectedIndex}">
+                <ListBox.InputBindings>
+                    <KeyBinding Command="{Binding RemovePlaylistSelectedFileCommand}" Gesture="CTRL+M" />
+                </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="5">
@@ -274,6 +280,10 @@
                                 <ColumnDefinition Width="{StaticResource IconFontColWidth}" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+
+                            <Grid.InputBindings>
+                                <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.RemovePlaylistSelectedFileCommand}" Gesture="LeftDoubleClick" />
+                            </Grid.InputBindings>
 
                             <TextBlock Grid.Column="0"
                                        Style="{StaticResource ListBoxItemIconFontTextBlockStyle}"

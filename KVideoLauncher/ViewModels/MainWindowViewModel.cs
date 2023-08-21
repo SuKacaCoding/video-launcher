@@ -136,6 +136,21 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void RemovePlaylistSelectedFile()
+    {
+        if (ListPlaylistSelectedIndex == -1)
+            return;
+
+        int currentListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
+        _historicalPlaylists[_currentPlaylistIndex].RemoveAt(currentListPlaylistSelectedIndex);
+        Playlist.Clear();
+        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        ListPlaylistSelectedIndex = currentListPlaylistSelectedIndex >= Playlist.Count
+            ? -1
+            : currentListPlaylistSelectedIndex;
+    }
+
+    [RelayCommand]
     private async Task ExitAsync()
     {
         await SaveSettingsAsync();
@@ -290,11 +305,9 @@ public partial class MainWindowViewModel : ObservableObject
 
     private async Task SetNewHistoricalPlaylistsForSettingsAsync()
     {
-        int latestPlaylistIndex = _historicalPlaylists.Count-1;
+        int latestPlaylistIndex = _historicalPlaylists.Count - 1;
         if (_historicalPlaylists[latestPlaylistIndex].Count == 0)
-        {
             _historicalPlaylists.RemoveAt(latestPlaylistIndex);
-        }
 
         var settings = await _settings;
         settings.HistoricalPlaylists.Clear();
