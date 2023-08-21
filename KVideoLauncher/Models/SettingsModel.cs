@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json.Serialization;
 using KVideoLauncher.Data;
@@ -18,8 +19,8 @@ public class SettingsModel
     public IDictionary<string, int> EntryFrequencyByPath { get; init; } =
         new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-    public IEnumerable<IEnumerable<FileDisplayingInfo>> HistoricalPlaylists { get; set; } =
-        Enumerable.Empty<IEnumerable<FileDisplayingInfo>>();
+    public ICollection<IEnumerable<FileDisplayingInfo>> HistoricalPlaylists { get; init; } =
+        new Collection<IEnumerable<FileDisplayingInfo>>();
 
     #endregion
 

@@ -260,6 +260,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <!--  TODO: Add "Move up" and "Move down" menu items.  -->
             <ListBox x:Name="ListPlaylist"
                      Grid.Row="0"
                      Grid.Column="0"

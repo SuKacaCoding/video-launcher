@@ -288,12 +288,26 @@ public partial class MainWindowViewModel : ObservableObject
         settings.EntryFrequencyByPath.AddRange(newEntryFrequencyByPath);
     }
 
+    private async Task SetNewHistoricalPlaylistsForSettingsAsync()
+    {
+        int latestPlaylistIndex = _historicalPlaylists.Count-1;
+        if (_historicalPlaylists[latestPlaylistIndex].Count == 0)
+        {
+            _historicalPlaylists.RemoveAt(latestPlaylistIndex);
+        }
+
+        var settings = await _settings;
+        settings.HistoricalPlaylists.Clear();
+        settings.HistoricalPlaylists.AddRange(_historicalPlaylists);
+    }
+
     private async Task SaveSettingsAsync()
     {
         if (!_settings.IsStarted)
             return;
 
         await RemoveRedundantPairsInPathEntryFrequenciesAsync();
+        await SetNewHistoricalPlaylistsForSettingsAsync();
 
         try
         {
