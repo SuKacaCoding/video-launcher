@@ -151,6 +151,18 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task GoToParentDirectoryAsync()
+    {
+        if (ListPlaylistSelectedIndex == -1)
+            return;
+
+        var info = Playlist[ListPlaylistSelectedIndex];
+        await CommonChangeDirectoryAsync
+            (directoryPath: Path.GetDirectoryName(info.File), EnterDirectoryStrategy.Instance);
+        await UpdateFrequentDirectoriesAsync();
+    }
+
+    [RelayCommand]
     private async Task ExitAsync()
     {
         await SaveSettingsAsync();

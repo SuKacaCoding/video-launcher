@@ -105,6 +105,15 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to parent directory.
+        /// </summary>
+        public static string GoToParentDirectory {
+            get {
+                return ResourceManager.GetString("GoToParentDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latest playlist.
         /// </summary>
         public static string LatestPlaylist {
@@ -159,7 +168,7 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The number of the files in the current playlist has reached the upper limit..
         /// </summary>
         public static string PlaylistFilesCountHasReachedLimit {
             get {
