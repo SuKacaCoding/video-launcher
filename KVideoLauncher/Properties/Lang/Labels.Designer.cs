@@ -123,6 +123,24 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert selected file and the ones above into current playlist.
+        /// </summary>
+        public static string InsertSelectedFileAndAboveIntoCurrentPlaylist {
+            get {
+                return ResourceManager.GetString("InsertSelectedFileAndAboveIntoCurrentPlaylist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert selected file and the ones below into current playlist.
+        /// </summary>
+        public static string InsertSelectedFileAndBelowIntoCurrentPlaylist {
+            get {
+                return ResourceManager.GetString("InsertSelectedFileAndBelowIntoCurrentPlaylist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latest playlist.
         /// </summary>
         public static string LatestPlaylist {

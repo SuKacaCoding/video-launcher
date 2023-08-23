@@ -158,4 +158,10 @@
   <data name="InsertAllFilesIntoCurrentPlaylist" xml:space="preserve">
     <value>将所有文件插入当前播放列表</value>
   </data>
+  <data name="InsertSelectedFileAndAboveIntoCurrentPlaylist" xml:space="preserve">
+    <value>将选中的以及上方的文件插入当前播放列表</value>
+  </data>
+  <data name="InsertSelectedFileAndBelowIntoCurrentPlaylist" xml:space="preserve">
+    <value>将选中的以及下方的文件插入当前播放列表</value>
+  </data>
 </root>

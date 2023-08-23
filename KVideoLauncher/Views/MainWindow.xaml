@@ -204,10 +204,36 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Files}" />
-            <Button Grid.Column="1"
-                    hc:IconElement.Geometry="{StaticResource AddGeometry}"
-                    Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}"
-                    Content="{x:Static l:Labels.InsertAllFilesIntoCurrentPlaylist}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
+                        hc:IconElement.Geometry="{StaticResource AddGeometry}"
+                        Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}"
+                        Content="{x:Static l:Labels.InsertAllFilesIntoCurrentPlaylist}" />
+                <hc:ContextMenuToggleButton Content="&#xe8c4;"
+                                            ContentTemplate="{StaticResource IconFontButtonTemplate}"
+                                            Style="{StaticResource ToggleButtonDefault}">
+                    <hc:ContextMenuToggleButton.Menu>
+                        <ContextMenu>
+                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                            <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndAboveIntoCurrentPlaylist}">
+                                <MenuItem.Icon>
+                                    <TextBlock Foreground="#1769fb"
+                                               Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                               Text="&#xe64d;" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                            <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndBelowIntoCurrentPlaylist}">
+                                <MenuItem.Icon>
+                                    <TextBlock Foreground="#1769fb"
+                                               Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                               Text="&#xe64d;" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </hc:ContextMenuToggleButton.Menu>
+                </hc:ContextMenuToggleButton>
+            </StackPanel>
         </Grid>
         <ListBox x:Name="ListFiles"
                  Grid.Row="2"
@@ -219,6 +245,8 @@
                 <KeyBinding Command="{Binding InsertIntoCurrentPlaylistCommand}"
                             CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
                             Gesture="CTRL+L" />
+                <KeyBinding Command="{Binding InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+L" />
+                <KeyBinding Command="{Binding InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}" Gesture="CTRL+ALT+L" />
             </ListBox.InputBindings>
             <ListBox.ItemTemplate>
                 <DataTemplate>

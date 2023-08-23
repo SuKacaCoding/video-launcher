@@ -121,7 +121,7 @@ public partial class MainWindowViewModel : ObservableObject
             return;
 
         int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex + 1;
-        CommonInsertIntoCurrentPlaylist(newListPlaylistSelectedIndex, info);
+        InsertIntoCurrentPlaylistCore(newListPlaylistSelectedIndex, info);
         Playlist.Clear();
         Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
@@ -132,20 +132,19 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void InsertAllFilesIntoCurrentPlaylist()
     {
-        bool canContinue = true;
-        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
-        foreach (var info in Files)
-        {
-            if (!canContinue)
-                break;
+        CommonInsertRangeIntoCurrentPlaylist(Files);
+    }
 
-            newListPlaylistSelectedIndex++;
-            canContinue = CommonInsertIntoCurrentPlaylist(newListPlaylistSelectedIndex, info);
-        }
+    [RelayCommand]
+    private void InsertSelectedFileAndAboveIntoCurrentPlaylist()
+    {
+        CommonInsertRangeIntoCurrentPlaylist(Files.Take(ListFilesSelectedIndex + 1));
+    }
 
-        Playlist.Clear();
-        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
-        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
+    [RelayCommand]
+    private void InsertSelectedFileAndBelowIntoCurrentPlaylist()
+    {
+        CommonInsertRangeIntoCurrentPlaylist(Files.TakeLast(Files.Count - ListFilesSelectedIndex));
     }
 
     [RelayCommand]
@@ -338,7 +337,7 @@ public partial class MainWindowViewModel : ObservableObject
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
-    private bool CommonInsertIntoCurrentPlaylist(int index, FileDisplayingInfo info)
+    private bool InsertIntoCurrentPlaylistCore(int index, FileDisplayingInfo info)
     {
         if (_historicalPlaylists[_currentPlaylistIndex].Count == PlaylistFilesMaxCount)
         {
@@ -348,6 +347,24 @@ public partial class MainWindowViewModel : ObservableObject
 
         _historicalPlaylists[_currentPlaylistIndex].Insert(index, info);
         return true;
+    }
+
+    private void CommonInsertRangeIntoCurrentPlaylist(IEnumerable<FileDisplayingInfo> infos)
+    {
+        bool canContinue = true;
+        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
+        foreach (var info in infos)
+        {
+            if (!canContinue)
+                break;
+
+            newListPlaylistSelectedIndex++;
+            canContinue = InsertIntoCurrentPlaylistCore(newListPlaylistSelectedIndex, info);
+        }
+
+        Playlist.Clear();
+        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
     private async Task RemoveRedundantPairsInPathEntryFrequenciesAsync()
