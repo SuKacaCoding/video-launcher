@@ -9,9 +9,11 @@ public class EnterDirectoryStrategy : IEnterPathStrategy
     public static EnterDirectoryStrategy Instance => LazyInstance.Value;
     private static readonly Lazy<EnterDirectoryStrategy> LazyInstance = new();
 
+    /// <exception cref="ArgumentException"></exception>
     public Task<string> Enter(EnterPath enterPath, IDictionary<string, string> lastEnteredPathByDrive)
     {
-        Debug.Assert(condition: enterPath.Path != null, message: "enterPath.Path != null");
+        if (enterPath.Path is null)
+            throw new ArgumentException(message: ".Path mustn't be null.", paramName: nameof(enterPath));
         string normalizedPath = Path.GetFullPath(enterPath.Path);
 
         lastEnteredPathByDrive[Directory.GetDirectoryRoot(normalizedPath)] = normalizedPath;

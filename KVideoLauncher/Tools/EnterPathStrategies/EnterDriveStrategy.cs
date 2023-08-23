@@ -10,14 +10,13 @@ public class EnterDriveStrategy : IEnterPathStrategy
     public static EnterDriveStrategy Instance => LazyInstance.Value;
     private static readonly Lazy<EnterDriveStrategy> LazyInstance = new();
 
+    /// <exception cref="ArgumentException"></exception>
     public async Task<string> Enter(EnterPath enterPath, IDictionary<string, string> lastEnteredPathByDrive)
     {
-        Debug.Assert(condition: enterPath.Path != null, message: "enterPath.Path != null");
-        Debug.Assert
-        (
-            condition: Directory.GetParent(enterPath.Path) is null,
-            message: "Directory.GetParent(enterPath.Path) is null"
-        );
+        if (enterPath.Path is null)
+            throw new ArgumentException(message: ".Path mustn't be null.", paramName: nameof(enterPath));
+        if (!Path.IsPathRooted(enterPath.Path))
+            throw new ArgumentException(message: ".Path must be a rooted path.", paramName: nameof(enterPath));
 
 
         string normalizedDrivePath = Path.GetFullPath(enterPath.Path);

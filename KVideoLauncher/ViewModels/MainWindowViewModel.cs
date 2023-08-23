@@ -48,7 +48,6 @@ public partial class MainWindowViewModel : ObservableObject
     private const int PinnedDirectoriesMaxCount = 5;
     private const int FrequentlyEnteredDirectoriesMaxCount = 7;
     private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
-    private const int HistoricalPlaylistsMaxCount = 30;
     private const int PlaylistFilesMaxCount = 72;
 
     private static readonly string SettingsDirectoryPath = Path.Join

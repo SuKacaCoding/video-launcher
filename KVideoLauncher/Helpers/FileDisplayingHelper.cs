@@ -10,6 +10,7 @@ namespace KVideoLauncher.Helpers;
 
 public static class FileDisplayingHelper
 {
+    /// <exception cref="ArgumentException"></exception>
     public static async IAsyncEnumerable<FileDisplayingInfo> EnumerateVideosInDirectoryAsync
     (
         string directoryPath,
@@ -17,8 +18,9 @@ public static class FileDisplayingHelper
         IEnumerable<string> subtitleFileExtensions
     )
     {
-        Debug.Assert
-            (condition: await directoryPath.DirectoryExistsAsync(), message: "await directoryPath.DirectoryExists()");
+        if (!await directoryPath.DirectoryExistsAsync())
+            throw new ArgumentException
+                (message: "must be an existing directory path.", paramName: nameof(directoryPath));
 
         var directoryInfo = new DirectoryInfo(directoryPath);
         IEnumerable<FileInfo> files = await Task.Run

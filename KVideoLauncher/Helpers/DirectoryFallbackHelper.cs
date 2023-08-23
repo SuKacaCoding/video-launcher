@@ -6,10 +6,12 @@ namespace KVideoLauncher.Helpers;
 
 public static class DirectoryFallbackHelper
 {
+    /// <exception cref="ArgumentException"></exception>
     public static async Task<string?> FallbackAsync(string directoryPath)
     {
-        Debug.Assert
-            (condition: !await directoryPath.DirectoryExistsAsync(), message: "!await directoryPath.DirectoryExists()");
+        if (await directoryPath.DirectoryExistsAsync())
+            throw new ArgumentException
+                (message: "mustn't be an existing directory path.", paramName: nameof(directoryPath));
 
         while (!Path.IsPathRooted(directoryPath))
         {
