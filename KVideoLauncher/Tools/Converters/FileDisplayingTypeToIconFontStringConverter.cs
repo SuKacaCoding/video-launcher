@@ -19,7 +19,6 @@ public class FileDisplayingTypeToIconFontStringConverter : IValueConverter
         {
             FileDisplayingType.Video => "\ue600",
             FileDisplayingType.VideoWithSubtitle => "\ue668",
-            FileDisplayingType.Subtitle => "\ue69e",
             _ => throw new ArgumentOutOfRangeException(nameof(displayingType))
         };
     }
@@ -29,5 +28,5 @@ public class FileDisplayingTypeToIconFontStringConverter : IValueConverter
         object? value, Type targetType, object? parameter,
         CultureInfo culture
     ) =>
-        throw new NotImplementedException();
+        throw new InvalidOperationException();
 }

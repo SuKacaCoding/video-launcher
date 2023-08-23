@@ -4,5 +4,4 @@ public enum FileDisplayingType
 {
     Video = 0,
     VideoWithSubtitle = 1,
-    Subtitle = 2
 }
