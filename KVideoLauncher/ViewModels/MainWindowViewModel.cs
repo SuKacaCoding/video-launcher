@@ -49,7 +49,7 @@ public partial class MainWindowViewModel : ObservableObject
     private const int FrequentlyEnteredDirectoriesMaxCount = 7;
     private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
     private const int HistoricalPlaylistsMaxCount = 30;
-    private const int PlaylistFilesMaxCount = 50;
+    private const int PlaylistFilesMaxCount = 72;
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (
@@ -120,7 +120,7 @@ public partial class MainWindowViewModel : ObservableObject
     {
         if (info is null)
             return;
-        if (_historicalPlaylists[_currentPlaylistIndex].Count == PlaylistFilesMaxCount)
+        if (Playlist.Count == PlaylistFilesMaxCount)
         {
             Growl.InfoGlobal(Labels.PlaylistFilesCountHasReachedLimit);
             return;
@@ -160,6 +160,18 @@ public partial class MainWindowViewModel : ObservableObject
         await CommonChangeDirectoryAsync
             (directoryPath: Path.GetDirectoryName(info.File), EnterDirectoryStrategy.Instance);
         await UpdateFrequentDirectoriesAsync();
+    }
+
+    [RelayCommand]
+    private void MoveListPlaylistSelectionUp()
+    {
+        CommonMoveListPlaylistSelection(-1);
+    }
+
+    [RelayCommand]
+    private void MoveListPlaylistSelectionDown()
+    {
+        CommonMoveListPlaylistSelection(1);
     }
 
     [RelayCommand]
@@ -294,6 +306,23 @@ public partial class MainWindowViewModel : ObservableObject
         RefreshDrives();
 
         Growl.InfoGlobal(Labels.TargetDirectoryDoesNotExist);
+    }
+
+    private void CommonMoveListPlaylistSelection(int offset)
+    {
+        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex + offset;
+        if (ListPlaylistSelectedIndex == -1 ||
+            newListPlaylistSelectedIndex < 0 ||
+            newListPlaylistSelectedIndex >= Playlist.Count)
+            return;
+
+        List<FileDisplayingInfo> currentPlaylist = _historicalPlaylists[_currentPlaylistIndex];
+        (currentPlaylist[ListPlaylistSelectedIndex], currentPlaylist[newListPlaylistSelectedIndex]) =
+            (currentPlaylist[newListPlaylistSelectedIndex], currentPlaylist[ListPlaylistSelectedIndex]);
+
+        Playlist.Clear();
+        Playlist.AddRange(currentPlaylist);
+        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
     private async Task RemoveRedundantPairsInPathEntryFrequenciesAsync()

@@ -263,8 +263,6 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!--  TODO: Add "Move up" and "Move down" menu items.  -->
-            <!--  TODO: Ability to find the location of the selected file.  -->
             <ListBox x:Name="ListPlaylist"
                      Grid.Row="0"
                      Grid.Column="0"
@@ -275,6 +273,8 @@
                 <ListBox.InputBindings>
                     <KeyBinding Command="{Binding RemovePlaylistSelectedFileCommand}" Gesture="CTRL+M" />
                     <KeyBinding Command="{Binding GoToParentDirectoryCommand}" Gesture="CTRL+F" />
+                    <KeyBinding Command="{Binding MoveListPlaylistSelectionUpCommand}" Gesture="ALT+UP" />
+                    <KeyBinding Command="{Binding MoveListPlaylistSelectionDownCommand}" Gesture="ALT+DOWN" />
                 </ListBox.InputBindings>
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
@@ -287,6 +287,22 @@
                                             <TextBlock Foreground="#ffb95c"
                                                        Style="{StaticResource ButtonIconFontTextBlockStyle}"
                                                        Text="&#xe61d;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                    <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionUpCommand}" Header="{x:Static l:Labels.MoveUp}">
+                                        <MenuItem.Icon>
+                                            <TextBlock Foreground="#5090f1"
+                                                       Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                                       Text="&#xe602;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                                    <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionDownCommand}" Header="{x:Static l:Labels.MoveDown}">
+                                        <MenuItem.Icon>
+                                            <TextBlock Foreground="#5090f1"
+                                                       Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                                       Text="&#xe601;" />
                                         </MenuItem.Icon>
                                     </MenuItem>
                                 </ContextMenu>
