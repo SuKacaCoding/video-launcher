@@ -155,4 +155,7 @@
   <data name="MoveDown" xml:space="preserve">
     <value>下移</value>
   </data>
+  <data name="InsertAllFilesIntoCurrentPlaylist" xml:space="preserve">
+    <value>将所有文件插入当前播放列表</value>
+  </data>
 </root>

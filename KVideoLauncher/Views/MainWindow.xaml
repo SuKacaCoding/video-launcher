@@ -25,6 +25,7 @@
         <KeyBinding Command="{Binding RefreshDrivesCommand}" Gesture="CTRL+R" />
         <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+SHIFT+R" />
         <KeyBinding Command="{Binding GoBackToRootDirectoryCommand}" Gesture="CTRL+ALT+R" />
+        <KeyBinding Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+A" />
     </Window.InputBindings>
     <Window.Resources>
         <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
@@ -203,8 +204,11 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Files}" />
+            <Button Grid.Column="1"
+                    hc:IconElement.Geometry="{StaticResource AddGeometry}"
+                    Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}"
+                    Content="{x:Static l:Labels.InsertAllFilesIntoCurrentPlaylist}" />
         </Grid>
-        <!--  TODO: Ability to add all the files to the playlist.  -->
         <ListBox x:Name="ListFiles"
                  Grid.Row="2"
                  Grid.Column="4"

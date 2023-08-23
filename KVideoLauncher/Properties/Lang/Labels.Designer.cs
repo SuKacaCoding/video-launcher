@@ -114,6 +114,15 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert all files into current playlist.
+        /// </summary>
+        public static string InsertAllFilesIntoCurrentPlaylist {
+            get {
+                return ResourceManager.GetString("InsertAllFilesIntoCurrentPlaylist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latest playlist.
         /// </summary>
         public static string LatestPlaylist {

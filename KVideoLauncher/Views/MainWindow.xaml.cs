@@ -177,8 +177,11 @@ public partial class MainWindow : Window
 
     private void CommonMoveFocusedListBoxSelection(int offset)
     {
-        int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
         int itemsCount = FocusedListBox.Items.Count;
+        if (itemsCount == 0)
+            return;
+
+        int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
 
         targetSelectedIndex = targetSelectedIndex.MathMod(itemsCount);
 

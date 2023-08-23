@@ -119,19 +119,33 @@ public partial class MainWindowViewModel : ObservableObject
     {
         if (info is null)
             return;
-        if (Playlist.Count == PlaylistFilesMaxCount)
-        {
-            Growl.InfoGlobal(Labels.PlaylistFilesCountHasReachedLimit);
-            return;
-        }
 
         int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex + 1;
-        _historicalPlaylists[_currentPlaylistIndex].Insert(newListPlaylistSelectedIndex, info);
+        CommonInsertIntoCurrentPlaylist(newListPlaylistSelectedIndex, info);
         Playlist.Clear();
         Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
 
         ListFilesSelectedIndex = (ListFilesSelectedIndex + 1).MathMod(Files.Count);
+    }
+
+    [RelayCommand]
+    private void InsertAllFilesIntoCurrentPlaylist()
+    {
+        bool canContinue = true;
+        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
+        foreach (var info in Files)
+        {
+            if (!canContinue)
+                break;
+
+            newListPlaylistSelectedIndex++;
+            canContinue = CommonInsertIntoCurrentPlaylist(newListPlaylistSelectedIndex, info);
+        }
+
+        Playlist.Clear();
+        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
     [RelayCommand]
@@ -322,6 +336,18 @@ public partial class MainWindowViewModel : ObservableObject
         Playlist.Clear();
         Playlist.AddRange(currentPlaylist);
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
+    }
+
+    private bool CommonInsertIntoCurrentPlaylist(int index, FileDisplayingInfo info)
+    {
+        if (_historicalPlaylists[_currentPlaylistIndex].Count == PlaylistFilesMaxCount)
+        {
+            Growl.InfoGlobal(Labels.PlaylistFilesCountHasReachedLimit);
+            return false;
+        }
+
+        _historicalPlaylists[_currentPlaylistIndex].Insert(index, info);
+        return true;
     }
 
     private async Task RemoveRedundantPairsInPathEntryFrequenciesAsync()
