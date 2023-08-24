@@ -187,6 +187,13 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void ClearCurrentPlaylist()
+    {
+        Playlist.Clear();
+        _historicalPlaylists[_currentPlaylistIndex].Clear();
+    }
+
+    [RelayCommand]
     private async Task ExitAsync()
     {
         await SaveSettingsAsync();

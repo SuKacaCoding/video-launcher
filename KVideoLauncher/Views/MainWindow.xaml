@@ -26,6 +26,7 @@
         <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+SHIFT+R" />
         <KeyBinding Command="{Binding GoBackToRootDirectoryCommand}" Gesture="CTRL+ALT+R" />
         <KeyBinding Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+A" />
+        <KeyBinding Command="{Binding ClearCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+M" />
     </Window.InputBindings>
     <Window.Resources>
         <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
@@ -280,9 +281,13 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Playlist}" />
-            <Button Grid.Column="1"
-                    Content="&#xeafd;"
-                    ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
+                        Command="{Binding ClearCurrentPlaylistCommand}"
+                        Content="&#xe680;"
+                        ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+                <Button Content="&#xeafd;" ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="6">
             <Grid.RowDefinitions>
