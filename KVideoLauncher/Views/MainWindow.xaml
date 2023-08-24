@@ -210,21 +210,19 @@
                         hc:IconElement.Geometry="{StaticResource AddGeometry}"
                         Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}"
                         Content="{x:Static l:Labels.InsertAllFilesIntoCurrentPlaylist}" />
-                <hc:ContextMenuToggleButton Content="&#xe8c4;"
-                                            ContentTemplate="{StaticResource IconFontButtonTemplate}"
-                                            Style="{StaticResource ToggleButtonDefault}">
-                    <hc:ContextMenuToggleButton.Menu>
+                <hc:ContextMenuButton Content="&#xe8c4;"
+                                      ContentTemplate="{StaticResource IconFontButtonTemplate}"
+                                      Style="{StaticResource ButtonDefault}">
+                    <hc:ContextMenuButton.Menu>
                         <ContextMenu>
-                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                            <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndAboveIntoCurrentPlaylist}">
+                            <MenuItem Command="{Binding InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndAboveIntoCurrentPlaylist}">
                                 <MenuItem.Icon>
                                     <TextBlock Foreground="#1769fb"
                                                Style="{StaticResource ButtonIconFontTextBlockStyle}"
                                                Text="&#xe64d;" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                            <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndBelowIntoCurrentPlaylist}">
+                            <MenuItem Command="{Binding InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndBelowIntoCurrentPlaylist}">
                                 <MenuItem.Icon>
                                     <TextBlock Foreground="#1769fb"
                                                Style="{StaticResource ButtonIconFontTextBlockStyle}"
@@ -232,8 +230,8 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </ContextMenu>
-                    </hc:ContextMenuToggleButton.Menu>
-                </hc:ContextMenuToggleButton>
+                    </hc:ContextMenuButton.Menu>
+                </hc:ContextMenuButton>
             </StackPanel>
         </Grid>
         <ListBox x:Name="ListFiles"
@@ -313,38 +311,37 @@
                     <KeyBinding Command="{Binding MoveListPlaylistSelectionUpCommand}" Gesture="ALT+UP" />
                     <KeyBinding Command="{Binding MoveListPlaylistSelectionDownCommand}" Gesture="ALT+DOWN" />
                 </ListBox.InputBindings>
+                <ListBox.Resources>
+                    <ContextMenu x:Key="ContextMenu">
+                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                        <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.GoToParentDirectoryCommand}" Header="{x:Static l:Labels.GoToParentDirectory}">
+                            <MenuItem.Icon>
+                                <TextBlock Foreground="#ffb95c"
+                                           Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                           Text="&#xe61d;" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                        <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionUpCommand}" Header="{x:Static l:Labels.MoveUp}">
+                            <MenuItem.Icon>
+                                <TextBlock Foreground="#5090f1"
+                                           Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                           Text="&#xe602;" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                        <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionDownCommand}" Header="{x:Static l:Labels.MoveDown}">
+                            <MenuItem.Icon>
+                                <TextBlock Foreground="#5090f1"
+                                           Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                                           Text="&#xe601;" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListBox.Resources>
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
-                        <Setter Property="ContextMenu">
-                            <Setter.Value>
-                                <ContextMenu>
-                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                    <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.GoToParentDirectoryCommand}" Header="{x:Static l:Labels.GoToParentDirectory}">
-                                        <MenuItem.Icon>
-                                            <TextBlock Foreground="#ffb95c"
-                                                       Style="{StaticResource ButtonIconFontTextBlockStyle}"
-                                                       Text="&#xe61d;" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                    <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionUpCommand}" Header="{x:Static l:Labels.MoveUp}">
-                                        <MenuItem.Icon>
-                                            <TextBlock Foreground="#5090f1"
-                                                       Style="{StaticResource ButtonIconFontTextBlockStyle}"
-                                                       Text="&#xe602;" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                    <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionDownCommand}" Header="{x:Static l:Labels.MoveDown}">
-                                        <MenuItem.Icon>
-                                            <TextBlock Foreground="#5090f1"
-                                                       Style="{StaticResource ButtonIconFontTextBlockStyle}"
-                                                       Text="&#xe601;" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Setter.Value>
-                        </Setter>
+                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
