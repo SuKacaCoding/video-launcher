@@ -5,10 +5,10 @@ namespace KVideoLauncher.Tools.EnterPathStrategies;
 
 public class EnterPath
 {
-    public IEnterPathStrategy? Strategy { set; private get; }
-    public string? Path { get; set; }
     public static EnterPath Instance { get; } = new();
-    
+    public string? Path { get; set; }
+    public IEnterPathStrategy? Strategy { set; private get; }
+
     /// <exception cref="NullReferenceException"></exception>
     public async Task<string?> Enter(IDictionary<string, string> lastEnteredPathByDrive)
     {

@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using KVideoLauncher.Properties.Lang;
+﻿using KVideoLauncher.Properties.Lang;
+using System.Windows;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace KVideoLauncher.Helpers;

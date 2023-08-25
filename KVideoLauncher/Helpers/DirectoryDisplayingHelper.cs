@@ -1,16 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using KVideoLauncher.Data;
+using KVideoLauncher.Extensions;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using KVideoLauncher.Data;
-using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
 public static class DirectoryDisplayingHelper
 {
-    private static int s_depth;
-    private static DirectoryInfo? s_currentDirectory;
-    private static bool s_depthIsUpToDate;
+    /// <remarks>
+    /// Yield returns <see langword="null"/> as a separator between parent and child infos.
+    /// </remarks>
+    public static async IAsyncEnumerable<DirectoryDisplayingInfo?> EnumerateInfosAsync()
+    {
+        await foreach (var info in EnumerateHierarchicalParentInfosAsync())
+            yield return info;
+        yield return null;
+        await foreach (var info in EnumerateIndentedChildrenInfosAsync())
+            yield return info;
+    }
 
     /// <exception cref="ArgumentException"></exception>
     public static async Task SetCurrentDirectoryAsync(string directoryPath)
@@ -23,18 +31,6 @@ public static class DirectoryDisplayingHelper
 
         s_currentDirectory = new DirectoryInfo(directoryPath);
         s_depthIsUpToDate = false;
-    }
-
-    /// <remarks>
-    ///     Yield returns <see langword="null" /> as a separator between parent and child infos.
-    /// </remarks>
-    public static async IAsyncEnumerable<DirectoryDisplayingInfo?> EnumerateInfosAsync()
-    {
-        await foreach (var info in EnumerateHierarchicalParentInfosAsync())
-            yield return info;
-        yield return null;
-        await foreach (var info in EnumerateIndentedChildrenInfosAsync())
-            yield return info;
     }
 
     private static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateHierarchicalParentInfosAsync()
@@ -70,8 +66,8 @@ public static class DirectoryDisplayingHelper
     }
 
     /// <remarks>
-    ///     Make sure <see cref="EnumerateHierarchicalParentInfosAsync" /> is called before if the current directory is
-    ///     changed.
+    /// Make sure <see cref="EnumerateHierarchicalParentInfosAsync"/> is called before if the
+    /// current directory is changed.
     /// </remarks>
     private static async IAsyncEnumerable<DirectoryDisplayingInfo> EnumerateIndentedChildrenInfosAsync()
     {
@@ -91,4 +87,8 @@ public static class DirectoryDisplayingHelper
             }
         }
     }
+
+    private static DirectoryInfo? s_currentDirectory;
+    private static int s_depth;
+    private static bool s_depthIsUpToDate;
 }

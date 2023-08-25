@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Security;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
@@ -18,6 +9,15 @@ using KVideoLauncher.Models;
 using KVideoLauncher.Properties.Lang;
 using KVideoLauncher.Tools.EnterPathStrategies;
 using Nito.AsyncEx;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Security;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace KVideoLauncher.ViewModels;
 
@@ -27,28 +27,27 @@ public partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private int _listDirectorySelectedIndex;
 
+    [ObservableProperty] private int _listFilesSelectedIndex;
     [ObservableProperty] private int _listPlaylistSelectedIndex = -1;
 
-    [ObservableProperty] private int _listFilesSelectedIndex;
-
-    #endregion
+    #endregion Binding properties
 
     #region ObservableCollections
 
-    public ObservableCollection<DriveInfo> Drives { get; } = new();
     public ObservableCollection<DirectoryDisplayingInfo> Directories { get; } = new();
+    public ObservableCollection<DriveInfo> Drives { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Files { get; } = new();
     public ObservableCollection<FrequentDirectoryDisplayingInfo> FrequentDirectories { get; } = new();
     public ObservableCollection<FileDisplayingInfo> Playlist { get; } = new();
 
-    #endregion
+    #endregion ObservableCollections
 
     #region Constants
 
-    private const int PinnedDirectoriesMaxCount = 5;
     private const int FrequentlyEnteredDirectoriesMaxCount = 7;
-    private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
+    private const int PinnedDirectoriesMaxCount = 5;
     private const int PlaylistFilesMaxCount = 72;
+    private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
 
     private static readonly string SettingsDirectoryPath = Path.Join
     (
@@ -59,9 +58,54 @@ public partial class MainWindowViewModel : ObservableObject
     private static readonly string SettingsFilePath = Path.Join
         (SettingsDirectoryPath, path2: "Settings.json");
 
-    #endregion
+    #endregion Constants
 
     #region RelayCommanmds
+
+    [RelayCommand]
+    private async Task ChangeDirectoryAsync(DirectoryDisplayingInfo? info)
+    {
+        if (info is null)
+            return;
+
+        await CommonChangeDirectoryAsync(info.Directory, EnterDirectoryStrategy.Instance);
+        await UpdateFrequentDirectoriesAsync();
+    }
+
+    [RelayCommand]
+    private Task ChangeDriveAsync(string? driveName) => CommonChangeDirectoryAsync
+        (driveName, EnterDriveStrategy.Instance);
+
+    [RelayCommand]
+    private void ClearCurrentPlaylist()
+    {
+        Playlist.Clear();
+        _historicalPlaylists[_currentPlaylistIndex].Clear();
+    }
+
+    [RelayCommand]
+    private async Task ExitAsync()
+    {
+        await SaveSettingsAsync();
+
+        Application.Current.Shutdown();
+    }
+
+    [RelayCommand]
+    private Task GoBackToRootDirectoryAsync() => CommonChangeDirectoryAsync
+        (EnterPath.Instance.Path, GoBackToRootPathStrategy.Instance);
+
+    [RelayCommand]
+    private async Task GoToParentDirectoryAsync()
+    {
+        if (ListPlaylistSelectedIndex == -1)
+            return;
+
+        var info = Playlist[ListPlaylistSelectedIndex];
+        await CommonChangeDirectoryAsync
+            (directoryPath: Path.GetDirectoryName(info.File), EnterDirectoryStrategy.Instance);
+        await UpdateFrequentDirectoriesAsync();
+    }
 
     [RelayCommand]
     private async Task InitializeData()
@@ -86,33 +130,10 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void RefreshDrives()
+    private void InsertAllFilesIntoCurrentPlaylist()
     {
-        Drives.Clear();
-        Drives.AddRange(DriveInfo.GetDrives().Where(info => info.IsReady));
+        CommonInsertRangeIntoCurrentPlaylist(Files);
     }
-
-    [RelayCommand]
-    private Task ChangeDriveAsync(string? driveName) => CommonChangeDirectoryAsync
-        (driveName, EnterDriveStrategy.Instance);
-
-    [RelayCommand]
-    private Task RefreshDirectoryAsync() => CommonChangeDirectoryAsync
-        (EnterPath.Instance.Path, DirectlyEnterDirectoryStrategy.Instance);
-
-    [RelayCommand]
-    private async Task ChangeDirectoryAsync(DirectoryDisplayingInfo? info)
-    {
-        if (info is null)
-            return;
-
-        await CommonChangeDirectoryAsync(info.Directory, EnterDirectoryStrategy.Instance);
-        await UpdateFrequentDirectoriesAsync();
-    }
-
-    [RelayCommand]
-    private Task GoBackToRootDirectoryAsync() => CommonChangeDirectoryAsync
-        (EnterPath.Instance.Path, GoBackToRootPathStrategy.Instance);
 
     [RelayCommand]
     private void InsertIntoCurrentPlaylist(FileDisplayingInfo? info)
@@ -130,12 +151,6 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void InsertAllFilesIntoCurrentPlaylist()
-    {
-        CommonInsertRangeIntoCurrentPlaylist(Files);
-    }
-
-    [RelayCommand]
     private void InsertSelectedFileAndAboveIntoCurrentPlaylist()
     {
         CommonInsertRangeIntoCurrentPlaylist(Files.Take(ListFilesSelectedIndex + 1));
@@ -145,6 +160,29 @@ public partial class MainWindowViewModel : ObservableObject
     private void InsertSelectedFileAndBelowIntoCurrentPlaylist()
     {
         CommonInsertRangeIntoCurrentPlaylist(Files.TakeLast(Files.Count - ListFilesSelectedIndex));
+    }
+
+    [RelayCommand]
+    private void MoveListPlaylistSelectionDown()
+    {
+        CommonMoveListPlaylistSelection(1);
+    }
+
+    [RelayCommand]
+    private void MoveListPlaylistSelectionUp()
+    {
+        CommonMoveListPlaylistSelection(-1);
+    }
+
+    [RelayCommand]
+    private Task RefreshDirectoryAsync() => CommonChangeDirectoryAsync
+        (EnterPath.Instance.Path, DirectlyEnterDirectoryStrategy.Instance);
+
+    [RelayCommand]
+    private void RefreshDrives()
+    {
+        Drives.Clear();
+        Drives.AddRange(DriveInfo.GetDrives().Where(info => info.IsReady));
     }
 
     [RelayCommand]
@@ -162,117 +200,9 @@ public partial class MainWindowViewModel : ObservableObject
             : currentListPlaylistSelectedIndex;
     }
 
-    [RelayCommand]
-    private async Task GoToParentDirectoryAsync()
-    {
-        if (ListPlaylistSelectedIndex == -1)
-            return;
-
-        var info = Playlist[ListPlaylistSelectedIndex];
-        await CommonChangeDirectoryAsync
-            (directoryPath: Path.GetDirectoryName(info.File), EnterDirectoryStrategy.Instance);
-        await UpdateFrequentDirectoriesAsync();
-    }
-
-    [RelayCommand]
-    private void MoveListPlaylistSelectionUp()
-    {
-        CommonMoveListPlaylistSelection(-1);
-    }
-
-    [RelayCommand]
-    private void MoveListPlaylistSelectionDown()
-    {
-        CommonMoveListPlaylistSelection(1);
-    }
-
-    [RelayCommand]
-    private void ClearCurrentPlaylist()
-    {
-        Playlist.Clear();
-        _historicalPlaylists[_currentPlaylistIndex].Clear();
-    }
-
-    [RelayCommand]
-    private async Task ExitAsync()
-    {
-        await SaveSettingsAsync();
-
-        Application.Current.Shutdown();
-    }
-
-    #endregion
+    #endregion RelayCommanmds
 
     #region Private methods
-
-    private async Task UpdateFrequentDirectoriesAsync()
-    {
-        string? currentDirectory = EnterPath.Instance.Path;
-
-        if (currentDirectory is { })
-        {
-            var settings = await _settings;
-            settings.EntryFrequencyByPath[currentDirectory] =
-                (settings.EntryFrequencyByPath.TryGetValue
-                    (currentDirectory, value: out int frequency)
-                    ? frequency
-                    : 0) + 1;
-        }
-
-        PriorityQueue<string, int> priorityQueue = await GetMaxPriorityQueueFromPathEntryFrequenciesAsync();
-
-        _frequentlyEnteredDirectories.Clear();
-        while (priorityQueue.Count > 0 &&
-               _frequentlyEnteredDirectories.Count < FrequentlyEnteredDirectoriesMaxCount)
-        {
-            string directoryPath = priorityQueue.Dequeue();
-            var directoryInfo = new DirectoryInfo(directoryPath);
-            _frequentlyEnteredDirectories.Add
-            (
-                new FrequentDirectoryDisplayingInfo
-                (
-                    directoryInfo.Name, directoryPath, isPinned: false
-                )
-            );
-        }
-
-        FrequentDirectories.Clear();
-        FrequentDirectories.AddRange(_pinnedDirectories);
-        FrequentDirectories.AddRange(_frequentlyEnteredDirectories);
-    }
-
-    private async Task<PriorityQueue<string, int>> GetMaxPriorityQueueFromPathEntryFrequenciesAsync()
-    {
-        var settings = await _settings;
-
-        var priorityQueue = new PriorityQueue<string, int>(Comparer<int>.Create((a, b) => b - a));
-        foreach (KeyValuePair<string, int> pathFrequencyPair in settings.EntryFrequencyByPath)
-        {
-            if (await pathFrequencyPair.Key.DirectoryExistsAsync())
-                priorityQueue.Enqueue(pathFrequencyPair.Key, pathFrequencyPair.Value);
-        }
-
-        return priorityQueue;
-    }
-
-    private async Task CommonChangeDirectoryAsync
-        (string? directoryPath, IEnterPathStrategy strategy)
-    {
-        if (directoryPath is null)
-            return;
-        if (!await directoryPath.DirectoryExistsAsync())
-        {
-            directoryPath = await DirectoryFallbackHelper.FallbackAsync(directoryPath)
-                            ?? (await EnterPath.Instance.Path.DirectoryExistsAsync()
-                                ? EnterPath.Instance.Path
-                                : null);
-            DirectoryNotExistsCallback();
-            await ChangeDirectoryCoreAsync(directoryPath, DirectlyEnterDirectoryStrategy.Instance);
-            return;
-        }
-
-        await ChangeDirectoryCoreAsync(directoryPath, strategy);
-    }
 
     private async Task ChangeDirectoryCoreAsync(string? directoryPath, IEnterPathStrategy strategy)
     {
@@ -320,11 +250,41 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    private void DirectoryNotExistsCallback()
+    private async Task CommonChangeDirectoryAsync
+        (string? directoryPath, IEnterPathStrategy strategy)
     {
-        RefreshDrives();
+        if (directoryPath is null)
+            return;
+        if (!await directoryPath.DirectoryExistsAsync())
+        {
+            directoryPath = await DirectoryFallbackHelper.FallbackAsync(directoryPath)
+                            ?? (await EnterPath.Instance.Path.DirectoryExistsAsync()
+                                ? EnterPath.Instance.Path
+                                : null);
+            DirectoryNotExistsCallback();
+            await ChangeDirectoryCoreAsync(directoryPath, DirectlyEnterDirectoryStrategy.Instance);
+            return;
+        }
 
-        Growl.InfoGlobal(Labels.TargetDirectoryDoesNotExist);
+        await ChangeDirectoryCoreAsync(directoryPath, strategy);
+    }
+
+    private void CommonInsertRangeIntoCurrentPlaylist(IEnumerable<FileDisplayingInfo> infos)
+    {
+        bool canContinue = true;
+        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
+        foreach (var info in infos)
+        {
+            if (!canContinue)
+                break;
+
+            newListPlaylistSelectedIndex++;
+            canContinue = InsertIntoCurrentPlaylistCore(newListPlaylistSelectedIndex, info);
+        }
+
+        Playlist.Clear();
+        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
     private void CommonMoveListPlaylistSelection(int offset)
@@ -344,6 +304,27 @@ public partial class MainWindowViewModel : ObservableObject
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
+    private void DirectoryNotExistsCallback()
+    {
+        RefreshDrives();
+
+        Growl.InfoGlobal(Labels.TargetDirectoryDoesNotExist);
+    }
+
+    private async Task<PriorityQueue<string, int>> GetMaxPriorityQueueFromPathEntryFrequenciesAsync()
+    {
+        var settings = await _settings;
+
+        var priorityQueue = new PriorityQueue<string, int>(Comparer<int>.Create((a, b) => b - a));
+        foreach (KeyValuePair<string, int> pathFrequencyPair in settings.EntryFrequencyByPath)
+        {
+            if (await pathFrequencyPair.Key.DirectoryExistsAsync())
+                priorityQueue.Enqueue(pathFrequencyPair.Key, pathFrequencyPair.Value);
+        }
+
+        return priorityQueue;
+    }
+
     private bool InsertIntoCurrentPlaylistCore(int index, FileDisplayingInfo info)
     {
         if (_historicalPlaylists[_currentPlaylistIndex].Count == PlaylistFilesMaxCount)
@@ -354,24 +335,6 @@ public partial class MainWindowViewModel : ObservableObject
 
         _historicalPlaylists[_currentPlaylistIndex].Insert(index, info);
         return true;
-    }
-
-    private void CommonInsertRangeIntoCurrentPlaylist(IEnumerable<FileDisplayingInfo> infos)
-    {
-        bool canContinue = true;
-        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
-        foreach (var info in infos)
-        {
-            if (!canContinue)
-                break;
-
-            newListPlaylistSelectedIndex++;
-            canContinue = InsertIntoCurrentPlaylistCore(newListPlaylistSelectedIndex, info);
-        }
-
-        Playlist.Clear();
-        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
-        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
     private async Task RemoveRedundantPairsInPathEntryFrequenciesAsync()
@@ -393,17 +356,6 @@ public partial class MainWindowViewModel : ObservableObject
         settings.EntryFrequencyByPath.AddRange(newEntryFrequencyByPath);
     }
 
-    private async Task SetNewHistoricalPlaylistsForSettingsAsync()
-    {
-        int latestPlaylistIndex = _historicalPlaylists.Count - 1;
-        if (_historicalPlaylists[latestPlaylistIndex].Count == 0)
-            _historicalPlaylists.RemoveAt(latestPlaylistIndex);
-
-        var settings = await _settings;
-        settings.HistoricalPlaylists.Clear();
-        settings.HistoricalPlaylists.AddRange(_historicalPlaylists);
-    }
-
     private async Task SaveSettingsAsync()
     {
         if (!_settings.IsStarted)
@@ -421,7 +373,7 @@ public partial class MainWindowViewModel : ObservableObject
             (
                 createStream, value: await _settings,
                 options: new JsonSerializerOptions
-                    { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+                { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
             );
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
@@ -430,17 +382,61 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    #endregion
+    private async Task SetNewHistoricalPlaylistsForSettingsAsync()
+    {
+        int latestPlaylistIndex = _historicalPlaylists.Count - 1;
+        if (_historicalPlaylists[latestPlaylistIndex].Count == 0)
+            _historicalPlaylists.RemoveAt(latestPlaylistIndex);
+
+        var settings = await _settings;
+        settings.HistoricalPlaylists.Clear();
+        settings.HistoricalPlaylists.AddRange(_historicalPlaylists);
+    }
+
+    private async Task UpdateFrequentDirectoriesAsync()
+    {
+        string? currentDirectory = EnterPath.Instance.Path;
+
+        if (currentDirectory is { })
+        {
+            var settings = await _settings;
+            settings.EntryFrequencyByPath[currentDirectory] =
+                (settings.EntryFrequencyByPath.TryGetValue
+                    (currentDirectory, value: out int frequency)
+                    ? frequency
+                    : 0) + 1;
+        }
+
+        PriorityQueue<string, int> priorityQueue = await GetMaxPriorityQueueFromPathEntryFrequenciesAsync();
+
+        _frequentlyEnteredDirectories.Clear();
+        while (priorityQueue.Count > 0 &&
+               _frequentlyEnteredDirectories.Count < FrequentlyEnteredDirectoriesMaxCount)
+        {
+            string directoryPath = priorityQueue.Dequeue();
+            var directoryInfo = new DirectoryInfo(directoryPath);
+            _frequentlyEnteredDirectories.Add
+            (
+                new FrequentDirectoryDisplayingInfo
+                (
+                    directoryInfo.Name, directoryPath, isPinned: false
+                )
+            );
+        }
+
+        FrequentDirectories.Clear();
+        FrequentDirectories.AddRange(_pinnedDirectories);
+        FrequentDirectories.AddRange(_frequentlyEnteredDirectories);
+    }
+
+    #endregion Private methods
 
     #region Private fields
-
-    private int _currentPlaylistIndex;
 
     private readonly List<FrequentDirectoryDisplayingInfo> _frequentlyEnteredDirectories =
         new(FrequentlyEnteredDirectoriesMaxCount);
 
     private readonly List<List<FileDisplayingInfo>> _historicalPlaylists = new();
-
     private readonly List<FrequentDirectoryDisplayingInfo> _pinnedDirectories = new(PinnedDirectoriesMaxCount);
 
     private readonly AsyncLazy<SettingsModel> _settings = new
@@ -457,7 +453,7 @@ public partial class MainWindowViewModel : ObservableObject
                     (openStream, options: new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 return settingsModel ?? new SettingsModel();
             }
-            catch (Exception ex)when (ex is UnauthorizedAccessException or IOException)
+            catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
             {
                 ExceptionDisplayingHelper.Display(ex);
                 return new SettingsModel();
@@ -465,5 +461,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
     );
 
-    #endregion
+    private int _currentPlaylistIndex;
+
+    #endregion Private fields
 }

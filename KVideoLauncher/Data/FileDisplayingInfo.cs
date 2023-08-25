@@ -4,9 +4,9 @@ namespace KVideoLauncher.Data;
 
 public class FileDisplayingInfo
 {
+    public FileDisplayingType DisplayingType { get; }
     public string DisplayName { get; }
     public string File { get; }
-    public FileDisplayingType DisplayingType { get; }
 
     public FileDisplayingInfo(string displayName, string file, FileDisplayingType displayingType)
     {

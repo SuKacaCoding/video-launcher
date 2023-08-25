@@ -7,7 +7,6 @@ namespace KVideoLauncher.Tools.EnterPathStrategies;
 public class EnterDirectoryStrategy : IEnterPathStrategy
 {
     public static EnterDirectoryStrategy Instance => LazyInstance.Value;
-    private static readonly Lazy<EnterDirectoryStrategy> LazyInstance = new();
 
     /// <exception cref="ArgumentException"></exception>
     public Task<string> Enter(EnterPath enterPath, IDictionary<string, string> lastEnteredPathByDrive)
@@ -20,4 +19,6 @@ public class EnterDirectoryStrategy : IEnterPathStrategy
 
         return Task.FromResult(normalizedPath);
     }
+
+    private static readonly Lazy<EnterDirectoryStrategy> LazyInstance = new();
 }

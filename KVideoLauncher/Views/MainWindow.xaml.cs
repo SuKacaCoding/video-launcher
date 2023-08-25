@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.Input;
+using HandyControl.Tools;
+using KVideoLauncher.Extensions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using HandyControl.Tools;
-using KVideoLauncher.Extensions;
 using Window = HandyControl.Controls.Window;
 
 namespace KVideoLauncher.Views;
@@ -32,11 +32,6 @@ public partial class MainWindow : Window
             FocusOnListBox(FocusedListBox);
         }
     }
-
-    private const int ListBoxWideMoveOffset = 5;
-
-    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
-    private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
 
     public MainWindow()
     {
@@ -113,10 +108,23 @@ public partial class MainWindow : Window
         FocusedListBoxIndex = 0;
     }
 
-    private void ListBoxMouseDown(object sender, RoutedEventArgs e)
+    private static void FocusOnListBoxSelection(ListBox listBox)
     {
-        if (e.Source is ListBox listBox)
-            FocusedListBox = listBox;
+        (listBox.ItemContainerGenerator.ContainerFromIndex(listBox.SelectedIndex) as FrameworkElement)?.Focus();
+    }
+
+    private void CommonMoveFocusedListBoxSelection(int offset)
+    {
+        int itemsCount = FocusedListBox.Items.Count;
+        if (itemsCount == 0)
+            return;
+
+        int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
+
+        targetSelectedIndex = targetSelectedIndex.MathMod(itemsCount);
+
+        FocusedListBox.SelectedIndex = targetSelectedIndex;
+        FocusOnListBoxSelection(FocusedListBox);
     }
 
     private int FocusOnListBox(ListBox listBox)
@@ -139,6 +147,17 @@ public partial class MainWindow : Window
         return indexOfListBox;
     }
 
+    private void ListBoxMouseDown(object sender, RoutedEventArgs e)
+    {
+        if (e.Source is ListBox listBox)
+            FocusedListBox = listBox;
+    }
+
+    private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
+    {
+        e.Cancel = true;
+    }
+
     [RelayCommand]
     private void MoveListBoxFocusLeft()
     {
@@ -149,18 +168,6 @@ public partial class MainWindow : Window
     private void MoveListBoxFocusRight()
     {
         FocusedListBoxIndex++;
-    }
-
-    [RelayCommand]
-    private void WideMoveFocusedListBoxSelectionDown()
-    {
-        CommonMoveFocusedListBoxSelection(ListBoxWideMoveOffset);
-    }
-
-    [RelayCommand]
-    private void WideMoveFocusedListBoxSelectionUp()
-    {
-        CommonMoveFocusedListBoxSelection(-ListBoxWideMoveOffset);
     }
 
     [RelayCommand]
@@ -175,30 +182,22 @@ public partial class MainWindow : Window
         CommonMoveFocusedListBoxSelection(-1);
     }
 
-    private void CommonMoveFocusedListBoxSelection(int offset)
+    [RelayCommand]
+    private void WideMoveFocusedListBoxSelectionDown()
     {
-        int itemsCount = FocusedListBox.Items.Count;
-        if (itemsCount == 0)
-            return;
-
-        int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
-
-        targetSelectedIndex = targetSelectedIndex.MathMod(itemsCount);
-
-        FocusedListBox.SelectedIndex = targetSelectedIndex;
-        FocusOnListBoxSelection(FocusedListBox);
+        CommonMoveFocusedListBoxSelection(ListBoxWideMoveOffset);
     }
 
-    private static void FocusOnListBoxSelection(ListBox listBox)
+    [RelayCommand]
+    private void WideMoveFocusedListBoxSelectionUp()
     {
-        (listBox.ItemContainerGenerator.ContainerFromIndex(listBox.SelectedIndex) as FrameworkElement)?.Focus();
+        CommonMoveFocusedListBoxSelection(-ListBoxWideMoveOffset);
     }
 
-    private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
-    {
-        e.Cancel = true;
-    }
+    private const int ListBoxWideMoveOffset = 5;
 
+    private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
+    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
     private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;
     private readonly ReadOnlyDictionary<ListBox, ColumnDefinition> _widthAdjustableColumnByListBox;
 

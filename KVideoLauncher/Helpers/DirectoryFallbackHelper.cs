@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using KVideoLauncher.Extensions;
+using System.IO;
 using System.Threading.Tasks;
-using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
