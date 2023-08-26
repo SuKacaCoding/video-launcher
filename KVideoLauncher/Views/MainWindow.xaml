@@ -1,11 +1,11 @@
 ﻿<hc:Window x:Class="KVideoLauncher.Views.MainWindow"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:converters="clr-namespace:KVideoLauncher.Tools.Converters"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:v="clr-namespace:KVideoLauncher.Views"
            xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
            Title="KVideoLauncher"
            d:DesignHeight="720"
@@ -40,8 +40,8 @@
         <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <converters:FileDisplayingTypeToIconFontStringConverter x:Key="FileDisplayType2IconFont" />
-        <converters:FrequentDirectoryDisplayingInfoIsPinnedToIconFontStringConverter x:Key="IsPinned2IconFont" />
+        <v:FileDisplayingTypeToIconFontStringConverter x:Key="FileDisplayType2IconFont" />
+        <v:FrequentDirectoryDisplayingInfoIsPinnedToIconFontStringConverter x:Key="IsPinned2IconFont" />
     </Window.Resources>
 
     <hc:Interaction.Triggers>

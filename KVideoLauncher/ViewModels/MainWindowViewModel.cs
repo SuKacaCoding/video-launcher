@@ -7,7 +7,6 @@ using KVideoLauncher.Extensions;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Models;
 using KVideoLauncher.Properties.Lang;
-using KVideoLauncher.Tools.EnterPathStrategies;
 using Nito.AsyncEx;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +17,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using KVideoLauncher.Tools.Strategies.EnterPath;
 
 namespace KVideoLauncher.ViewModels;
 

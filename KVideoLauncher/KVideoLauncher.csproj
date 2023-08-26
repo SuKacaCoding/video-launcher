@@ -47,6 +47,11 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <Folder Include="Tools\Strategies\" />
+    </ItemGroup>
+
+
     <!--    <ItemGroup>-->
     <!--      <Page Include="Properties\DesignTimeResources.xaml"-->
     <!--            Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">-->

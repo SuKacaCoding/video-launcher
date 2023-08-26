@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace KVideoLauncher.Tools.EnterPathStrategies;
+namespace KVideoLauncher.Tools.Strategies.EnterPath;
 
 public class DirectlyEnterDirectoryStrategy : IEnterPathStrategy
 {

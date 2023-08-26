@@ -1,8 +1,8 @@
-﻿using KVideoLauncher.Data.Enums;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
+using KVideoLauncher.Data.Enums;
 
-namespace KVideoLauncher.Tools.Converters;
+namespace KVideoLauncher.Views;
 
 public class FileDisplayingTypeToIconFontStringConverter : IValueConverter
 {
