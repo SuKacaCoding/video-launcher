@@ -108,7 +108,7 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task InitializeData()
+    private async Task InitializeDataAsync()
     {
         var settings = await _settings;
 
