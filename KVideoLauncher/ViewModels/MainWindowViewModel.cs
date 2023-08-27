@@ -7,6 +7,7 @@ using KVideoLauncher.Extensions;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Models;
 using KVideoLauncher.Properties.Lang;
+using KVideoLauncher.Tools.Strategies.EnterPath;
 using Nito.AsyncEx;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,16 +18,21 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using KVideoLauncher.Tools.Strategies.EnterPath;
 
 namespace KVideoLauncher.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
+    #region CanExecutes
+
+    private bool CanSwitchToNextPlaylist => CurrentPlaylistIndex < _historicalPlaylists.Count - 1;
+    private bool CanSwitchToPreviousPlaylist => CurrentPlaylistIndex >= 1;
+
+    #endregion CanExecutes
+
     #region Binding properties
 
     [ObservableProperty] private int _listDirectorySelectedIndex;
-
     [ObservableProperty] private int _listFilesSelectedIndex;
     [ObservableProperty] private int _listPlaylistSelectedIndex = -1;
 
@@ -80,7 +86,7 @@ public partial class MainWindowViewModel : ObservableObject
     private void ClearCurrentPlaylist()
     {
         Playlist.Clear();
-        _historicalPlaylists[_currentPlaylistIndex].Clear();
+        _historicalPlaylists[CurrentPlaylistIndex].Clear();
     }
 
     [RelayCommand]
@@ -126,7 +132,7 @@ public partial class MainWindowViewModel : ObservableObject
         foreach (IEnumerable<FileDisplayingInfo> playlist in settings.HistoricalPlaylists)
             _historicalPlaylists.Add(playlist.ToList());
         _historicalPlaylists.Add(new List<FileDisplayingInfo>());
-        _currentPlaylistIndex = _historicalPlaylists.Count - 1;
+        CurrentPlaylistIndex = _historicalPlaylists.Count - 1;
     }
 
     [RelayCommand]
@@ -143,8 +149,7 @@ public partial class MainWindowViewModel : ObservableObject
 
         int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex + 1;
         InsertIntoCurrentPlaylistCore(newListPlaylistSelectedIndex, info);
-        Playlist.Clear();
-        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        UpdateCurrentPlaylist();
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
 
         ListFilesSelectedIndex = (ListFilesSelectedIndex + 1).MathMod(Files.Count);
@@ -192,12 +197,40 @@ public partial class MainWindowViewModel : ObservableObject
             return;
 
         int currentListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
-        _historicalPlaylists[_currentPlaylistIndex].RemoveAt(currentListPlaylistSelectedIndex);
-        Playlist.Clear();
-        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        _historicalPlaylists[CurrentPlaylistIndex].RemoveAt(currentListPlaylistSelectedIndex);
+        UpdateCurrentPlaylist();
         ListPlaylistSelectedIndex = currentListPlaylistSelectedIndex >= Playlist.Count
             ? -1
             : currentListPlaylistSelectedIndex;
+    }
+
+    [RelayCommand]
+    private void SwitchToLatestPlaylist()
+    {
+        RemoveCurrentPlaylistIfNecessary();
+
+        CurrentPlaylistIndex = _historicalPlaylists.Count - 1;
+        UpdateCurrentPlaylist();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSwitchToNextPlaylist))]
+    private void SwitchToNextPlaylist()
+    {
+        bool removed = RemoveCurrentPlaylistIfNecessary();
+        if (removed)
+            SwitchToNextPlaylistCommand.NotifyCanExecuteChanged();
+        else
+            CurrentPlaylistIndex++;
+        UpdateCurrentPlaylist();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSwitchToPreviousPlaylist))]
+    private void SwitchToPreviousPlaylist()
+    {
+        RemoveCurrentPlaylistIfNecessary();
+
+        CurrentPlaylistIndex--;
+        UpdateCurrentPlaylist();
     }
 
     #endregion RelayCommanmds
@@ -282,8 +315,7 @@ public partial class MainWindowViewModel : ObservableObject
             canContinue = InsertIntoCurrentPlaylistCore(newListPlaylistSelectedIndex, info);
         }
 
-        Playlist.Clear();
-        Playlist.AddRange(_historicalPlaylists[_currentPlaylistIndex]);
+        UpdateCurrentPlaylist();
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
@@ -295,12 +327,11 @@ public partial class MainWindowViewModel : ObservableObject
             newListPlaylistSelectedIndex >= Playlist.Count)
             return;
 
-        List<FileDisplayingInfo> currentPlaylist = _historicalPlaylists[_currentPlaylistIndex];
+        List<FileDisplayingInfo> currentPlaylist = _historicalPlaylists[CurrentPlaylistIndex];
         (currentPlaylist[ListPlaylistSelectedIndex], currentPlaylist[newListPlaylistSelectedIndex]) =
             (currentPlaylist[newListPlaylistSelectedIndex], currentPlaylist[ListPlaylistSelectedIndex]);
 
-        Playlist.Clear();
-        Playlist.AddRange(currentPlaylist);
+        UpdateCurrentPlaylist();
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
@@ -327,13 +358,21 @@ public partial class MainWindowViewModel : ObservableObject
 
     private bool InsertIntoCurrentPlaylistCore(int index, FileDisplayingInfo info)
     {
-        if (_historicalPlaylists[_currentPlaylistIndex].Count == PlaylistFilesMaxCount)
+        if (_historicalPlaylists[CurrentPlaylistIndex].Count == PlaylistFilesMaxCount)
         {
             Growl.InfoGlobal(Labels.PlaylistFilesCountHasReachedLimit);
             return false;
         }
 
-        _historicalPlaylists[_currentPlaylistIndex].Insert(index, info);
+        _historicalPlaylists[CurrentPlaylistIndex].Insert(index, info);
+        return true;
+    }
+
+    private bool RemoveCurrentPlaylistIfNecessary()
+    {
+        if (CurrentPlaylistIndex == _historicalPlaylists.Count - 1 || Playlist.Count != 0)
+            return false;
+        _historicalPlaylists.RemoveAt(CurrentPlaylistIndex);
         return true;
     }
 
@@ -391,6 +430,12 @@ public partial class MainWindowViewModel : ObservableObject
         var settings = await _settings;
         settings.HistoricalPlaylists.Clear();
         settings.HistoricalPlaylists.AddRange(_historicalPlaylists);
+    }
+
+    private void UpdateCurrentPlaylist()
+    {
+        Playlist.Clear();
+        Playlist.AddRange(_historicalPlaylists[CurrentPlaylistIndex]);
     }
 
     private async Task UpdateFrequentDirectoriesAsync()
@@ -461,6 +506,9 @@ public partial class MainWindowViewModel : ObservableObject
         }
     );
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SwitchToPreviousPlaylistCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SwitchToNextPlaylistCommand))]
     private int _currentPlaylistIndex;
 
     #endregion Private fields
