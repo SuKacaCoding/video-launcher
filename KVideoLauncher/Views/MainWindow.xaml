@@ -22,13 +22,11 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <Window.InputBindings>
-        <KeyBinding Command="{Binding RefreshDrivesCommand}" Gesture="CTRL+R" />
-        <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+SHIFT+R" />
         <KeyBinding Command="{Binding GoBackToRootDirectoryCommand}" Gesture="CTRL+ALT+R" />
         <KeyBinding Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+A" />
         <KeyBinding Command="{Binding ClearCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+M" />
-        <KeyBinding Command="{Binding SwitchToPreviousPlaylistCommand}" Gesture="ALT+LEFT" />
-        <KeyBinding Command="{Binding SwitchToNextPlaylistCommand}" Gesture="ALT+RIGHT" />
+        <KeyBinding Command="{Binding SwitchToPreviousPlaylistCommand}" Gesture="ALT+OemSemicolon" />
+        <KeyBinding Command="{Binding SwitchToNextPlaylistCommand}" Gesture="ALT+OemQuotes" />
         <KeyBinding Command="{Binding SwitchToLatestPlaylistCommand}" Gesture="ALT+ENTER" />
     </Window.InputBindings>
     <Window.Resources>
@@ -101,6 +99,9 @@
                      Grid.Row="0"
                      ItemsSource="{Binding Drives}"
                      SelectedValuePath="Name">
+                <ListBox.InputBindings>
+                    <KeyBinding Command="{Binding RefreshDrivesCommand}" Gesture="CTRL+R" />
+                </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Margin="5"
@@ -179,6 +180,7 @@
                  ItemsSource="{Binding Directories}"
                  SelectedIndex="{Binding ListDirectorySelectedIndex}">
             <ListBox.InputBindings>
+                <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+R" />
                 <KeyBinding Command="{Binding ChangeDirectoryCommand}"
                             CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}"
                             Gesture="CTRL+ENTER" />
@@ -244,6 +246,7 @@
                  ItemsSource="{Binding Files}"
                  SelectedIndex="{Binding ListFilesSelectedIndex}">
             <ListBox.InputBindings>
+                <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+R" />
                 <KeyBinding Command="{Binding InsertIntoCurrentPlaylistCommand}"
                             CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
                             Gesture="CTRL+L" />
@@ -311,6 +314,7 @@
                      ItemsSource="{Binding Playlist}"
                      SelectedIndex="{Binding ListPlaylistSelectedIndex}">
                 <ListBox.InputBindings>
+                    <KeyBinding Command="{Binding RefreshCurrentPlaylistCommand}" Gesture="CTRL+R" />
                     <KeyBinding Command="{Binding RemovePlaylistSelectedFileCommand}" Gesture="CTRL+M" />
                     <KeyBinding Command="{Binding GoToParentDirectoryCommand}" Gesture="CTRL+F" />
                     <KeyBinding Command="{Binding MoveListPlaylistSelectionUpCommand}" Gesture="ALT+UP" />
