@@ -184,14 +184,20 @@ public partial class MainWindowViewModel : ObservableObject
     {
         List<FileDisplayingInfo> currentPlaylist = _historicalPlaylists[CurrentPlaylistIndex];
         currentPlaylist.Clear();
-        foreach (var fileDisplayingInfo in Playlist)
+
+        int newListPlaylistSelectedIndex = ListPlaylistSelectedIndex;
+        for (int i = 0; i < Playlist.Count; i++)
         {
+            var fileDisplayingInfo = Playlist[i];
             var newFileDisplayingInfo = await fileDisplayingInfo.Refresh((await _settings).SubtitleFileExtensions);
             if (newFileDisplayingInfo is { })
                 currentPlaylist.Add(newFileDisplayingInfo);
+            else if (i == newListPlaylistSelectedIndex)
+                newListPlaylistSelectedIndex = -1;
         }
 
         UpdateCurrentPlaylist();
+        ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
     [RelayCommand]
