@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools;
 using KVideoLauncher.Extensions;
+using KVideoLauncher.Helpers;
+using KVideoLauncher.Properties;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -37,7 +40,24 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        #region Restore the position of the window
+
+        try
+        {
+            var bounds = Rect.Parse(Settings.Default.WindowPosition);
+            Top = bounds.Top;
+            Left = bounds.Left;
+        }
+        catch (Exception ex)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
+
+        #endregion Restore the position of the window
+
         this.Apply(BackdropType.Acrylic);
+
+        #region Initialize fields
 
         _widthAdjustableColumnByListBox = new Dictionary<ListBox, ColumnDefinition>
         {
@@ -55,7 +75,10 @@ public partial class MainWindow : Window
             ListPlaylist
         }.AsReadOnly();
 
-        // Initialize Commands.
+        #endregion Initialize fields
+
+        #region Initialize commands
+
         InputBindings.Add
         (
             new KeyBinding
@@ -104,6 +127,8 @@ public partial class MainWindow : Window
                 Command = PreciselyMoveFocusedListBoxSelectionUpCommand
             }
         );
+
+        #endregion Initialize commands
 
         FocusedListBoxIndex = 0;
     }
@@ -155,6 +180,9 @@ public partial class MainWindow : Window
 
     private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
     {
+        Settings.Default.WindowPosition = RestoreBounds.ToString(CultureInfo.InvariantCulture);
+        Settings.Default.Save();
+
         e.Cancel = true;
     }
 

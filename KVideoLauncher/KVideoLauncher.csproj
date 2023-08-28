@@ -13,17 +13,17 @@
 
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
-        <PackageReference Include="HandyControls" Version="3.4.5"/>
-        <PackageReference Include="Nito.AsyncEx" Version="5.1.2"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+        <PackageReference Include="HandyControls" Version="3.4.5" />
+        <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
     </ItemGroup>
 
 
     <ItemGroup>
-        <None Remove="Properties\icon.ico"/>
-        <None Remove="Properties\IconFont\iconfont.ttf"/>
-        <Resource Include="Properties\icon.ico"/>
-        <Resource Include="Properties\IconFont\iconfont.ttf"/>
+        <None Remove="Properties\icon.ico" />
+        <None Remove="Properties\IconFont\iconfont.ttf" />
+        <Resource Include="Properties\icon.ico" />
+        <Resource Include="Properties\IconFont\iconfont.ttf" />
     </ItemGroup>
 
 
@@ -32,6 +32,11 @@
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Labels.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Settings.Designer.cs">
+          <DesignTimeSharedInput>True</DesignTimeSharedInput>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
     </ItemGroup>
 
@@ -49,6 +54,14 @@
 
     <ItemGroup>
       <Folder Include="Tools\Strategies\" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Update="Properties\Settings.settings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
 
