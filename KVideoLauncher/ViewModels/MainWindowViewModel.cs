@@ -180,6 +180,21 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task RefreshCurrentPlaylistAsync()
+    {
+        List<FileDisplayingInfo> currentPlaylist = _historicalPlaylists[CurrentPlaylistIndex];
+        currentPlaylist.Clear();
+        foreach (var fileDisplayingInfo in Playlist)
+        {
+            var newFileDisplayingInfo = await fileDisplayingInfo.Refresh((await _settings).SubtitleFileExtensions);
+            if (newFileDisplayingInfo is { })
+                currentPlaylist.Add(newFileDisplayingInfo);
+        }
+
+        UpdateCurrentPlaylist();
+    }
+
+    [RelayCommand]
     private Task RefreshDirectoryAsync() => CommonChangeDirectoryAsync
         (EnterPath.Instance.Path, DirectlyEnterDirectoryStrategy.Instance);
 

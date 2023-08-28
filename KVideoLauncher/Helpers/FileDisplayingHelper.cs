@@ -1,10 +1,9 @@
-﻿using KVideoLauncher.Data;
-using KVideoLauncher.Data.Enums;
-using KVideoLauncher.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using KVideoLauncher.Data;
+using KVideoLauncher.Data.Enums;
+using KVideoLauncher.Extensions;
 
 namespace KVideoLauncher.Helpers;
 
@@ -19,41 +18,23 @@ public static class FileDisplayingHelper
     )
     {
         if (!await directoryPath.DirectoryExistsAsync())
+        {
             throw new ArgumentException
                 (message: "must be an existing directory path.", paramName: nameof(directoryPath));
+        }
 
         var directoryInfo = new DirectoryInfo(directoryPath);
-        IEnumerable<FileInfo> files = await Task.Run
-        (
-            () =>
-            {
-                IEnumerable<FileInfo> commonFiles = directoryInfo.EnumerateFiles().Where(info => info.IsCommon());
-                return commonFiles as FileInfo[] ?? commonFiles.ToArray();
-            }
-        );
+        FileInfo[] files = await FileHelper.GetCommonFilesAsync(directoryInfo);
 
-        IEnumerable<FileInfo> videos = files.Where
-        (
-            info => videoFileExtensions.Any
-                (extension => string.Equals(extension, info.Extension, StringComparison.OrdinalIgnoreCase))
-        );
-        IEnumerable<FileInfo> subtitles = files.Where
-        (
-            info => subtitleFileExtensions.Any
-                (extension => string.Equals(extension, info.Extension, StringComparison.OrdinalIgnoreCase))
-        );
+        IEnumerable<FileInfo> videos = files.GetVideoFiles(videoFileExtensions);
+        IEnumerable<FileInfo> subtitles = files.GetSubtitleFiles(subtitleFileExtensions);
         subtitles = subtitles as FileInfo[] ?? subtitles.ToArray();
 
         foreach (var video in videos)
         {
-            if (subtitles.Any
-                (
-                    subtitle => subtitle.Name.StartsWith
-                        (value: Path.GetFileNameWithoutExtension(video.Name), StringComparison.OrdinalIgnoreCase)
-                ))
-                yield return new FileDisplayingInfo(video.Name, video.FullName, FileDisplayingType.VideoWithSubtitle);
-            else
-                yield return new FileDisplayingInfo(video.Name, video.FullName, FileDisplayingType.Video);
+            yield return video.HasExternalSubtitle(subtitles)
+                ? new FileDisplayingInfo(video.Name, video.FullName, FileDisplayingType.VideoWithSubtitle)
+                : new FileDisplayingInfo(video.Name, video.FullName, FileDisplayingType.Video);
         }
     }
 }

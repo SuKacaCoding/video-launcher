@@ -287,7 +287,9 @@
                         Command="{Binding ClearCurrentPlaylistCommand}"
                         Content="&#xe680;"
                         ContentTemplate="{StaticResource IconFontButtonTemplate}" />
-                <Button Content="&#xeafd;" ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+                <Button Command="{Binding RefreshCurrentPlaylistCommand}"
+                        Content="&#xeafd;"
+                        ContentTemplate="{StaticResource IconFontButtonTemplate}" />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="6">
