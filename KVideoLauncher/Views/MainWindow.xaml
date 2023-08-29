@@ -15,6 +15,7 @@
            Icon="/Properties/icon.ico"
            NonClientAreaBackground="Transparent"
            PreviewMouseDown="ListBoxMouseDown"
+           Visibility="{Binding WindowVisibility, Mode=TwoWay}"
            WindowStartupLocation="CenterScreen"
            WindowState="Maximized"
            mc:Ignorable="d">

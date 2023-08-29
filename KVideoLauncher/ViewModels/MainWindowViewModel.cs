@@ -36,6 +36,7 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private int _listDirectorySelectedIndex = -1;
     [ObservableProperty] private int _listFilesSelectedIndex = -1;
     [ObservableProperty] private int _listPlaylistSelectedIndex = -1;
+    [ObservableProperty] private Visibility _windowVisibility = Visibility.Visible;
 
     #endregion Binding properties
 
@@ -199,6 +200,8 @@ public partial class MainWindowViewModel : ObservableObject
 
         try
         {
+            WindowVisibility = Visibility.Hidden;
+
             await VideoPlayerHelper.LaunchAndWaitAsync
                 (settings.PlayCommand, filePaths: fileDisplayingInfos.Select(info => info.File));
 
@@ -215,9 +218,13 @@ public partial class MainWindowViewModel : ObservableObject
                 CreatePlaylist();
                 Playlist.Clear();
             }
+
+            WindowVisibility = Visibility.Visible;
         }
         catch (Win32Exception)
         {
+            WindowVisibility = Visibility.Visible;
+
             Growl.InfoGlobal(Labels.MakeSurePlayCommandIsCorrect);
         }
     }
