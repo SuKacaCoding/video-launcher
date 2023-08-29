@@ -29,11 +29,13 @@ public class SettingsModel
     public IEnumerable<DirectoryDisplayingInfo> PinnedDirectories { get; init; } =
         Enumerable.Empty<DirectoryDisplayingInfo>();
 
+    public string? PlayCommand { get; init; }
+
     public IEnumerable<string> SubtitleFileExtensions { get; init; } =
-new[] { ".SRT", ".SUB", ".IDX", ".ASS" }.AsReadOnly();
+        new[] { ".SRT", ".SUB", ".IDX", ".ASS" }.AsReadOnly();
 
     public IEnumerable<string> VideoFileExtensions { get; init; } =
-            new[] { ".AVI", ".FLV", ".MKV", ".MOV", ".MP4", ".RM", ".RMVB", ".TS", ".PS", ".WMV" }.AsReadOnly();
+        new[] { ".AVI", ".FLV", ".MKV", ".MOV", ".MP4", ".RM", ".RMVB", ".TS", ".PS", ".WMV" }.AsReadOnly();
 
     #endregion Setting properties for users to customize
 }

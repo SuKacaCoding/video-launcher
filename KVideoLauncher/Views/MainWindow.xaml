@@ -28,6 +28,7 @@
         <KeyBinding Command="{Binding SwitchToPreviousPlaylistCommand}" Gesture="ALT+OemSemicolon" />
         <KeyBinding Command="{Binding SwitchToNextPlaylistCommand}" Gesture="ALT+OemQuotes" />
         <KeyBinding Command="{Binding SwitchToLatestPlaylistCommand}" Gesture="ALT+ENTER" />
+        <KeyBinding Command="{Binding PlayCommand}" Gesture="CTRL+S" />
     </Window.InputBindings>
     <Window.Resources>
         <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
@@ -403,7 +404,7 @@
                         <TextBlock Text="{x:Static l:Labels.PlayButDoNotClose}" />
                     </StackPanel>
                 </Button>
-                <Button Style="{StaticResource ButtonPrimary}">
+                <Button Command="{Binding PlayCommand}" Style="{StaticResource ButtonPrimary}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="{StaticResource IconFontMargin}"
                                    Style="{StaticResource ButtonIconFontTextBlockStyle}"

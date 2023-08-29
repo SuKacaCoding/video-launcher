@@ -164,4 +164,10 @@
   <data name="InsertSelectedFileAndBelowIntoCurrentPlaylist" xml:space="preserve">
     <value>将选中的以及下方的文件插入当前播放列表</value>
   </data>
+  <data name="NothingToPlay" xml:space="preserve">
+    <value>没有视频需要播放。</value>
+  </data>
+  <data name="MakeSurePlayCommandIsCorrect" xml:space="preserve">
+    <value>请确保您在设置文件中所配置的播放命令是正确的。</value>
+  </data>
 </root>

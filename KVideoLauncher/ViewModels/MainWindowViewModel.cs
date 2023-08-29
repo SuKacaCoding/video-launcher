@@ -11,6 +11,7 @@ using KVideoLauncher.Tools.Strategies.EnterPath;
 using Nito.AsyncEx;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -32,8 +33,8 @@ public partial class MainWindowViewModel : ObservableObject
 
     #region Binding properties
 
-    [ObservableProperty] private int _listDirectorySelectedIndex;
-    [ObservableProperty] private int _listFilesSelectedIndex;
+    [ObservableProperty] private int _listDirectorySelectedIndex = -1;
+    [ObservableProperty] private int _listFilesSelectedIndex = -1;
     [ObservableProperty] private int _listPlaylistSelectedIndex = -1;
 
     #endregion Binding properties
@@ -55,14 +56,8 @@ public partial class MainWindowViewModel : ObservableObject
     private const int PlaylistFilesMaxCount = 72;
     private const int StoredFrequentlyEnteredDirectoriesMaxCount = 30;
 
-    private static readonly string SettingsDirectoryPath = Path.Join
-    (
-        path1: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        path2: "KVideoLauncher"
-    );
-
     private static readonly string SettingsFilePath = Path.Join
-        (SettingsDirectoryPath, path2: "Settings.json");
+        (Utils.SettingsDirectoryPath, path2: "Settings.json");
 
     #endregion Constants
 
@@ -131,8 +126,7 @@ public partial class MainWindowViewModel : ObservableObject
 
         foreach (IEnumerable<FileDisplayingInfo> playlist in settings.HistoricalPlaylists)
             _historicalPlaylists.Add(playlist.ToList());
-        _historicalPlaylists.Add(new List<FileDisplayingInfo>());
-        CurrentPlaylistIndex = _historicalPlaylists.Count - 1;
+        CreatePlaylist();
     }
 
     [RelayCommand]
@@ -177,6 +171,55 @@ public partial class MainWindowViewModel : ObservableObject
     private void MoveListPlaylistSelectionUp()
     {
         CommonMoveListPlaylistSelection(-1);
+    }
+
+    [RelayCommand]
+    private async Task PlayAsync()
+    {
+        var settings = await _settings;
+        if (settings.PlayCommand is null)
+            return;
+
+        var fileDisplayingInfos = new List<FileDisplayingInfo>();
+        bool fromPlaylist = false;
+        if (Playlist.Count > 0)
+        {
+            fileDisplayingInfos.AddRange(Playlist);
+            fromPlaylist = true;
+        }
+        else if (Files.Count == 1)
+            fileDisplayingInfos.Add(Files[0]);
+        else if (ListFilesSelectedIndex != -1)
+            fileDisplayingInfos.Add(Files[ListFilesSelectedIndex]);
+        else
+        {
+            Growl.InfoGlobal(Labels.NothingToPlay);
+            return;
+        }
+
+        try
+        {
+            await VideoPlayerHelper.LaunchAndWaitAsync
+                (settings.PlayCommand, filePaths: fileDisplayingInfos.Select(info => info.File));
+
+            if (fromPlaylist)
+            {
+                int lastIndexOfHistoricalPlaylists = _historicalPlaylists.Count - 1;
+                if (CurrentPlaylistIndex != lastIndexOfHistoricalPlaylists)
+                {
+                    _historicalPlaylists.RemoveAt(lastIndexOfHistoricalPlaylists);
+                    _historicalPlaylists.RemoveAt(CurrentPlaylistIndex);
+                    _historicalPlaylists.Add(Playlist.ToList());
+                }
+
+                CreatePlaylist();
+                Playlist.Clear();
+            }
+        }
+        catch (Win32Exception)
+        {
+            Growl.InfoGlobal(Labels.MakeSurePlayCommandIsCorrect);
+        }
     }
 
     [RelayCommand]
@@ -356,6 +399,12 @@ public partial class MainWindowViewModel : ObservableObject
         ListPlaylistSelectedIndex = newListPlaylistSelectedIndex;
     }
 
+    private void CreatePlaylist()
+    {
+        _historicalPlaylists.Add(new List<FileDisplayingInfo>());
+        CurrentPlaylistIndex = _historicalPlaylists.Count - 1;
+    }
+
     private void DirectoryNotExistsCallback()
     {
         RefreshDrives();
@@ -426,7 +475,7 @@ public partial class MainWindowViewModel : ObservableObject
 
         try
         {
-            Directory.CreateDirectory(SettingsDirectoryPath);
+            Directory.CreateDirectory(Utils.SettingsDirectoryPath);
 
             await using var createStream = File.Create(SettingsFilePath);
             await JsonSerializer.SerializeAsync
@@ -444,13 +493,9 @@ public partial class MainWindowViewModel : ObservableObject
 
     private async Task SetNewHistoricalPlaylistsForSettingsAsync()
     {
-        int latestPlaylistIndex = _historicalPlaylists.Count - 1;
-        if (_historicalPlaylists[latestPlaylistIndex].Count == 0)
-            _historicalPlaylists.RemoveAt(latestPlaylistIndex);
-
         var settings = await _settings;
         settings.HistoricalPlaylists.Clear();
-        settings.HistoricalPlaylists.AddRange(_historicalPlaylists);
+        settings.HistoricalPlaylists.AddRange(_historicalPlaylists.Take(_historicalPlaylists.Count - 1));
     }
 
     private void UpdateCurrentPlaylist()
