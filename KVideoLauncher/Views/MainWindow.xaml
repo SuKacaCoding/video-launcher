@@ -156,6 +156,7 @@
 
             <ToggleButton Grid.Row="6"
                           HorizontalAlignment="Stretch"
+                          Click="ToggleBtnNetworkClicked"
                           Content="{x:Static l:Labels.NetworkSmb}" />
         </Grid>
 
