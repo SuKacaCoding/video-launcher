@@ -394,26 +394,17 @@
                         ToolTip="{x:Static l:Labels.LatestPlaylist}" />
             </StackPanel>
 
-            <StackPanel Grid.Row="2"
-                        Grid.Column="1"
-                        Orientation="Horizontal">
-                <Button Margin="{StaticResource HorStackPanelChildrenMargin}" Style="{StaticResource ButtonDashedPrimary}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="{StaticResource IconFontMargin}"
-                                   Style="{StaticResource ButtonIconFontTextBlockStyle}"
-                                   Text="&#xea82;" />
-                        <TextBlock Text="{x:Static l:Labels.PlayButDoNotClose}" />
-                    </StackPanel>
-                </Button>
-                <Button Command="{Binding PlayCommand}" Style="{StaticResource ButtonPrimary}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="{StaticResource IconFontMargin}"
-                                   Style="{StaticResource ButtonIconFontTextBlockStyle}"
-                                   Text="&#xea82;" />
-                        <TextBlock Text="{x:Static l:Labels.Play}" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+            <Button Grid.Row="2"
+                    Grid.Column="1"
+                    Command="{Binding PlayCommand}"
+                    Style="{StaticResource ButtonPrimary}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="{StaticResource IconFontMargin}"
+                               Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                               Text="&#xea82;" />
+                    <TextBlock Text="{x:Static l:Labels.Play}" />
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </hc:Window>

@@ -141,9 +141,6 @@
   <data name="Play" xml:space="preserve">
     <value>Play</value>
   </data>
-  <data name="PlayButDoNotClose" xml:space="preserve">
-    <value>Play but don't close</value>
-  </data>
   <data name="Playlist" xml:space="preserve">
     <value>Playlist:</value>
   </data>

@@ -214,15 +214,6 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
-        ///   查找类似 Play but don&apos;t close 的本地化字符串。
-        /// </summary>
-        public static string PlayButDoNotClose {
-            get {
-                return ResourceManager.GetString("PlayButDoNotClose", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Playlist: 的本地化字符串。
         /// </summary>
         public static string Playlist {
