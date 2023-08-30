@@ -28,6 +28,6 @@
 
 ## 如何使用
 
-中文版：见 [KVideoLauncher 中文文档](https://flowus.cn/9e3c4aa3-1f7e-4f1a-adf2-82b7706c5f23)。
+中文版：见 [KVideoLauncher 中文文档](https://flowus.cn/share/9e3c4aa3-1f7e-4f1a-adf2-82b7706c5f23)。
 
 English version: See the wiki of this repository.
