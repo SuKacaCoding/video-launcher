@@ -1,6 +1,6 @@
 [Switch to English](README.md)
 
-![Logo](images\logo.svg)
+![Logo](images/logo.svg)
 
 # KVideoLauncher
 

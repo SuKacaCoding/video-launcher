@@ -1,6 +1,6 @@
 [切换到中文版](README_zh.md)
 
-![Logo](images\logo.svg)
+![Logo](images/logo.svg)
 
 # KVideoLauncher
 
