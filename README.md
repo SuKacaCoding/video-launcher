@@ -28,6 +28,6 @@ A tool to find and launch a video player to play videos which can be controlled 
 
 ## How to use
 
-English version: See the wiki of this repository.
+English version: See [Wiki](https://github.com/SuKacaCoding/video-launcher/wiki).
 
 中文版：见 [KVideoLauncher 中文文档](https://flowus.cn/share/9e3c4aa3-1f7e-4f1a-adf2-82b7706c5f23)。
