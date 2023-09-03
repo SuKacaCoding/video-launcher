@@ -1,12 +1,6 @@
-﻿using System.IO;
-
-namespace KVideoLauncher;
+﻿namespace KVideoLauncher;
 
 public static class Utils
 {
-    public static readonly string SettingsDirectoryPath = Path.Join
-    (
-        path1: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        path2: "KVideoLauncher"
-    );
+    public static readonly string SettingsDirectoryPath = AppContext.BaseDirectory;
 }

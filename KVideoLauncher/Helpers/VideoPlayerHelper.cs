@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,8 +15,16 @@ public static class VideoPlayerHelper
         foreach (string filePath in filePaths)
             stringBuilder.AppendLine(filePath);
 
-        Directory.CreateDirectory(Utils.SettingsDirectoryPath);
-        await File.WriteAllTextAsync(PlaylistFilePath, contents: stringBuilder.ToString(), Encoding.UTF8);
+        try
+        {
+            Directory.CreateDirectory(Utils.SettingsDirectoryPath);
+            await File.WriteAllTextAsync(PlaylistFilePath, contents: stringBuilder.ToString(), Encoding.UTF8);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or SecurityException)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+            return;
+        }
 
         var processStartInfo = new ProcessStartInfo
             (command.Replace(TextToReplace, newValue: $"\"{PlaylistFilePath}\""));
