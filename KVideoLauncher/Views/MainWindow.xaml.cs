@@ -46,21 +46,6 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        #region Restore the position of the window
-
-        try
-        {
-            var bounds = Rect.Parse(Settings.Default.WindowPosition);
-            Top = bounds.Top;
-            Left = bounds.Left;
-        }
-        catch (Exception ex)
-        {
-            ExceptionDisplayingHelper.Display(ex);
-        }
-
-        #endregion Restore the position of the window
-
         this.Apply(BackdropType.Acrylic);
 
         #region Initialize fields
@@ -231,6 +216,22 @@ public partial class MainWindow : Window
     private void WideMoveFocusedListBoxSelectionUp()
     {
         CommonMoveFocusedListBoxSelection(-ListBoxWideMoveOffset);
+    }
+
+    private void WindowLoaded(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var bounds = Rect.Parse(Settings.Default.WindowPosition);
+            Top = bounds.Top;
+            Left = bounds.Left;
+
+            WindowState = WindowState.Maximized;
+        }
+        catch (Exception ex)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
     }
 
     private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;

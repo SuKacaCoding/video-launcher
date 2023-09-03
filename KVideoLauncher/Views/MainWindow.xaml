@@ -13,11 +13,11 @@
            Background="{StaticResource TranslucentBackgroundBrush}"
            Closing="MainWindow_OnClosing"
            Icon="/Properties/icon.ico"
+           Loaded="WindowLoaded"
            NonClientAreaBackground="Transparent"
            PreviewMouseDown="ListBoxMouseDown"
            Visibility="{Binding WindowVisibility, Mode=TwoWay}"
-           WindowStartupLocation="CenterScreen"
-           WindowState="Maximized"
+           WindowStartupLocation="Manual"
            mc:Ignorable="d">
     <Window.DataContext>
         <vm:MainWindowViewModel />
