@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.Input;
+using HandyControl.Tools;
+using KVideoLauncher.Extensions;
+using KVideoLauncher.Helpers;
+using KVideoLauncher.Properties;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using HandyControl.Tools;
-using KVideoLauncher.Extensions;
-using KVideoLauncher.Helpers;
-using KVideoLauncher.Properties;
 using MessageBox = HandyControl.Controls.MessageBox;
 using Window = HandyControl.Controls.Window;
 
@@ -36,11 +36,6 @@ public partial class MainWindow : Window
             FocusOnListBox(FocusedListBox);
         }
     }
-
-    private const int ListBoxWideMoveOffset = 5;
-
-    private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
-    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
 
     public MainWindow()
     {
@@ -234,6 +229,10 @@ public partial class MainWindow : Window
         }
     }
 
+    private const int ListBoxWideMoveOffset = 5;
+
+    private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
+    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
     private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;
     private readonly ReadOnlyDictionary<ListBox, ColumnDefinition> _widthAdjustableColumnByListBox;
 

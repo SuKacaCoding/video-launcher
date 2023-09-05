@@ -1,14 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Security;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
@@ -19,6 +9,16 @@ using KVideoLauncher.Models;
 using KVideoLauncher.Properties.Lang;
 using KVideoLauncher.Tools.Strategies.EnterPath;
 using Nito.AsyncEx;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Security;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace KVideoLauncher.ViewModels;
 
@@ -497,7 +497,7 @@ public partial class MainWindowViewModel : ObservableObject
             (
                 createStream, value: await _settings,
                 options: new JsonSerializerOptions
-                    { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+                { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
             );
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
