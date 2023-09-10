@@ -9,7 +9,7 @@ namespace KVideoLauncher.Helpers;
 public static class VideoPlayerHelper
 {
     /// <exception cref="System.ComponentModel.Win32Exception"/>
-    public static async Task LaunchAndWaitAsync(string command, IEnumerable<string> filePaths)
+    public static async Task LaunchAndWaitAsync(IEnumerable<string> commands, IEnumerable<string> filePaths)
     {
         var stringBuilder = new StringBuilder();
         foreach (string filePath in filePaths)
@@ -26,11 +26,14 @@ public static class VideoPlayerHelper
             return;
         }
 
-        var processStartInfo = new ProcessStartInfo
-            (command.Replace(TextToReplace, newValue: $"\"{PlaylistFilePath}\""));
-        var process = Process.Start(processStartInfo);
-        if (process is { })
-            await process.WaitForExitAsync();
+        foreach (string command in commands)
+        {
+            var processStartInfo = new ProcessStartInfo
+                (command.Replace(TextToReplace, newValue: $"\"{PlaylistFilePath}\""));
+            var process = Process.Start(processStartInfo);
+            if (process is { })
+                await process.WaitForExitAsync();
+        }
     }
 
     private const string TextToReplace = "<playlist.m3u8>";

@@ -179,7 +179,7 @@ public partial class MainWindowViewModel : ObservableObject
     private async Task PlayAsync()
     {
         var settings = await _settings;
-        if (settings.PlayCommand is null)
+        if (!settings.PlayCommands.Any())
             return;
 
         var fileDisplayingInfos = new List<FileDisplayingInfo>();
@@ -204,7 +204,7 @@ public partial class MainWindowViewModel : ObservableObject
             WindowVisibility = Visibility.Hidden;
 
             await VideoPlayerHelper.LaunchAndWaitAsync
-                (settings.PlayCommand, filePaths: fileDisplayingInfos.Select(info => info.File));
+                (settings.PlayCommands, filePaths: fileDisplayingInfos.Select(info => info.File));
 
             if (fromPlaylist)
             {
@@ -215,11 +215,18 @@ public partial class MainWindowViewModel : ObservableObject
 
             WindowVisibility = Visibility.Visible;
         }
-        catch (Win32Exception)
+        catch (Win32Exception ex)
         {
             WindowVisibility = Visibility.Visible;
 
-            Growl.InfoGlobal(Labels.MakeSurePlayCommandIsCorrect);
+            ExceptionDisplayingHelper.Display
+            (
+                $"""
+                 {Labels.MakeSurePlayCommandIsCorrect}
+
+                 {ex.Message}
+                 """
+            );
         }
     }
 
@@ -497,7 +504,7 @@ public partial class MainWindowViewModel : ObservableObject
             (
                 createStream, value: await _settings,
                 options: new JsonSerializerOptions
-                { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+                    { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
             );
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)

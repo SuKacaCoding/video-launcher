@@ -8,6 +8,11 @@ public static class ExceptionDisplayingHelper
 {
     public static void Display(Exception ex)
     {
-        MessageBox.Show(ex.Message, Labels.Exception, icon: MessageBoxImage.Error);
+        Display(ex.Message);
+    }
+
+    public static void Display(string message)
+    {
+        MessageBox.Show(message, Labels.Exception, icon: MessageBoxImage.Error);
     }
 }

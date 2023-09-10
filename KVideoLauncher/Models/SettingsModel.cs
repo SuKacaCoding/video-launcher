@@ -29,7 +29,7 @@ public class SettingsModel
     public IEnumerable<DirectoryDisplayingInfo> PinnedDirectories { get; init; } =
         Enumerable.Empty<DirectoryDisplayingInfo>();
 
-    public string? PlayCommand { get; init; }
+    public IEnumerable<string> PlayCommands { get; init; } = Enumerable.Empty<string>();
 
     public IEnumerable<string> SubtitleFileExtensions { get; init; } =
         new[] { ".SRT", ".SUB", ".IDX", ".ASS" }.AsReadOnly();
