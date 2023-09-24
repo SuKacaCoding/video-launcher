@@ -203,15 +203,17 @@ public partial class MainWindowViewModel : ObservableObject
         {
             WindowVisibility = Visibility.Hidden;
 
-            await VideoPlayerHelper.LaunchAndWaitAsync
-                (settings.PlayCommands, filePaths: fileDisplayingInfos.Select(info => info.File));
-
             if (fromPlaylist)
             {
                 SaveCurrentPlaylist();
                 CreatePlaylist();
                 Playlist.Clear();
             }
+
+            await SaveSettingsAsync();
+
+            await VideoPlayerHelper.LaunchAndWaitAsync
+                (settings.PlayCommands, filePaths: fileDisplayingInfos.Select(info => info.File));
 
             WindowVisibility = Visibility.Visible;
         }
@@ -504,7 +506,7 @@ public partial class MainWindowViewModel : ObservableObject
             (
                 createStream, value: await _settings,
                 options: new JsonSerializerOptions
-                    { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
+                { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }
             );
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
