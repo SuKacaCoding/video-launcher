@@ -10,7 +10,6 @@
            Title="KVideoLauncher"
            d:DesignHeight="720"
            d:DesignWidth="1280"
-           Background="{StaticResource TranslucentBackgroundBrush}"
            Closing="MainWindow_OnClosing"
            Icon="/Properties/icon.ico"
            Loaded="WindowLoaded"
@@ -23,25 +22,38 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
     <Window.InputBindings>
-        <KeyBinding Command="{Binding GoBackToRootDirectoryCommand}" Gesture="CTRL+ALT+R" />
-        <KeyBinding Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+A" />
-        <KeyBinding Command="{Binding ClearCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+M" />
-        <KeyBinding Command="{Binding SwitchToPreviousPlaylistCommand}" Gesture="ALT+OemSemicolon" />
-        <KeyBinding Command="{Binding SwitchToNextPlaylistCommand}" Gesture="ALT+OemQuotes" />
-        <KeyBinding Command="{Binding SwitchToLatestPlaylistCommand}" Gesture="ALT+ENTER" />
-        <KeyBinding Command="{Binding PlayCommand}" Gesture="CTRL+S" />
+        <KeyBinding Command="{Binding GoBackToRootDirectoryCommand}"
+                    Gesture="CTRL+ALT+R" />
+        <KeyBinding Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}"
+                    Gesture="CTRL+SHIFT+A" />
+        <KeyBinding Command="{Binding ClearCurrentPlaylistCommand}"
+                    Gesture="CTRL+SHIFT+M" />
+        <KeyBinding Command="{Binding SwitchToPreviousPlaylistCommand}"
+                    Gesture="ALT+OemSemicolon" />
+        <KeyBinding Command="{Binding SwitchToNextPlaylistCommand}"
+                    Gesture="ALT+OemQuotes" />
+        <KeyBinding Command="{Binding SwitchToLatestPlaylistCommand}"
+                    Gesture="ALT+ENTER" />
+        <KeyBinding Command="{Binding PlayCommand}"
+                    Gesture="CTRL+S" />
     </Window.InputBindings>
     <Window.Resources>
-        <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
+        <Style BasedOn="{StaticResource {x:Type ListBox}}"
+               TargetType="ListBox">
             <Style.Triggers>
-                <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource LightPrimaryBrush}" />
+                <Trigger Property="IsKeyboardFocusWithin"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="{DynamicResource LightPrimaryBrush}" />
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Focusable" Value="True" />
+            <Setter Property="Focusable"
+                    Value="True" />
         </Style>
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+               TargetType="TextBlock">
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
         </Style>
         <v:FileDisplayingTypeToIconFontStringConverter x:Key="FileDisplayType2IconFont" />
         <v:FrequentDirectoryDisplayingInfoIsPinnedToIconFontStringConverter x:Key="IsPinned2IconFont" />
@@ -60,11 +72,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.85*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition x:Name="ColDirectories" Width="*" />
+            <ColumnDefinition x:Name="ColDirectories"
+                              Width="*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition x:Name="ColFiles" Width="*" />
+            <ColumnDefinition x:Name="ColFiles"
+                              Width="*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition x:Name="ColPlaylist" Width="*" />
+            <ColumnDefinition x:Name="ColPlaylist"
+                              Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -72,21 +87,25 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <FrameworkElement x:Name="DummyControl" Visibility="Collapsed" />
+        <FrameworkElement x:Name="DummyControl"
+                          Visibility="Collapsed" />
 
-        <Grid Grid.Row="0" Grid.Column="0">
+        <Grid Grid.Row="0"
+              Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Drives}" />
+            <TextBlock Grid.Column="0"
+                       Text="{x:Static l:Labels.Drives}" />
             <Button Grid.Column="1"
                     Command="{Binding RefreshDrivesCommand}"
                     Content="&#xeafd;"
                     ContentTemplate="{StaticResource IconFontButtonTemplate}" />
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="0">
+        <Grid Grid.Row="2"
+              Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.618*" />
                 <RowDefinition Height="5" />
@@ -102,7 +121,8 @@
                      ItemsSource="{Binding Drives}"
                      SelectedValuePath="Name">
                 <ListBox.InputBindings>
-                    <KeyBinding Command="{Binding RefreshDrivesCommand}" Gesture="CTRL+R" />
+                    <KeyBinding Command="{Binding RefreshDrivesCommand}"
+                                Gesture="CTRL+R" />
                 </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -113,12 +133,14 @@
                 </ListBox.ItemTemplate>
                 <hc:Interaction.Triggers>
                     <hc:EventTrigger EventName="SelectionChanged">
-                        <hc:InvokeCommandAction Command="{Binding ChangeDriveCommand}" CommandParameter="{Binding ElementName=ListDrives, Path=SelectedValue}" />
+                        <hc:InvokeCommandAction Command="{Binding ChangeDriveCommand}"
+                                                CommandParameter="{Binding ElementName=ListDrives, Path=SelectedValue}" />
                     </hc:EventTrigger>
                 </hc:Interaction.Triggers>
             </ListBox>
 
-            <TextBlock Grid.Row="2" Text="{x:Static l:Labels.Frequent}" />
+            <TextBlock Grid.Row="2"
+                       Text="{x:Static l:Labels.Frequent}" />
             <ListBox x:Name="ListFrequent"
                      Grid.Row="4"
                      HorizontalContentAlignment="Stretch"
@@ -137,9 +159,10 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.InputBindings>
-                                <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ChangeDirectoryCommand}"
-                                              CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}"
-                                              Gesture="LeftDoubleClick" />
+                                <MouseBinding
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ChangeDirectoryCommand}"
+                                    CommandParameter="{Binding ElementName=ListFrequent, Path=SelectedItem}"
+                                    Gesture="LeftDoubleClick" />
                             </Grid.InputBindings>
 
                             <TextBlock Grid.Column="0"
@@ -160,14 +183,17 @@
                           Content="{x:Static l:Labels.NetworkSmb}" />
         </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="2">
+        <Grid Grid.Row="0"
+              Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Directories}" />
-            <Button Grid.Column="1" Command="{Binding RefreshDirectoryCommand}">
+            <TextBlock Grid.Column="0"
+                       Text="{x:Static l:Labels.Directories}" />
+            <Button Grid.Column="1"
+                    Command="{Binding RefreshDirectoryCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="{StaticResource IconFontMargin}"
                                Style="{StaticResource ButtonIconFontTextBlockStyle}"
@@ -183,7 +209,8 @@
                  ItemsSource="{Binding Directories}"
                  SelectedIndex="{Binding ListDirectorySelectedIndex}">
             <ListBox.InputBindings>
-                <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+R" />
+                <KeyBinding Command="{Binding RefreshDirectoryCommand}"
+                            Gesture="CTRL+R" />
                 <KeyBinding Command="{Binding ChangeDirectoryCommand}"
                             CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}"
                             Gesture="CTRL+ENTER" />
@@ -193,9 +220,10 @@
                 <DataTemplate>
                     <hc:SimplePanel>
                         <hc:SimplePanel.InputBindings>
-                            <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ChangeDirectoryCommand}"
-                                          CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}"
-                                          Gesture="LeftDoubleClick" />
+                            <MouseBinding
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ChangeDirectoryCommand}"
+                                CommandParameter="{Binding ElementName=ListDirectories, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
                         </hc:SimplePanel.InputBindings>
 
                         <TextBlock Margin="5"
@@ -206,14 +234,17 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Grid Grid.Row="0" Grid.Column="4">
+        <Grid Grid.Row="0"
+              Grid.Column="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Files}" />
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Grid.Column="0"
+                       Text="{x:Static l:Labels.Files}" />
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
                 <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
                         hc:IconElement.Geometry="{StaticResource AddGeometry}"
                         Command="{Binding InsertAllFilesIntoCurrentPlaylistCommand}"
@@ -223,14 +254,16 @@
                                       Style="{StaticResource ButtonDefault}">
                     <hc:ContextMenuButton.Menu>
                         <ContextMenu>
-                            <MenuItem Command="{Binding InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndAboveIntoCurrentPlaylist}">
+                            <MenuItem Command="{Binding InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}"
+                                      Header="{x:Static l:Labels.InsertSelectedFileAndAboveIntoCurrentPlaylist}">
                                 <MenuItem.Icon>
                                     <TextBlock Foreground="#1769fb"
                                                Style="{StaticResource ButtonIconFontTextBlockStyle}"
                                                Text="&#xe64d;" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Command="{Binding InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}" Header="{x:Static l:Labels.InsertSelectedFileAndBelowIntoCurrentPlaylist}">
+                            <MenuItem Command="{Binding InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}"
+                                      Header="{x:Static l:Labels.InsertSelectedFileAndBelowIntoCurrentPlaylist}">
                                 <MenuItem.Icon>
                                     <TextBlock Foreground="#1769fb"
                                                Style="{StaticResource ButtonIconFontTextBlockStyle}"
@@ -249,12 +282,15 @@
                  ItemsSource="{Binding Files}"
                  SelectedIndex="{Binding ListFilesSelectedIndex}">
             <ListBox.InputBindings>
-                <KeyBinding Command="{Binding RefreshDirectoryCommand}" Gesture="CTRL+R" />
+                <KeyBinding Command="{Binding RefreshDirectoryCommand}"
+                            Gesture="CTRL+R" />
                 <KeyBinding Command="{Binding InsertIntoCurrentPlaylistCommand}"
                             CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
                             Gesture="CTRL+L" />
-                <KeyBinding Command="{Binding InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}" Gesture="CTRL+SHIFT+L" />
-                <KeyBinding Command="{Binding InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}" Gesture="CTRL+ALT+L" />
+                <KeyBinding Command="{Binding InsertSelectedFileAndAboveIntoCurrentPlaylistCommand}"
+                            Gesture="CTRL+SHIFT+L" />
+                <KeyBinding Command="{Binding InsertSelectedFileAndBelowIntoCurrentPlaylistCommand}"
+                            Gesture="CTRL+ALT+L" />
             </ListBox.InputBindings>
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -265,9 +301,10 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid.InputBindings>
-                            <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.InsertIntoCurrentPlaylistCommand}"
-                                          CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
-                                          Gesture="LeftDoubleClick" />
+                            <MouseBinding
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.InsertIntoCurrentPlaylistCommand}"
+                                CommandParameter="{Binding ElementName=ListFiles, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
                         </Grid.InputBindings>
 
                         <TextBlock Grid.Column="0"
@@ -281,14 +318,17 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Grid Grid.Row="0" Grid.Column="6">
+        <Grid Grid.Row="0"
+              Grid.Column="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{x:Static l:Labels.Playlist}" />
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Grid.Column="0"
+                       Text="{x:Static l:Labels.Playlist}" />
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
                 <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
                         Command="{Binding ClearCurrentPlaylistCommand}"
                         Content="&#xe680;"
@@ -298,7 +338,8 @@
                         ContentTemplate="{StaticResource IconFontButtonTemplate}" />
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="6">
+        <Grid Grid.Row="2"
+              Grid.Column="6">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5" />
@@ -317,16 +358,23 @@
                      ItemsSource="{Binding Playlist}"
                      SelectedIndex="{Binding ListPlaylistSelectedIndex}">
                 <ListBox.InputBindings>
-                    <KeyBinding Command="{Binding RefreshCurrentPlaylistCommand}" Gesture="CTRL+R" />
-                    <KeyBinding Command="{Binding RemovePlaylistSelectedFileCommand}" Gesture="CTRL+M" />
-                    <KeyBinding Command="{Binding GoToParentDirectoryCommand}" Gesture="CTRL+F" />
-                    <KeyBinding Command="{Binding MoveListPlaylistSelectionUpCommand}" Gesture="ALT+UP" />
-                    <KeyBinding Command="{Binding MoveListPlaylistSelectionDownCommand}" Gesture="ALT+DOWN" />
+                    <KeyBinding Command="{Binding RefreshCurrentPlaylistCommand}"
+                                Gesture="CTRL+R" />
+                    <KeyBinding Command="{Binding RemovePlaylistSelectedFileCommand}"
+                                Gesture="CTRL+M" />
+                    <KeyBinding Command="{Binding GoToParentDirectoryCommand}"
+                                Gesture="CTRL+F" />
+                    <KeyBinding Command="{Binding MoveListPlaylistSelectionUpCommand}"
+                                Gesture="ALT+UP" />
+                    <KeyBinding Command="{Binding MoveListPlaylistSelectionDownCommand}"
+                                Gesture="ALT+DOWN" />
                 </ListBox.InputBindings>
                 <ListBox.Resources>
                     <ContextMenu x:Key="ContextMenu">
                         <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                        <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.GoToParentDirectoryCommand}" Header="{x:Static l:Labels.GoToParentDirectory}">
+                        <MenuItem
+                            Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.GoToParentDirectoryCommand}"
+                            Header="{x:Static l:Labels.GoToParentDirectory}">
                             <MenuItem.Icon>
                                 <TextBlock Foreground="#ffb95c"
                                            Style="{StaticResource ButtonIconFontTextBlockStyle}"
@@ -334,7 +382,9 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                        <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionUpCommand}" Header="{x:Static l:Labels.MoveUp}">
+                        <MenuItem
+                            Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionUpCommand}"
+                            Header="{x:Static l:Labels.MoveUp}">
                             <MenuItem.Icon>
                                 <TextBlock Foreground="#5090f1"
                                            Style="{StaticResource ButtonIconFontTextBlockStyle}"
@@ -342,7 +392,9 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                        <MenuItem Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionDownCommand}" Header="{x:Static l:Labels.MoveDown}">
+                        <MenuItem
+                            Command="{Binding Source={x:Reference DummyControl}, Path=DataContext.MoveListPlaylistSelectionDownCommand}"
+                            Header="{x:Static l:Labels.MoveDown}">
                             <MenuItem.Icon>
                                 <TextBlock Foreground="#5090f1"
                                            Style="{StaticResource ButtonIconFontTextBlockStyle}"
@@ -352,8 +404,10 @@
                     </ContextMenu>
                 </ListBox.Resources>
                 <ListBox.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource ListBoxItemBaseStyle}" TargetType="ListBoxItem">
-                        <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
+                    <Style BasedOn="{StaticResource ListBoxItemBaseStyle}"
+                           TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu"
+                                Value="{StaticResource ContextMenu}" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
@@ -365,7 +419,9 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.InputBindings>
-                                <MouseBinding Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.RemovePlaylistSelectedFileCommand}" Gesture="LeftDoubleClick" />
+                                <MouseBinding
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.RemovePlaylistSelectedFileCommand}"
+                                    Gesture="LeftDoubleClick" />
                             </Grid.InputBindings>
 
                             <TextBlock Grid.Column="0"
