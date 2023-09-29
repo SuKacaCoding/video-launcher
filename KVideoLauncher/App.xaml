@@ -14,24 +14,41 @@
             <sys:Double x:Key="ListBoxItemTextFontSize">24</sys:Double>
             <Thickness x:Key="IconFontMargin">0 0 5 0</Thickness>
             <Thickness x:Key="HorStackPanelChildrenMargin">0 0 5 0</Thickness>
+            <Thickness x:Key="MainMargin">12</Thickness>
             <GridLength x:Key="IconFontColWidth">30</GridLength>
             <Style x:Key="ListBoxItemIconFontTextBlockStyle"
                    BasedOn="{StaticResource {x:Type TextBlock}}"
                    TargetType="TextBlock">
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="FontFamily" Value="{StaticResource IconFontFamily}" />
-                <Setter Property="FontSize" Value="{StaticResource ListBoxItemTextFontSize}" />
-                <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Center" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource IconFontFamily}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource ListBoxItemTextFontSize}" />
+                <Setter Property="Foreground"
+                        Value="{DynamicResource InfoBrush}" />
             </Style>
             <Style x:Key="ButtonIconFontTextBlockStyle"
                    BasedOn="{StaticResource {x:Type TextBlock}}"
                    TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource IconFontFamily}" />
-                <Setter Property="FontSize" Value="{StaticResource IconFontSize}" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource IconFontFamily}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource IconFontSize}" />
+            </Style>
+            <Style x:Key="TitleTextBlockStyle"
+                   BasedOn="{StaticResource {x:Type TextBlock}}"
+                   TargetType="TextBlock">
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeFontSize}" />
+                <Setter Property="FontWeight"
+                        Value="SemiBold" />
             </Style>
             <DataTemplate x:Key="IconFontButtonTemplate">
-                <TextBlock Style="{StaticResource ButtonIconFontTextBlockStyle}" Text="{Binding}" />
+                <TextBlock Style="{StaticResource ButtonIconFontTextBlockStyle}"
+                           Text="{Binding}" />
             </DataTemplate>
             <SolidColorBrush x:Key="TranslucentBackgroundBrush"
                              Opacity="0.618"

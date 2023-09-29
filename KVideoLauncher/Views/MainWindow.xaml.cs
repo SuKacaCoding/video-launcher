@@ -11,7 +11,6 @@ using HandyControl.Tools;
 using KVideoLauncher.Extensions;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Properties;
-using MessageBox = HandyControl.Controls.MessageBox;
 using Window = HandyControl.Controls.Window;
 
 namespace KVideoLauncher.Views;
@@ -205,11 +204,6 @@ public partial class MainWindow : Window
     private void PreciselyMoveFocusedListBoxSelectionUp()
     {
         CommonMoveFocusedListBoxSelection(-1);
-    }
-
-    private void ToggleBtnNetworkClicked(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show(owner: this, messageBoxText: "Coming soon ...", icon: MessageBoxImage.Information);
     }
 
     [RelayCommand]

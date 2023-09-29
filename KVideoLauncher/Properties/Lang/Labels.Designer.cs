@@ -177,7 +177,7 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Network (SMB)....
+        ///   Looks up a localized string similar to Network (SMB).
         /// </summary>
         public static string NetworkSmb {
             get {
@@ -200,6 +200,15 @@ namespace KVideoLauncher.Properties.Lang {
         public static string NothingToPlay {
             get {
                 return ResourceManager.GetString("NothingToPlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         
@@ -254,6 +263,15 @@ namespace KVideoLauncher.Properties.Lang {
         public static string TargetDirectoryDoesNotExist {
             get {
                 return ResourceManager.GetString("TargetDirectoryDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network (SMB)....
+        /// </summary>
+        public static string ToggleNetworkSmb {
+            get {
+                return ResourceManager.GetString("ToggleNetworkSmb", resourceCulture);
             }
         }
     }
