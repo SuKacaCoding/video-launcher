@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KVideoLauncher", "KVideoLau
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongShell", "GongShell\GongShell.csproj", "{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2DA98493-0F3D-4CFA-AB72-E41F7EA2646F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DA98493-0F3D-4CFA-AB72-E41F7EA2646F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DA98493-0F3D-4CFA-AB72-E41F7EA2646F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DA98493-0F3D-4CFA-AB72-E41F7EA2646F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DA98493-0F3D-4CFA-AB72-E41F7EA2646F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

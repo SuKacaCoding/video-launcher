@@ -516,3 +516,6 @@ msbuild.wrn
 # IconFont demos
 IconFont/
 !iconfont.ttf
+
+# Test
+/Test/
