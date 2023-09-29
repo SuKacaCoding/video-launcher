@@ -65,4 +65,9 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <ProjectReference Include="..\GongShell\GongShell.csproj" />
+    </ItemGroup>
+
+
 </Project>

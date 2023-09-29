@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KVideoLauncher", "KVideoLauncher\KVideoLauncher.csproj", "{4BBB48CD-8D99-4BAA-8474-5BCBB6802282}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongShell", "GongShell\GongShell.csproj", "{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4BBB48CD-8D99-4BAA-8474-5BCBB6802282}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BBB48CD-8D99-4BAA-8474-5BCBB6802282}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BBB48CD-8D99-4BAA-8474-5BCBB6802282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711CCF1F-6B8F-4E97-8D84-0EE679C83B41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
