@@ -409,7 +409,8 @@
             </Grid>
         </Grid>
 
-        <hc:Drawer Closed="DrawerClosed"
+        <hc:Drawer x:Name="DrawerLeft"
+                   Closed="DrawerClosed"
                    Dock="Left"
                    IsOpen="{Binding ElementName=TglBtnNetwork, Path=IsChecked}"
                    MaskCanClose="True"

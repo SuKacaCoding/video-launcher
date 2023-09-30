@@ -126,21 +126,29 @@ public partial class MainWindow : Window
 
         #endregion Initialize commands
 
+        #region Initialize access keys
+
+        AccessKeyManager.Register(key: "e", TglBtnNetwork);
+
+        #endregion Initialize access keys
+
         FocusedListBoxIndex = 0;
     }
 
     private void CommonMoveFocusedListBoxSelection(int offset)
     {
-        int itemsCount = FocusedListBox.Items.Count;
+        var targetListBox = DrawerLeft.IsOpen ? MyNetworkView.ListComputerShares : FocusedListBox;
+
+        int itemsCount = targetListBox.Items.Count;
         if (itemsCount == 0)
             return;
 
-        int targetSelectedIndex = FocusedListBox.SelectedIndex + offset;
+        int targetSelectedIndex = targetListBox.SelectedIndex + offset;
 
         targetSelectedIndex = targetSelectedIndex.MathMod(itemsCount);
 
-        FocusedListBox.SelectedIndex = targetSelectedIndex;
-        FocusedListBox.FocusOnSelection();
+        targetListBox.SelectedIndex = targetSelectedIndex;
+        targetListBox.FocusOnSelection();
     }
 
     private void DrawerClosed(object sender, RoutedEventArgs e)
