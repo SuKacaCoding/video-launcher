@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
              xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              d:Background="White"
              d:DesignHeight="500"
              d:DesignWidth="300"
@@ -43,11 +44,14 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    Command="{Binding RefreshComputerSharesCommand}"
-                    Content="&#xeafd;"
-                    ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="{StaticResource HorStackPanelChildrenMargin}"
+                        HorizontalAlignment="Left"
+                        Command="{Binding RefreshComputerSharesCommand}"
+                        Content="&#xeafd;"
+                        ContentTemplate="{StaticResource IconFontButtonTemplate}" />
+                <hc:LoadingCircle IsRunning="{Binding IsLoadingComputerShares}" Visibility="{Binding LoadingComputerSharesVisibility}" />
+            </StackPanel>
             <Button Grid.Column="1"
                     Content="{x:Static l:Labels.OK}"
                     Style="{StaticResource ButtonPrimary}" />
