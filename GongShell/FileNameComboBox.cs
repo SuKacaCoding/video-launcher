@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 
 namespace GongSolutions.Shell
@@ -8,21 +8,17 @@ namespace GongSolutions.Shell
     /// <summary>
     /// A filename combo box suitable for use in file Open/Save dialogs.
     /// </summary>
-    /// 
     /// <remarks>
     /// <para>
-    /// This control extends the <see cref="ComboBox"/> class to provide
-    /// auto-completion of filenames based on the folder selected in a
-    /// <see cref="ShellView"/>. The control also automatically navigates 
-    /// the ShellView control when the user types a folder path.
+    /// This control extends the <see cref="ComboBox"/> class to provide auto-completion of
+    /// filenames based on the folder selected in a <see cref="ShellView"/>. The control also
+    /// automatically navigates the ShellView control when the user types a folder path.
     /// </para>
     /// </remarks>
     public class FileNameComboBox : ComboBox
     {
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileNameComboBox"/>
-        /// class.
+        /// Initializes a new instance of the <see cref="FileNameComboBox"/> class.
         /// </summary>
         [Category("Behaviour")]
         [DefaultValue(null)]
@@ -33,9 +29,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets the <see cref="ShellView"/> control that the 
-        /// <see cref="FileNameComboBox"/> should look for auto-completion
-        /// hints.
+        /// Gets/sets the <see cref="ShellView"/> control that the <see cref="FileNameComboBox"/>
+        /// should look for auto-completion hints.
         /// </summary>
         [Category("Behaviour")]
         [DefaultValue(null)]
@@ -51,23 +46,17 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Occurs when a file name is entered into the 
-        /// <see cref="FileNameComboBox"/> and the Return key pressed.
+        /// Occurs when a file name is entered into the <see cref="FileNameComboBox"/> and the
+        /// Return key pressed.
         /// </summary>
         public event EventHandler FileNameEntered;
 
         /// <summary>
-        /// Determines whether the specified key is a regular input key or a 
-        /// special key that requires preprocessing. 
+        /// Determines whether the specified key is a regular input key or a special key that
+        /// requires preprocessing.
         /// </summary>
-        /// 
-        /// <param name="keyData">
-        /// One of the <see cref="Keys"/> values.
-        /// </param>
-        /// 
-        /// <returns>
-        /// true if the specified key is a regular input key; otherwise, false. 
-        /// </returns>
+        /// <param name="keyData">One of the <see cref="Keys"/> values.</param>
+        /// <returns>true if the specified key is a regular input key; otherwise, false.</returns>
         protected override bool IsInputKey(Keys keyData)
         {
             if (keyData == Keys.Enter)
@@ -83,10 +72,7 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Raises the <see cref="Control.KeyDown"/> event.
         /// </summary>
-        /// 
-        /// <param name="e">
-        /// A <see cref="KeyEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">A <see cref="KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -106,10 +92,7 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Raises the <see cref="Control.KeyPress"/> event.
         /// </summary>
-        /// 
-        /// <param name="e">
-        /// A <see cref="KeyPressEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">A <see cref="KeyPressEventArgs"/> that contains the event data.</param>
         protected override void OnKeyPress(KeyPressEventArgs e)
         {
             base.OnKeyPress(e);
@@ -119,10 +102,7 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Raises the <see cref="Control.TextChanged"/> event.
         /// </summary>
-        /// 
-        /// <param name="e">
-        /// An <see cref="EventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
@@ -136,7 +116,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void AutoComplete()
+        private void AutoComplete()
         {
             string path;
             string pattern;
@@ -181,7 +161,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void ConnectEventHandlers()
+        private void ConnectEventHandlers()
         {
             if (m_ShellView != null)
             {
@@ -189,7 +169,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void DisconnectEventHandlers()
+        private void DisconnectEventHandlers()
         {
             if (m_ShellView != null)
             {
@@ -197,7 +177,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        bool Open(string path)
+        private bool Open(string path)
         {
             bool result = false;
 
@@ -234,7 +214,7 @@ namespace GongSolutions.Shell
             return result;
         }
 
-        void OpenParentOf(string path)
+        private void OpenParentOf(string path)
         {
             string parent = Path.GetDirectoryName(path);
 
@@ -248,7 +228,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_ShellView_SelectionChanged(object sender, EventArgs e)
+        private void m_ShellView_SelectionChanged(object sender, EventArgs e)
         {
             if ((m_ShellView.SelectedItems.Length > 0) &&
                 (!m_ShellView.SelectedItems[0].IsFolder) &&
@@ -258,7 +238,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        FileFilterComboBox m_FilterControl;
+        private FileFilterComboBox m_FilterControl;
         ShellView m_ShellView;
         bool m_TryAutoComplete;
     }

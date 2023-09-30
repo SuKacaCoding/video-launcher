@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 #pragma warning disable 1591
 
@@ -12,8 +11,8 @@ namespace GongSolutions.Shell.Interop
     public interface IShellItem
     {
         IntPtr BindToHandler(IntPtr pbc,
-            [MarshalAs(UnmanagedType.LPStruct)]Guid bhid,
-            [MarshalAs(UnmanagedType.LPStruct)]Guid riid);
+            [MarshalAs(UnmanagedType.LPStruct)] Guid bhid,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
         [PreserveSig]
         HResult GetParent(out IShellItem ppsi);

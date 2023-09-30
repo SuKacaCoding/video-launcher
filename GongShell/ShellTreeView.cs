@@ -1,15 +1,13 @@
+using GongSolutions.Shell.Interop;
+using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using GongSolutions.Shell.Interop;
-using Interop = GongSolutions.Shell.Interop;
 using ComTypes = System.Runtime.InteropServices.ComTypes;
 
 namespace GongSolutions.Shell
@@ -17,18 +15,15 @@ namespace GongSolutions.Shell
     /// <summary>
     /// Provides a tree view of a computer's folders.
     /// </summary>
-    /// 
     /// <remarks>
     /// <para>
-    /// The <see cref="ShellTreeView"/> control allows you to embed Windows 
-    /// Explorer functionality in your Windows Forms applications. The
-    /// control provides a tree view of the computer's folders, as it would 
-    /// appear in the left-hand pane in Explorer.
+    /// The <see cref="ShellTreeView"/> control allows you to embed Windows Explorer functionality
+    /// in your Windows Forms applications. The control provides a tree view of the computer's
+    /// folders, as it would appear in the left-hand pane in Explorer.
     /// </para>
     /// </remarks>
     public class ShellTreeView : Control, Interop.IDropSource, Interop.IDropTarget
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellTreeView"/> class.
         /// </summary>
@@ -62,9 +57,9 @@ namespace GongSolutions.Shell
             m_ShellListener.ItemUpdated += new ShellItemEventHandler(m_ShellListener_ItemUpdated);
             m_ShellListener.SharingChanged += new ShellItemEventHandler(m_ShellListener_ItemUpdated);
 
-            // Setting AllowDrop to true then false makes sure OleInitialize()
-            // is called for the thread: it must be called before we can use
-            // RegisterDragDrop. There is probably a neater way of doing this.
+            // Setting AllowDrop to true then false makes sure OleInitialize() is called for the
+            // thread: it must be called before we can use RegisterDragDrop. There is probably a
+            // neater way of doing this.
             m_TreeView.AllowDrop = true;
             m_TreeView.AllowDrop = false;
 
@@ -80,8 +75,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a value indicating whether drag/drop operations are
-        /// allowed on the control.
+        /// Gets/sets a value indicating whether drag/drop operations are allowed on the control.
         /// </summary>
         [DefaultValue(false)]
         public override bool AllowDrop
@@ -108,8 +102,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether a tree node label takes on
-        /// the appearance of a hyperlink as the mouse pointer passes over it.
+        /// Gets or sets a value indicating whether a tree node label takes on the appearance of a
+        /// hyperlink as the mouse pointer passes over it.
         /// </summary>
         [DefaultValue(true)]
         [Category("Appearance")]
@@ -120,8 +114,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets or sets the root folder that is displayed in the 
-        /// <see cref="ShellTreeView"/>.
+        /// Gets or sets the root folder that is displayed in the <see cref="ShellTreeView"/>.
         /// </summary>
         [Category("Appearance")]
         public ShellItem RootFolder
@@ -135,8 +128,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a <see cref="ShellView"/> whose navigation should be
-        /// controlled by the treeview.
+        /// Gets/sets a <see cref="ShellView"/> whose navigation should be controlled by the treeview.
         /// </summary>
         [DefaultValue(null), Category("Behaviour")]
         public ShellView ShellView
@@ -160,8 +152,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets or sets the selected folder in the 
-        /// <see cref="ShellTreeView"/>.
+        /// Gets or sets the selected folder in the <see cref="ShellTreeView"/>.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -173,8 +164,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether hidden folders should
-        /// be displayed in the tree.
+        /// Gets or sets a value indicating whether hidden folders should be displayed in the tree.
         /// </summary>
         [DefaultValue(ShowHidden.System), Category("Appearance")]
         public ShowHidden ShowHidden
@@ -215,7 +205,7 @@ namespace GongSolutions.Shell
             return HResult.DRAGDROP_S_USEDEFAULTCURSORS;
         }
 
-        #endregion
+        #endregion IDropSource Members
 
         #region IDropTarget Members
 
@@ -253,7 +243,6 @@ namespace GongSolutions.Shell
                 if ((m_DragTarget == null) ||
                     (node != m_DragTarget.Node))
                 {
-
                     if (m_DragTarget != null)
                     {
                         m_DragTarget.Dispose();
@@ -296,13 +285,12 @@ namespace GongSolutions.Shell
             }
         }
 
-        #endregion
+        #endregion IDropTarget Members
 
         #region Hidden Properties
 
         /// <summary>
-        /// This property does not apply to the <see cref="ShellTreeView"/> 
-        /// class.
+        /// This property does not apply to the <see cref="ShellTreeView"/> class.
         /// </summary>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -312,9 +300,9 @@ namespace GongSolutions.Shell
             set { base.Text = value; }
         }
 
-        #endregion
+        #endregion Hidden Properties
 
-        void CreateItems()
+        private void CreateItems()
         {
             m_TreeView.BeginUpdate();
 
@@ -331,7 +319,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void CreateItem(TreeNode parent, ShellItem folder)
+        private void CreateItem(TreeNode parent, ShellItem folder)
         {
             string displayName = folder.DisplayName;
             TreeNode node;
@@ -354,7 +342,7 @@ namespace GongSolutions.Shell
             SetNodeImage(node);
         }
 
-        void CreateChildren(TreeNode node)
+        private void CreateChildren(TreeNode node)
         {
             if ((node.Nodes.Count == 1) && (node.Nodes[0].Tag == null))
             {
@@ -369,7 +357,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void RefreshItem(TreeNode node)
+        private void RefreshItem(TreeNode node)
         {
             ShellItem folder = (ShellItem)node.Tag;
             node.Text = folder.DisplayName;
@@ -409,7 +397,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        TreeNode InsertNode(TreeNode parent, ShellItem folder, string displayName)
+        private TreeNode InsertNode(TreeNode parent, ShellItem folder, string displayName)
         {
             ShellItem parentFolder = (ShellItem)parent.Tag;
             IntPtr folderRelPidl = Shell32.ILFindLastID(folder.Pidl);
@@ -437,7 +425,7 @@ namespace GongSolutions.Shell
             return result;
         }
 
-        bool ShouldShowHidden()
+        private bool ShouldShowHidden()
         {
             if (m_ShowHidden == ShowHidden.System)
             {
@@ -459,7 +447,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        IEnumerator<ShellItem> GetFolderEnumerator(ShellItem folder)
+        private IEnumerator<ShellItem> GetFolderEnumerator(ShellItem folder)
         {
             SHCONTF filter = SHCONTF.FOLDERS;
             if (ShouldShowHidden()) filter |= SHCONTF.INCLUDEHIDDEN;
@@ -471,9 +459,8 @@ namespace GongSolutions.Shell
             TVITEMW itemInfo = new TVITEMW();
             ShellItem folder = (ShellItem)node.Tag;
 
-            // We need to set the images for the item by sending a 
-            // TVM_SETITEMW message, as we need to set the overlay images,
-            // and the .Net TreeView API does not support overlays.
+            // We need to set the images for the item by sending a TVM_SETITEMW message, as we need
+            // to set the overlay images, and the .Net TreeView API does not support overlays.
             itemInfo.mask = TVIF.TVIF_IMAGE | TVIF.TVIF_SELECTEDIMAGE |
                             TVIF.TVIF_STATE;
             itemInfo.hItem = node.Handle;
@@ -487,7 +474,7 @@ namespace GongSolutions.Shell
                 0, ref itemInfo);
         }
 
-        void SelectItem(ShellItem value)
+        private void SelectItem(ShellItem value)
         {
             TreeNode node = m_TreeView.Nodes[0];
             ShellItem folder = (ShellItem)node.Tag;
@@ -525,7 +512,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        TreeNode FindItem(ShellItem item, TreeNode parent)
+        private TreeNode FindItem(ShellItem item, TreeNode parent)
         {
             if ((ShellItem)parent.Tag == item)
             {
@@ -547,7 +534,7 @@ namespace GongSolutions.Shell
             return null;
         }
 
-        bool NodeHasChildren(TreeNode node)
+        private bool NodeHasChildren(TreeNode node)
         {
             return (node.Nodes.Count > 0) && (node.Nodes[0].Tag != null);
         }
@@ -588,7 +575,7 @@ namespace GongSolutions.Shell
             m_ScrollDirection = scroll;
         }
 
-        ShellItem[] ParseShellIDListArray(ComTypes.IDataObject pDataObj)
+        private ShellItem[] ParseShellIDListArray(ComTypes.IDataObject pDataObj)
         {
             List<ShellItem> result = new List<ShellItem>();
             ComTypes.FORMATETC format = new ComTypes.FORMATETC();
@@ -634,7 +621,7 @@ namespace GongSolutions.Shell
             return result.ToArray();
         }
 
-        bool ShouldSerializeRootFolder()
+        private bool ShouldSerializeRootFolder()
         {
             return m_RootFolder != ShellItem.Desktop;
         }
@@ -664,7 +651,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_TreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        private void m_TreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             try
             {
@@ -694,7 +681,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_TreeView_MouseUp(object sender, MouseEventArgs e)
+        private void m_TreeView_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -719,7 +706,7 @@ namespace GongSolutions.Shell
             if (node != null) RefreshItem(node);
         }
 
-        void m_ShellListener_ItemUpdated(object sender, ShellItemEventArgs e)
+        private void m_ShellListener_ItemUpdated(object sender, ShellItemEventArgs e)
         {
             TreeNode parent = FindItem(e.Item.Parent, m_TreeView.Nodes[0]);
             if (parent != null) RefreshItem(parent);
@@ -735,12 +722,12 @@ namespace GongSolutions.Shell
             }
         }
 
-        enum ScrollDirection
+        private enum ScrollDirection
         {
             None = -1, Up, Down
         }
 
-        class DragTarget : IDisposable
+        private class DragTarget : IDisposable
         {
             public DragTarget(TreeNode node,
                               int keyState, Point pt,
@@ -811,13 +798,13 @@ namespace GongSolutions.Shell
                 set { m_Data = value; }
             }
 
-            void m_DragExpandTimer_Tick(object sender, EventArgs e)
+            private void m_DragExpandTimer_Tick(object sender, EventArgs e)
             {
                 m_Node.Expand();
                 m_DragExpandTimer.Stop();
             }
 
-            TreeNode m_Node;
+            private TreeNode m_Node;
             Interop.IDropTarget m_DropTarget;
             Timer m_DragExpandTimer;
             static ComTypes.IDataObject m_Data;
@@ -836,8 +823,7 @@ namespace GongSolutions.Shell
         ShellNotificationListener m_ShellListener = new ShellNotificationListener();
     }
 
-    /// Describes whether hidden files/folders should be displayed in a 
-    /// control.
+    /// Describes whether hidden files/folders should be displayed in a control.
     public enum ShowHidden
     {
         /// <summary>
@@ -851,8 +837,8 @@ namespace GongSolutions.Shell
         True,
 
         /// <summary>
-        /// The Windows Explorer "Show hidden files" setting should be used
-        /// to determine whether to show hidden files/folders.
+        /// The Windows Explorer "Show hidden files" setting should be used to determine whether to
+        /// show hidden files/folders.
         /// </summary>
         System
     }

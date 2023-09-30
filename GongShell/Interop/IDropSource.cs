@@ -12,6 +12,7 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         HResult QueryContinueDrag(bool fEscapePressed, int grfKeyState);
+
         [PreserveSig]
         HResult GiveFeedback(int dwEffect);
     }

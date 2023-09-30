@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using GongSolutions.Shell.Interop;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace GongSolutions.Shell
 {
-    class SystemImageList
+    internal class SystemImageList
     {
         public static void DrawSmallImage(Graphics g, Point point,
                                           int imageIndex, bool selected)
@@ -65,7 +63,7 @@ namespace GongSolutions.Shell
                 0, SmallImageList);
         }
 
-        static void InitializeImageLists()
+        private static void InitializeImageLists()
         {
             Shell32.FileIconInit(true);
             if (!Shell32.Shell_GetImageLists(out m_LargeImageList,
@@ -75,7 +73,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        static IntPtr SmallImageList
+        private static IntPtr SmallImageList
         {
             get
             {
@@ -87,7 +85,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        static IntPtr LargeImageList
+        private static IntPtr LargeImageList
         {
             get
             {
@@ -99,7 +97,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        static IntPtr m_SmallImageList;
+        private static IntPtr m_SmallImageList;
         static IntPtr m_LargeImageList;
     }
 }

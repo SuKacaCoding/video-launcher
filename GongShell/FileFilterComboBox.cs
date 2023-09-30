@@ -1,46 +1,34 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
 using System.Text;
 using System.Text.RegularExpressions;
-using GongSolutions.Shell.Interop;
+using System.Windows.Forms;
 
 namespace GongSolutions.Shell
 {
     /// <summary>
     /// A file-filter combo box suitable for use in open/save file dialogs.
     /// </summary>
-    /// 
     /// <remarks>
     /// <para>
-    /// This control extends the <see cref="ComboBox"/> class to provide
-    /// automatic filtering of shell items according to wildcard patterns. 
-    /// By setting the control's <see cref="ShellView"/> property, the control
-    /// will automatically filter items in a ShellView.
+    /// This control extends the <see cref="ComboBox"/> class to provide automatic filtering of
+    /// shell items according to wildcard patterns. By setting the control's <see cref="ShellView"/>
+    /// property, the control will automatically filter items in a ShellView.
     /// </para>
-    /// 
     /// <para>
-    /// The <see cref="FilterItems"/> property accepts a filter string 
-    /// similar to that accepted by the standard <see cref="FileDialog"/>
-    /// class, for example: 
-    /// <b>"Text files (*.txt)|*.txt|All files (*.*)|*.*"</b>
+    /// The <see cref="FilterItems"/> property accepts a filter string similar to that accepted by
+    /// the standard <see cref="FileDialog"/> class, for example: <b>"Text files (*.txt)|*.txt|All
+    /// files (*.*)|*.*"</b>
     /// </para>
-    /// 
     /// <para>
-    /// The currently selected filter is selected by the <see cref="Filter"/>
-    /// property. This should be set to one of the filter patterns specified
-    /// in <see cref="FilterItems"/>, e.g. <b>"*.txt"</b>.
+    /// The currently selected filter is selected by the <see cref="Filter"/> property. This should
+    /// be set to one of the filter patterns specified in <see cref="FilterItems"/>, e.g. <b>"*.txt"</b>.
     /// </para>
     /// </remarks>
     public class FileFilterComboBox : ComboBox
     {
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileFilterComboBox"/>
-        /// class.
+        /// Initializes a new instance of the <see cref="FileFilterComboBox"/> class.
         /// </summary>
         public FileFilterComboBox()
         {
@@ -49,8 +37,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets or sets the current filter string, which determines the 
-        /// items that appear in the control's <see cref="ShellView"/>.
+        /// Gets or sets the current filter string, which determines the items that appear in the
+        /// control's <see cref="ShellView"/>.
         /// </summary>
         [Category("Behaviour"), DefaultValue("*.*")]
         public string Filter
@@ -106,32 +94,22 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets the filter string which determines the choices that 
-        /// appear in the control's drop-down list.
+        /// Gets/sets the filter string which determines the choices that appear in the control's
+        /// drop-down list.
         /// </summary>
-        /// 
         /// <remarks>
         /// <para>
-        /// For each filtering option, the filter string contains a 
-        /// description of the filter, followed by the vertical bar (|) and
-        /// the filter pattern. The strings for different filtering options
-        /// are separated by the vertical bar.
+        /// For each filtering option, the filter string contains a description of the filter,
+        /// followed by the vertical bar (|) and the filter pattern. The strings for different
+        /// filtering options are separated by the vertical bar.
         /// </para>
-        /// 
         /// <para>
-        /// If the filter itself does not appear in the description then
-        /// it will be automatically added when the control is displayed.
-        /// For example, in the example below the "Video files" entry will
-        /// be displayed as "Video files (*.avi, *.wmv)". Beacuse the "All 
-        /// files" entry already has the filter string present in its 
-        /// description, it will not be added again.
+        /// If the filter itself does not appear in the description then it will be automatically
+        /// added when the control is displayed. For example, in the example below the "Video files"
+        /// entry will be displayed as "Video files (*.avi, *.wmv)". Beacuse the "All files" entry
+        /// already has the filter string present in its description, it will not be added again.
         /// </para>
-        /// 
-        /// <para>
-        /// <example>
-        /// "Video files|*.avi, *.wmv|All files (*.*)|*.*"
-        /// </example>
-        /// </para>
+        /// <para><example>"Video files|*.avi, *.wmv|All files (*.*)|*.*"</example></para>
         /// </remarks>
         [Category("Behaviour")]
         public string FilterItems
@@ -177,8 +155,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets the <see cref="ShellView"/> control that the 
-        /// <see cref="FileFilterComboBox"/> should filter the items of.
+        /// Gets/sets the <see cref="ShellView"/> control that the <see cref="FileFilterComboBox"/>
+        /// should filter the items of.
         /// </summary>
         [DefaultValue(null)]
         [Category("Behaviour")]
@@ -202,17 +180,10 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Generates a <see cref="Regex"/> object equivalent to the 
-        /// provided wildcard.
+        /// Generates a <see cref="Regex"/> object equivalent to the provided wildcard.
         /// </summary>
-        /// 
-        /// <param name="wildcard">
-        /// The wildcard to generate a regex for.
-        /// </param>
-        /// 
-        /// <returns>
-        /// A regex equivalent to the wildcard.
-        /// </returns>
+        /// <param name="wildcard">The wildcard to generate a regex for.</param>
+        /// <returns>A regex equivalent to the wildcard.</returns>
         public static Regex GenerateRegex(string wildcard)
         {
             string[] wildcards = wildcard.Split(',');
@@ -238,10 +209,7 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Raises the <see cref="Control.TextChanged"/> event.
         /// </summary>
-        /// 
-        /// <param name="e">
-        /// An EventArgs that contains the event data.
-        /// </param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
@@ -255,10 +223,10 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_ShellView_FilterItem(object sender, FilterItemEventArgs e)
+        private void m_ShellView_FilterItem(object sender, FilterItemEventArgs e)
         {
-            // Include items that are present in the filesystem, and are a 
-            // folder, or match the current regex.
+            // Include items that are present in the filesystem, and are a folder, or match the
+            // current regex.
             if (e.Include)
             {
                 e.Include = (e.Item.IsFileSystem || e.Item.IsFileSystemAncestor) &&
@@ -266,7 +234,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        string m_Filter = "*.*";
+        private string m_Filter = "*.*";
         string m_FilterItems = "";
         ShellView m_ShellView;
         Regex m_Regex;

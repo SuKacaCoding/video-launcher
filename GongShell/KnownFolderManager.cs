@@ -1,11 +1,9 @@
+using GongSolutions.Shell.Interop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
@@ -157,7 +155,7 @@ namespace GongSolutions.Shell
             return ((IEnumerable<KnownFolder>)this).GetEnumerator();
         }
 
-        void AddFolder(string name, CSIDL csidl)
+        private void AddFolder(string name, CSIDL csidl)
         {
             KnownFolder folder = CreateFolder(csidl, name);
 
@@ -169,7 +167,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        static KnownFolder CreateFolder(CSIDL csidl, string name)
+        private static KnownFolder CreateFolder(CSIDL csidl, string name)
         {
             StringBuilder path = new StringBuilder(512);
 
@@ -183,7 +181,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        static KnownFolder CreateFolder(IKnownFolder iface)
+        private static KnownFolder CreateFolder(IKnownFolder iface)
         {
             KNOWNFOLDER_DEFINITION def = iface.GetFolderDefinition();
 
@@ -206,7 +204,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        struct PathIndexEntry
+        private struct PathIndexEntry
         {
             public PathIndexEntry(string name, CSIDL csidl)
             {
@@ -218,7 +216,7 @@ namespace GongSolutions.Shell
             public CSIDL Csidl;
         }
 
-        IKnownFolderManager m_ComInterface;
+        private IKnownFolderManager m_ComInterface;
         Dictionary<string, KnownFolder> m_NameIndex;
         Dictionary<string, KnownFolder> m_PathIndex;
     }
@@ -262,7 +260,7 @@ namespace GongSolutions.Shell
             get { return m_ParsingName; }
         }
 
-        IKnownFolder m_ComInterface;
+        private IKnownFolder m_ComInterface;
         CSIDL m_Csidl;
         string m_Name;
         string m_ParsingName;

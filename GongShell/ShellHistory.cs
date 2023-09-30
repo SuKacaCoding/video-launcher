@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
@@ -10,7 +8,6 @@ namespace GongSolutions.Shell
     /// </summary>
     public class ShellHistory
     {
-
         /// <summary>
         /// Clears the shell history.
         /// </summary>
@@ -32,8 +29,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets the list of folders in the <see cref="ShellView"/>'s
-        /// <b>Back</b> history.
+        /// Gets the list of folders in the <see cref="ShellView"/>'s <b>Back</b> history.
         /// </summary>
         public ShellItem[] HistoryBack
         {
@@ -44,8 +40,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets the list of folders in the <see cref="ShellView"/>'s
-        /// <b>Forward</b> history.
+        /// Gets the list of folders in the <see cref="ShellView"/>'s <b>Forward</b> history.
         /// </summary>
         public ShellItem[] HistoryForward
         {
@@ -140,7 +135,7 @@ namespace GongSolutions.Shell
             get { return m_History[m_Current]; }
         }
 
-        List<ShellItem> m_History;
+        private List<ShellItem> m_History;
         int m_Current;
     }
 }

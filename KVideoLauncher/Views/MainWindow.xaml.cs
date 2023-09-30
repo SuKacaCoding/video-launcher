@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.Input;
+using HandyControl.Tools;
+using KVideoLauncher.Extensions;
+using KVideoLauncher.Helpers;
+using KVideoLauncher.Properties;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -6,11 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CommunityToolkit.Mvvm.Input;
-using HandyControl.Tools;
-using KVideoLauncher.Extensions;
-using KVideoLauncher.Helpers;
-using KVideoLauncher.Properties;
 using Window = HandyControl.Controls.Window;
 
 namespace KVideoLauncher.Views;
@@ -51,7 +51,7 @@ public partial class MainWindow : Window
         if (this.Apply(BackdropType.Acrylic))
             Background = FindResource("TranslucentBackgroundBrush") as Brush;
 
-        #endregion
+        #endregion Apply Acrylic effect
 
         #region Initialize fields
 

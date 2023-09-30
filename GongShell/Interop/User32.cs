@@ -40,8 +40,10 @@ namespace GongSolutions.Shell.Interop
         public int iSubItem;
         public LVIS state;
         public LVIS stateMask;
+
         [MarshalAs(UnmanagedType.LPTStr)]
         public string pszText;
+
         public int cchTextMax;
         public int iImage;
         public int lParam;
@@ -190,7 +192,7 @@ namespace GongSolutions.Shell.Interop
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    struct TVITEMW
+    internal struct TVITEMW
     {
         public TVIF mask;
         public IntPtr hItem;
@@ -215,7 +217,7 @@ namespace GongSolutions.Shell.Interop
         GW_ENABLEDPOPUP = 6
     }
 
-    class User32
+    internal class User32
     {
         [DllImport("user32.dll")]
         public static extern bool DeleteMenu(IntPtr hMenu, int uPosition,

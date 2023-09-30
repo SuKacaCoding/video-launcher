@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace GongSolutions.Shell
 {
-    class ShellItemEditor : UITypeEditor
+    internal class ShellItemEditor : UITypeEditor
     {
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {

@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GongSolutions.Shell
@@ -54,7 +49,7 @@ namespace GongSolutions.Shell
             get { return m_SelectedItem; }
         }
 
-        void SaveSelection()
+        private void SaveSelection()
         {
             if (tabControl.SelectedTab == knownFoldersPage)
             {
@@ -67,7 +62,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void knownFolderList_DoubleClick(object sender, EventArgs e)
+        private void knownFolderList_DoubleClick(object sender, EventArgs e)
         {
             if (knownFolderList.SelectedItems.Count > 0)
             {
@@ -76,17 +71,17 @@ namespace GongSolutions.Shell
             }
         }
 
-        void knownFolderList_SelectedIndexChanged(object sender, EventArgs e)
+        private void knownFolderList_SelectedIndexChanged(object sender, EventArgs e)
         {
             okButton.Enabled = knownFolderList.SelectedItems.Count > 0;
         }
 
-        void fileBrowseView_SelectionChanged(object sender, EventArgs e)
+        private void fileBrowseView_SelectionChanged(object sender, EventArgs e)
         {
             okButton.Enabled = allFilesView.SelectedItems.Length > 0;
         }
 
-        void tabControl_Selected(object sender, TabControlEventArgs e)
+        private void tabControl_Selected(object sender, TabControlEventArgs e)
         {
             if (e.TabPage == knownFoldersPage)
             {
@@ -98,12 +93,12 @@ namespace GongSolutions.Shell
             }
         }
 
-        void okButton_Click(object sender, EventArgs e)
+        private void okButton_Click(object sender, EventArgs e)
         {
             SaveSelection();
             DialogResult = DialogResult.OK;
         }
 
-        ShellItem m_SelectedItem;
+        private ShellItem m_SelectedItem;
     }
 }

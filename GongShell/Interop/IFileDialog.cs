@@ -32,7 +32,7 @@ namespace GongSolutions.Shell.Interop
         FDAP_TOP = 0x1
     }
 
-    enum FILEOPENDIALOGOPTIONS
+    internal enum FILEOPENDIALOGOPTIONS
     {
         FOS_OVERWRITEPROMPT = 0x2,
         FOS_STRICTFILETYPES = 0x4,
@@ -148,6 +148,7 @@ namespace GongSolutions.Shell.Interop
     public interface IShellItemFilter
     {
         int IncludeItem(IShellItem psi);
+
         int GetEnumFlagsForItem(IShellItem psi, out SHCONTF pgrfFlags);
     };
 }

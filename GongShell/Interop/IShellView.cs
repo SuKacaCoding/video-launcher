@@ -22,22 +22,33 @@ namespace GongSolutions.Shell.Interop
     public interface IShellView
     {
         void GetWindow(out IntPtr windowHandle);
+
         void ContextSensitiveHelp(bool fEnterMode);
+
         [PreserveSig]
         long TranslateAcceleratorA(IntPtr message);
+
         void EnableModeless(bool enable);
+
         void UIActivate(UInt32 activtionState);
+
         void Refresh();
+
         void CreateViewWindow(
             IShellView previousShellView,
             ref FOLDERSETTINGS folderSetting,
             IShellBrowser shellBrowser,
             ref Rectangle bounds,
             out IntPtr handleOfCreatedWindow);
+
         void DestroyViewWindow();
+
         void GetCurrentInfo(ref FOLDERSETTINGS pfs);
-        void AddPropertySheetPages([In, MarshalAs(UnmanagedType.U4)] uint reserved, [In]ref IntPtr functionPointer, [In] IntPtr lparam);
+
+        void AddPropertySheetPages([In, MarshalAs(UnmanagedType.U4)] uint reserved, [In] ref IntPtr functionPointer, [In] IntPtr lparam);
+
         void SaveViewState();
+
         void SelectItem(IntPtr pidlItem, [MarshalAs(UnmanagedType.U4)] SVSI flags);
 
         [PreserveSig]

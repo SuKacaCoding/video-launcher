@@ -1,8 +1,8 @@
+using GongSolutions.Shell.Interop;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
@@ -11,10 +11,8 @@ namespace GongSolutions.Shell
     /// </summary>
     public class ShellNotificationListener : Component
     {
-
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="ShellNotificationListener"/> class.
+        /// Initializes a new instance of the <see cref="ShellNotificationListener"/> class.
         /// </summary>
         public ShellNotificationListener()
         {
@@ -22,8 +20,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="ShellNotificationListener"/> class.
+        /// Initializes a new instance of the <see cref="ShellNotificationListener"/> class.
         /// </summary>
         public ShellNotificationListener(IContainer container)
         {
@@ -96,7 +93,7 @@ namespace GongSolutions.Shell
             m_Window.Dispose();
         }
 
-        class NotificationWindow : Control
+        private class NotificationWindow : Control
         {
             public NotificationWindow(ShellNotificationListener parent)
             {
@@ -234,7 +231,7 @@ namespace GongSolutions.Shell
                 }
             }
 
-            uint m_NotifyId;
+            private uint m_NotifyId;
             ShellNotificationListener m_Parent;
             const int WM_SHNOTIFY = 0x401;
         }
@@ -247,15 +244,10 @@ namespace GongSolutions.Shell
     /// </summary>
     public class ShellItemEventArgs : EventArgs
     {
-
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="ShellItemEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ShellItemEventArgs"/> class.
         /// </summary>
-        /// 
-        /// <param name="item">
-        /// The ShellItem that has changed.
-        /// </param>
+        /// <param name="item">The ShellItem that has changed.</param>
         public ShellItemEventArgs(ShellItem item)
         {
             m_Item = item;
@@ -269,7 +261,7 @@ namespace GongSolutions.Shell
             get { return m_Item; }
         }
 
-        ShellItem m_Item;
+        private ShellItem m_Item;
     }
 
     /// <summary>
@@ -278,17 +270,10 @@ namespace GongSolutions.Shell
     public class ShellItemChangeEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="ShellItemChangeEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ShellItemChangeEventArgs"/> class.
         /// </summary>
-        /// 
-        /// <param name="oldItem">
-        /// The ShellItem before the change
-        /// </param>
-        /// 
-        /// <param name="newItem">
-        /// The ShellItem after the change
-        /// </param>
+        /// <param name="oldItem">The ShellItem before the change</param>
+        /// <param name="newItem">The ShellItem after the change</param>
         public ShellItemChangeEventArgs(ShellItem oldItem,
                                         ShellItem newItem)
         {
@@ -312,38 +297,24 @@ namespace GongSolutions.Shell
             get { return m_NewItem; }
         }
 
-        ShellItem m_OldItem;
+        private ShellItem m_OldItem;
         ShellItem m_NewItem;
     }
 
     /// <summary>
-    /// Represents the method that handles change notifications from
-    /// <see cref="ShellNotificationListener"/>
+    /// Represents the method that handles change notifications from <see cref="ShellNotificationListener"/>
     /// </summary>
-    /// 
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// 
-    /// <param name="e">
-    /// A <see cref="ShellItemEventArgs"/> that contains the data
-    /// for the event.
-    /// </param>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">A <see cref="ShellItemEventArgs"/> that contains the data for the event.</param>
     public delegate void ShellItemEventHandler(object sender,
         ShellItemEventArgs e);
 
     /// <summary>
-    /// Represents the method that handles change notifications from
-    /// <see cref="ShellNotificationListener"/>
+    /// Represents the method that handles change notifications from <see cref="ShellNotificationListener"/>
     /// </summary>
-    /// 
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// 
+    /// <param name="sender">The source of the event.</param>
     /// <param name="e">
-    /// A <see cref="ShellItemChangeEventArgs"/> that contains the data
-    /// for the event.
+    /// A <see cref="ShellItemChangeEventArgs"/> that contains the data for the event.
     /// </param>
     public delegate void ShellItemChangeEventHandler(object sender,
         ShellItemChangeEventArgs e);

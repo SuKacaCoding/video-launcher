@@ -2,7 +2,6 @@
 
 namespace KVideoLauncher.ViewModels;
 
-public class NetworkViewModel: ObservableObject
+public class NetworkViewModel : ObservableObject
 {
-    
 }

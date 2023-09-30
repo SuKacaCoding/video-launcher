@@ -1,117 +1,86 @@
+using GongSolutions.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
     /// <summary>
     /// Provides support for displaying the context menu of a shell item.
     /// </summary>
-    /// 
     /// <remarks>
     /// <para>
-    /// Use this class to display a context menu for a shell item, either
-    /// as a popup menu, or as a main menu. 
+    /// Use this class to display a context menu for a shell item, either as a popup menu, or as a
+    /// main menu.
     /// </para>
-    /// 
     /// <para>
-    /// To display a popup menu, simply call <see cref="ShowContextMenu"/>
-    /// with the parent control and the position at which the menu should
-    /// be shown.
+    /// To display a popup menu, simply call <see cref="ShowContextMenu"/> with the parent control
+    /// and the position at which the menu should be shown.
     /// </para>
-    /// 
     /// <para>
-    /// To display a shell context menu in a Form's main menu, call the
-    /// <see cref="Populate"/> method to populate the menu. In addition, 
-    /// you must intercept a number of special messages that will be sent 
-    /// to the menu's parent form. To do this, you must override 
-    /// <see cref="Form.WndProc"/> like so:
+    /// To display a shell context menu in a Form's main menu, call the <see cref="Populate"/>
+    /// method to populate the menu. In addition, you must intercept a number of special messages
+    /// that will be sent to the menu's parent form. To do this, you must override <see
+    /// cref="Form.WndProc"/> like so:
     /// </para>
-    /// 
     /// <code>
-    ///     protected override void WndProc(ref Message m) {
-    ///         if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
-    ///             base.WndProc(ref m);
-    ///         }
-    ///     }
+    ///protected override void WndProc(ref Message m) {
+    ///if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
+    ///base.WndProc(ref m);
+    ///}
+    ///}
     /// </code>
-    /// 
-    /// <para>
-    /// Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.
-    /// </para>
-    /// 
-    /// Standard menu commands can also be invoked from this class, for 
-    /// example <see cref="InvokeDelete"/> and <see cref="InvokeRename"/>.
+    /// <para>Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.</para>
+    /// Standard menu commands can also be invoked from this class, for example <see
+    /// cref="InvokeDelete"/> and <see cref="InvokeRename"/>.
     /// </remarks>
     public class ShellContextMenu
     {
-
         /// <summary>
-        /// Initialises a new instance of the <see cref="ShellContextMenu"/> 
-        /// class.
+        /// Initialises a new instance of the <see cref="ShellContextMenu"/> class.
         /// </summary>
-        /// 
-        /// <param name="item">
-        /// The item to which the context menu should refer.
-        /// </param>
+        /// <param name="item">The item to which the context menu should refer.</param>
         public ShellContextMenu(ShellItem item)
         {
             Initialize(new ShellItem[] { item });
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ShellContextMenu"/> 
-        /// class.
+        /// Initialises a new instance of the <see cref="ShellContextMenu"/> class.
         /// </summary>
-        /// 
-        /// <param name="items">
-        /// The items to which the context menu should refer.
-        /// </param>
+        /// <param name="items">The items to which the context menu should refer.</param>
         public ShellContextMenu(ShellItem[] items)
         {
             Initialize(items);
         }
 
         /// <summary>
-        /// Handles context menu messages when the <see cref="ShellContextMenu"/>
-        /// is displayed on a Form's main menu bar.
+        /// Handles context menu messages when the <see cref="ShellContextMenu"/> is displayed on a
+        /// Form's main menu bar.
         /// </summary>
-        /// 
         /// <remarks>
         /// <para>
-        /// To display a shell context menu in a Form's main menu, call the
-        /// <see cref="Populate"/> method to populate the menu with the shell
-        /// item's menu items. In addition, you must intercept a number of
-        /// special messages that will be sent to the menu's parent form. To
+        /// To display a shell context menu in a Form's main menu, call the <see cref="Populate"/>
+        /// method to populate the menu with the shell item's menu items. In addition, you must
+        /// intercept a number of special messages that will be sent to the menu's parent form. To
         /// do this, you must override <see cref="Form.WndProc"/> like so:
         /// </para>
-        /// 
         /// <code>
-        ///     protected override void WndProc(ref Message m) {
-        ///         if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
-        ///             base.WndProc(ref m);
-        ///         }
-        ///     }
+        ///protected override void WndProc(ref Message m) {
+        ///if ((m_ContextMenu == null) || (!m_ContextMenu.HandleMenuMessage(ref m))) {
+        ///base.WndProc(ref m);
+        ///}
+        ///}
         /// </code>
-        /// 
-        /// <para>
-        /// Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.
-        /// </para>
+        /// <para>Where m_ContextMenu is the <see cref="ShellContextMenu"/> being shown.</para>
         /// </remarks>
-        /// 
-        /// <param name="m">
-        /// The message to handle.
-        /// </param>
-        /// 
+        /// <param name="m">The message to handle.</param>
         /// <returns>
-        /// <see langword="true"/> if the message was a Shell Context Menu
-        /// message, <see langword="false"/> if not. If the method returns false,
-        /// then the message should be passed down to the base class's
-        /// <see cref="Form.WndProc"/> method.
+        /// <see langword="true"/> if the message was a Shell Context Menu message, <see
+        /// langword="false"/> if not. If the method returns false, then the message should be
+        /// passed down to the base class's <see cref="Form.WndProc"/> method.
         /// </returns>
         public bool HandleMenuMessage(ref Message m)
         {
@@ -172,8 +141,7 @@ namespace GongSolutions.Shell
             }
             catch (COMException e)
             {
-                // Ignore the exception raised when the user cancels
-                // a delete operation.
+                // Ignore the exception raised when the user cancels a delete operation.
                 if (e.ErrorCode != unchecked((int)0x800704C7) &&
                     e.ErrorCode != unchecked((int)0x80270000))
                 {
@@ -210,19 +178,13 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Populates a <see cref="Menu"/> with the context menu items for
-        /// a shell item.
+        /// Populates a <see cref="Menu"/> with the context menu items for a shell item.
         /// </summary>
-        /// 
         /// <remarks>
-        /// If this method is being used to populate a Form's main menu
-        /// then you need to call <see cref="HandleMenuMessage"/> in the
-        /// Form's message handler.
+        /// If this method is being used to populate a Form's main menu then you need to call <see
+        /// cref="HandleMenuMessage"/> in the Form's message handler.
         /// </remarks>
-        /// 
-        /// <param name="menu">
-        /// The menu to populate.
-        /// </param>
+        /// <param name="menu">The menu to populate.</param>
         public void Populate(Menu menu)
         {
             RemoveShellMenuItems(menu);
@@ -233,14 +195,9 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Shows a context menu for a shell item.
         /// </summary>
-        /// 
-        /// <param name="control">
-        /// The parent control.
-        /// </param>
-        /// 
+        /// <param name="control">The parent control.</param>
         /// <param name="pos">
-        /// The position on <paramref name="control"/> that the menu
-        /// should be displayed at.
+        /// The position on <paramref name="control"/> that the menu should be displayed at.
         /// </param>
         public void ShowContextMenu(Control control, Point pos)
         {
@@ -267,7 +224,7 @@ namespace GongSolutions.Shell
             set { m_ComInterface = value; }
         }
 
-        void Initialize(ShellItem[] items)
+        private void Initialize(ShellItem[] items)
         {
             IntPtr[] pidls = new IntPtr[items.Length];
             ShellItem parent = null;
@@ -286,7 +243,6 @@ namespace GongSolutions.Shell
                     else
                     {
                         parent = items[n].Parent;
-
                     }
                 }
                 else
@@ -309,7 +265,7 @@ namespace GongSolutions.Shell
             m_MessageWindow = new MessageWindow(this);
         }
 
-        void InvokeCommand(int index)
+        private void InvokeCommand(int index)
         {
             const int SW_SHOWNORMAL = 1;
             CMINVOKECOMMANDINFO_ByIndex invoke = new CMINVOKECOMMANDINFO_ByIndex();
@@ -319,7 +275,7 @@ namespace GongSolutions.Shell
             m_ComInterface2.InvokeCommand(ref invoke);
         }
 
-        void TagManagedMenuItems(Menu menu, int tag)
+        private void TagManagedMenuItems(Menu menu, int tag)
         {
             MENUINFO info = new MENUINFO();
 
@@ -333,7 +289,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void RemoveShellMenuItems(Menu menu)
+        private void RemoveShellMenuItems(Menu menu)
         {
             const int tag = 0xAB;
             List<int> remove = new List<int>();
@@ -346,8 +302,7 @@ namespace GongSolutions.Shell
             itemInfo.cbSize = (UInt32)Marshal.SizeOf(itemInfo);
             itemInfo.fMask = MIIM.MIIM_ID | MIIM.MIIM_SUBMENU;
 
-            // First, tag the managed menu items with an arbitary 
-            // value (0xAB).
+            // First, tag the managed menu items with an arbitary value (0xAB).
             TagManagedMenuItems(menu, tag);
 
             for (int n = 0; n < count; ++n)
@@ -356,8 +311,8 @@ namespace GongSolutions.Shell
 
                 if (itemInfo.hSubMenu == IntPtr.Zero)
                 {
-                    // If the item has no submenu we can't get the tag, so 
-                    // check its ID to determine if it was added by the shell.
+                    // If the item has no submenu we can't get the tag, so check its ID to determine
+                    // if it was added by the shell.
                     if (itemInfo.wID >= m_CmdFirst) remove.Add(n);
                 }
                 else
@@ -375,7 +330,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        class MessageWindow : Control
+        private class MessageWindow : Control
         {
             public MessageWindow(ShellContextMenu parent)
             {
@@ -390,7 +345,7 @@ namespace GongSolutions.Shell
                 }
             }
 
-            ShellContextMenu m_Parent;
+            private ShellContextMenu m_Parent;
         }
 
         MessageWindow m_MessageWindow;

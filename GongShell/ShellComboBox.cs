@@ -1,28 +1,23 @@
+using GongSolutions.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
     /// <summary>
     /// Provides a drop-down list displaying the Windows Shell namespace.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The <see cref="ShellComboBox"/> class displays a view of the Windows
-    /// Shell namespace in a drop-down list similar to that displayed in
-    /// a file open/save dialog.
+    /// The <see cref="ShellComboBox"/> class displays a view of the Windows Shell namespace in a
+    /// drop-down list similar to that displayed in a file open/save dialog.
     /// </remarks>
     public class ShellComboBox : Control
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellComboBox"/> class.
         /// </summary>
@@ -89,8 +84,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a value indicating whether the full file system path 
-        /// should be displayed in the main portion of the control.
+        /// Gets/sets a value indicating whether the full file system path should be displayed in
+        /// the main portion of the control.
         /// </summary>
         [DefaultValue(false)]
         public bool ShowFileSystemPath
@@ -104,8 +99,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets the folder that the <see cref="ShellComboBox"/> should
-        /// display as the root folder.
+        /// Gets/sets the folder that the <see cref="ShellComboBox"/> should display as the root folder.
         /// </summary>
         [Editor(typeof(ShellItemEditor), typeof(UITypeEditor))]
         public ShellItem RootFolder
@@ -123,8 +117,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets the folder currently selected in the 
-        /// <see cref="ShellComboBox"/>.
+        /// Gets/sets the folder currently selected in the <see cref="ShellComboBox"/>.
         /// </summary>
         [Editor(typeof(ShellItemEditor), typeof(UITypeEditor))]
         public ShellItem SelectedFolder
@@ -144,8 +137,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a <see cref="ShellView"/> whose navigation should be
-        /// controlled by the combo box.
+        /// Gets/sets a <see cref="ShellView"/> whose navigation should be controlled by the combo box.
         /// </summary>
         [DefaultValue(null), Category("Behaviour")]
         public ShellView ShellView
@@ -169,19 +161,16 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Occurs when the <see cref="ShellComboBox"/>'s 
-        /// <see cref="SelectedFolder"/> property changes.
+        /// Occurs when the <see cref="ShellComboBox"/>'s <see cref="SelectedFolder"/> property changes.
         /// </summary>
         public event EventHandler Changed;
 
         /// <summary>
-        /// Occurs when the <see cref="ShellComboBox"/> control wants to know
-        /// if it should include a folder in its view.
+        /// Occurs when the <see cref="ShellComboBox"/> control wants to know if it should include a
+        /// folder in its view.
         /// </summary>
-        /// 
         /// <remarks>
-        /// This event allows the folders displayed in the 
-        /// <see cref="ShellComboBox"/> control to be filtered.
+        /// This event allows the folders displayed in the <see cref="ShellComboBox"/> control to be filtered.
         /// </remarks>
         public event FilterItemEventHandler FilterItem;
 
@@ -195,7 +184,7 @@ namespace GongSolutions.Shell
             return m_SelectedFolder != ShellItem.Desktop;
         }
 
-        void CreateItems()
+        private void CreateItems()
         {
             if (!m_CreatingItems)
             {
@@ -212,7 +201,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void CreateItems(ShellItem folder, int indent)
+        private void CreateItems(ShellItem folder, int indent)
         {
             IEnumerator<ShellItem> e = folder.GetEnumerator(
                 SHCONTF.FOLDERS | SHCONTF.INCLUDEHIDDEN);
@@ -226,7 +215,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void CreateItem(ShellItem folder, int indent)
+        private void CreateItem(ShellItem folder, int indent)
         {
             int index = m_Combo.Items.Add(new ComboItem(folder, indent));
 
@@ -241,7 +230,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        bool ShouldCreateItem(ShellItem folder)
+        private bool ShouldCreateItem(ShellItem folder)
         {
             FilterItemEventArgs e = new FilterItemEventArgs(folder);
             ShellItem myComputer = new ShellItem(Environment.SpecialFolder.MyComputer);
@@ -267,7 +256,7 @@ namespace GongSolutions.Shell
             return e.Include;
         }
 
-        bool ShouldCreateChildren(ShellItem folder)
+        private bool ShouldCreateChildren(ShellItem folder)
         {
             return (folder == m_Computer) ||
                    (folder == ShellItem.Desktop) ||
@@ -286,7 +275,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void NavigateShellView()
+        private void NavigateShellView()
         {
             if ((m_ShellView != null) && !m_ChangingLocation)
             {
@@ -306,7 +295,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void OnChanged()
+        private void OnChanged()
         {
             if (Changed != null)
             {
@@ -336,9 +325,8 @@ namespace GongSolutions.Shell
 
                 if ((e.State & DrawItemState.ComboBoxEdit) != 0)
                 {
-                    // Don't draw the folder location in the edit box when
-                    // the control is Editable as the edit control will
-                    // take care of that.
+                    // Don't draw the folder location in the edit box when the control is Editable
+                    // as the edit control will take care of that.
                     display = m_Editable ? string.Empty : GetEditString();
                 }
                 else
@@ -353,8 +341,8 @@ namespace GongSolutions.Shell
                     e.Bounds.Y, (int)size.Width, e.Bounds.Height);
                 textOffset = (int)((e.Bounds.Height - size.Height) / 2);
 
-                // If the text is being drawin in the main combo box edit area,
-                // draw the text 1 pixel higher - this is how it looks in Windows.
+                // If the text is being drawin in the main combo box edit area, draw the text 1
+                // pixel higher - this is how it looks in Windows.
                 if ((e.State & DrawItemState.ComboBoxEdit) != 0)
                 {
                     textOffset -= 1;
@@ -387,7 +375,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_Combo_SelectedIndexChanged(object sender, EventArgs e)
+        private void m_Combo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!m_CreatingItems)
             {
@@ -401,12 +389,12 @@ namespace GongSolutions.Shell
             m_SelectAll = true;
         }
 
-        void m_Edit_LostFocus(object sender, EventArgs e)
+        private void m_Edit_LostFocus(object sender, EventArgs e)
         {
             m_SelectAll = false;
         }
 
-        void m_Edit_KeyDown(object sender, KeyEventArgs e)
+        private void m_Edit_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -435,7 +423,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_Edit_MouseDown(object sender, MouseEventArgs e)
+        private void m_Edit_MouseDown(object sender, MouseEventArgs e)
         {
             if (m_SelectAll)
             {
@@ -465,7 +453,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        void m_ShellListener_ItemRenamed(object sender, ShellItemChangeEventArgs e)
+        private void m_ShellListener_ItemRenamed(object sender, ShellItemChangeEventArgs e)
         {
             CreateItems();
         }
@@ -475,7 +463,7 @@ namespace GongSolutions.Shell
             CreateItems();
         }
 
-        class ComboItem
+        private class ComboItem
         {
             public ComboItem(ShellItem folder, int indent)
             {
@@ -492,8 +480,8 @@ namespace GongSolutions.Shell
         ShellView m_ShellView;
         bool m_Editable;
         ShellItem m_RootFolder = ShellItem.Desktop;
-        ShellItem m_SelectedFolder;
-        bool m_ChangingLocation;
+        private ShellItem m_SelectedFolder;
+        private bool m_ChangingLocation;
         bool m_ShowFileSystemPath;
         bool m_CreatingItems;
         bool m_SelectAll;

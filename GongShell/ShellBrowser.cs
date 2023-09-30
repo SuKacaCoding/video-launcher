@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
 using GongSolutions.Shell.Interop;
+using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace GongSolutions.Shell
 {
-    class ShellBrowser : IShellBrowser,
+    internal class ShellBrowser : IShellBrowser,
                          IOleCommandTarget,
                          Interop.IServiceProvider
     {
@@ -158,7 +156,7 @@ namespace GongSolutions.Shell
             return HResult.E_NOTIMPL;
         }
 
-        #endregion
+        #endregion IShellBrowser Members
 
         #region IOleCommandTarget Members
 
@@ -172,7 +170,7 @@ namespace GongSolutions.Shell
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        #endregion
+        #endregion IOleCommandTarget Members
 
         #region IServiceProvider Members
 
@@ -199,13 +197,13 @@ namespace GongSolutions.Shell
             return HResult.S_OK;
         }
 
-        #endregion
+        #endregion IServiceProvider Members
 
         protected ShellView m_ShellView;
-        StatusBar m_StatusBar;
+        private StatusBar m_StatusBar;
     }
 
-    class DialogShellBrowser : ShellBrowser, ICommDlgBrowser
+    internal class DialogShellBrowser : ShellBrowser, ICommDlgBrowser
     {
         public DialogShellBrowser(ShellView shellView)
             : base(shellView) { }
@@ -249,6 +247,6 @@ namespace GongSolutions.Shell
                 HResult.S_OK : HResult.S_FALSE;
         }
 
-        #endregion
+        #endregion ICommDlgBrowser Members
     }
 }

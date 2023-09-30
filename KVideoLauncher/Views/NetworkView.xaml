@@ -1,13 +1,13 @@
 ﻿<UserControl x:Class="KVideoLauncher.Views.NetworkView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
-             mc:Ignorable="d"
              d:DesignHeight="500"
-             d:DesignWidth="300">
+             d:DesignWidth="300"
+             mc:Ignorable="d">
     <UserControl.DataContext>
         <vm:NetworkViewModel />
     </UserControl.DataContext>
@@ -21,8 +21,8 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Text="{x:Static l:Labels.NetworkSmb}"
-                   Style="{StaticResource TitleTextBlockStyle}" />
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Text="{x:Static l:Labels.NetworkSmb}" />
 
         <ListBox Grid.Row="2" />
 
@@ -37,8 +37,8 @@
                     Content="&#xeafd;"
                     ContentTemplate="{StaticResource IconFontButtonTemplate}" />
             <Button Grid.Column="1"
-                    Style="{StaticResource ButtonPrimary}"
-                    Content="{x:Static l:Labels.OK}" />
+                    Content="{x:Static l:Labels.OK}"
+                    Style="{StaticResource ButtonPrimary}" />
         </Grid>
     </Grid>
 </UserControl>

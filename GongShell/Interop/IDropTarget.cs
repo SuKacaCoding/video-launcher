@@ -14,8 +14,11 @@ namespace GongSolutions.Shell.Interop
     {
         void DragEnter(IDataObject pDataObj, int grfKeyState,
                        Point pt, ref int pdwEffect);
+
         void DragOver(int grfKeyState, Point pt, ref int pdwEffect);
+
         void DragLeave();
+
         void Drop(IDataObject pDataObj, int grfKeyState,
                  Point pt, ref int pdwEffect);
     }

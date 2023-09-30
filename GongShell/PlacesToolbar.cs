@@ -1,30 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GongSolutions.Shell
 {
     /// <summary>
-    /// Provides a toolbar showing common places in the computer's
-    /// filesystem.
+    /// Provides a toolbar showing common places in the computer's filesystem.
     /// </summary>
-    /// 
     /// <remarks>
-    /// Use the <see cref="PlacesToolbar"/> control to display a 
-    /// toolbar listing common places in the computer's filesystem,
-    /// similar to that on the far left-side of the standard file 
+    /// Use the <see cref="PlacesToolbar"/> control to display a toolbar listing common places in
+    /// the computer's filesystem, similar to that on the far left-side of the standard file
     /// open/save dialogs.
     /// </remarks>
     public partial class PlacesToolbar : UserControl
     {
-
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// Initializes a new instance of the <see cref="PlacesToolbar"/> class.
         /// </summary>
         public PlacesToolbar()
         {
@@ -36,14 +28,8 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Adds a new folder to the toolbar.
         /// </summary>
-        /// 
-        /// <param name="folder">
-        /// A <see cref="ShellItem"/> representing the folder to be added.
-        /// </param>
-        /// 
-        /// <returns>
-        /// true if the item was sucessfully added, false otherwise.
-        /// </returns>
+        /// <param name="folder">A <see cref="ShellItem"/> representing the folder to be added.</param>
+        /// <returns>true if the item was sucessfully added, false otherwise.</returns>
         public bool Add(ShellItem folder)
         {
             bool include = IncludeItem(folder);
@@ -69,8 +55,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// A <see cref="C:ShellView"/> that should be automatically 
-        /// navigated when the user clicks on an entry in the toolbar.
+        /// A <see cref="C:ShellView"/> that should be automatically navigated when the user clicks
+        /// on an entry in the toolbar.
         /// </summary>
         [DefaultValue(null)]
         public ShellView ShellView
@@ -80,21 +66,18 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Occurs when the <see cref="PlacesToolbar"/> control wants to 
-        /// know if it should include an item.
+        /// Occurs when the <see cref="PlacesToolbar"/> control wants to know if it should include
+        /// an item.
         /// </summary>
-        /// 
         /// <remarks>
-        /// This event allows the items displayed in the 
-        /// <see cref="PlacesToolbar"/> control to be filtered.
+        /// This event allows the items displayed in the <see cref="PlacesToolbar"/> control to be filtered.
         /// </remarks>
         public event FilterItemEventHandler FilterItem;
 
         #region Hidden Properties
 
         /// <summary>
-        /// This property does not apply to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property does not apply to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public override bool AllowDrop
@@ -104,8 +87,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public override bool AutoScroll
@@ -115,8 +97,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public new Size AutoScrollMargin
@@ -126,8 +107,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public new Size AutoScrollMinSize
@@ -137,8 +117,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false), DefaultValue(true)]
         public override bool AutoSize
@@ -148,8 +127,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false), DefaultValue(AutoSizeMode.GrowAndShrink)]
         public new AutoSizeMode AutoSizeMode
@@ -159,8 +137,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public override AutoValidate AutoValidate
@@ -170,8 +147,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public override Image BackgroundImage
@@ -181,8 +157,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public override ImageLayout BackgroundImageLayout
@@ -192,8 +167,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public new BorderStyle BorderStyle
@@ -203,8 +177,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// This property is not relevant to the 
-        /// <see cref="PlacesToolbar"/> class.
+        /// This property is not relevant to the <see cref="PlacesToolbar"/> class.
         /// </summary>
         [Browsable(false)]
         public new bool CausesValidation
@@ -213,7 +186,7 @@ namespace GongSolutions.Shell
             set { base.CausesValidation = value; }
         }
 
-        #endregion
+        #endregion Hidden Properties
 
         /// <summary>
         /// Overrides the <see cref="Control.OnVisibleChanged"/> method.
@@ -225,7 +198,7 @@ namespace GongSolutions.Shell
             if (toolStrip.Items.Count == 0) CreateDefaultItems();
         }
 
-        void CreateDefaultItems()
+        private void CreateDefaultItems()
         {
             const int CSIDL_NETWORK = 0x0012;
             Add(new ShellItem(Environment.SpecialFolder.Recent));
@@ -235,7 +208,7 @@ namespace GongSolutions.Shell
             Add(new ShellItem((Environment.SpecialFolder)CSIDL_NETWORK));
         }
 
-        bool IncludeItem(ShellItem item)
+        private bool IncludeItem(ShellItem item)
         {
             if (FilterItem != null)
             {
@@ -249,7 +222,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        string WrapButtonText(ToolStripButton button, string s)
+        private string WrapButtonText(ToolStripButton button, string s)
         {
             Graphics g = Graphics.FromHwnd(toolStrip.Handle);
 
@@ -264,7 +237,7 @@ namespace GongSolutions.Shell
             return s;
         }
 
-        void button_Click(object sender, EventArgs e)
+        private void button_Click(object sender, EventArgs e)
         {
             if (m_ShellView != null)
             {
@@ -273,7 +246,7 @@ namespace GongSolutions.Shell
             }
         }
 
-        class Renderer : ToolStripSystemRenderer
+        private class Renderer : ToolStripSystemRenderer
         {
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
             {
@@ -292,6 +265,6 @@ namespace GongSolutions.Shell
             }
         }
 
-        ShellView m_ShellView;
+        private ShellView m_ShellView;
     }
 }

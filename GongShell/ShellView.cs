@@ -1,46 +1,41 @@
+using GongSolutions.Shell.Interop;
 using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
 using System.Drawing;
 using System.Drawing.Design;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Windows.Forms;
-using GongSolutions.Shell.Interop;
+
 using ComTypes = System.Runtime.InteropServices.ComTypes;
 
 namespace GongSolutions.Shell
 {
     /// <summary>
-    /// Specifies how list items are displayed in a <see cref="ShellView"/> 
-    /// control. 
+    /// Specifies how list items are displayed in a <see cref="ShellView"/> control.
     /// </summary>
     public enum ShellViewStyle
     {
         /// <summary>
-        /// Each item appears as a full-sized icon with a label below it. 
+        /// Each item appears as a full-sized icon with a label below it.
         /// </summary>
         LargeIcon = 1,
 
         /// <summary>
-        /// Each item appears as a small icon with a label to its right. 
+        /// Each item appears as a small icon with a label to its right.
         /// </summary>
         SmallIcon,
 
         /// <summary>
-        /// Each item appears as a small icon with a label to its right. 
-        /// Items are arranged in columns with no column headers. 
+        /// Each item appears as a small icon with a label to its right. Items are arranged in
+        /// columns with no column headers.
         /// </summary>
         List,
 
         /// <summary>
-        /// Each item appears on a separate line with further information 
-        /// about each item arranged in columns. The left-most column 
-        /// contains a small icon and label. 
+        /// Each item appears on a separate line with further information about each item arranged
+        /// in columns. The left-most column contains a small icon and label.
         /// </summary>
         Details,
 
@@ -50,14 +45,14 @@ namespace GongSolutions.Shell
         Thumbnail,
 
         /// <summary>
-        /// Each item appears as a full-sized icon with the item label and 
-        /// file information to the right of it. 
+        /// Each item appears as a full-sized icon with the item label and file information to the
+        /// right of it.
         /// </summary>
         Tile,
 
         /// <summary>
-        /// Each item appears in a thumbstrip at the bottom of the control,
-        /// with a large preview of the seleted item appearing above.
+        /// Each item appears in a thumbstrip at the bottom of the control, with a large preview of
+        /// the seleted item appearing above.
         /// </summary>
         Thumbstrip,
     }
@@ -65,22 +60,18 @@ namespace GongSolutions.Shell
     /// <summary>
     /// Provides a view of a computer's files and folders.
     /// </summary>
-    /// 
     /// <remarks>
     /// <para>
-    /// The <see cref="ShellView"/> control allows you to embed Windows 
-    /// Explorer functionality in your Windows Forms applications. The
-    /// control provides a view of a single folder's contents, as it would
-    /// appear in the right-hand pane in Explorer.
+    /// The <see cref="ShellView"/> control allows you to embed Windows Explorer functionality in
+    /// your Windows Forms applications. The control provides a view of a single folder's contents,
+    /// as it would appear in the right-hand pane in Explorer.
     /// </para>
-    /// 
     /// <para>
-    /// When a new <see cref="ShellView"/> control is added to a form,
-    /// it displays the contents of the Desktop folder. Other folders
-    /// can be displayed by calling one of the Navigate methods or setting
-    /// the <see cref="CurrentFolder"/> property.
+    /// When a new <see cref="ShellView"/> control is added to a form, it displays the contents of
+    /// the Desktop folder. Other folders can be displayed by calling one of the Navigate methods or
+    /// setting the <see cref="CurrentFolder"/> property.
     /// </para>
-    /// </remarks>    
+    /// </remarks>
     public class ShellView : Control, INotifyPropertyChanged
     {
         /// <summary>
@@ -92,7 +83,7 @@ namespace GongSolutions.Shell
         /// Constant passed to <see cref="SetColumnWidth"/> which causes a column to be auto-sized
         /// to fit the column header text width.
         /// </summary>
-        public const int ColumnAutoSizeToHeader = -2;        
+        public const int ColumnAutoSizeToHeader = -2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellView"/> class.
@@ -164,10 +155,7 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Navigates to the specified <see cref="ShellItem"/>.
         /// </summary>
-        /// 
-        /// <param name="folder">
-        /// The folder to navigate to.
-        /// </param>
+        /// <param name="folder">The folder to navigate to.</param>
         public void Navigate(ShellItem folder)
         {
             NavigatingEventArgs e = new NavigatingEventArgs(folder);
@@ -200,11 +188,7 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Navigates to the specified filesystem directory.
         /// </summary>
-        /// 
-        /// <param name="path">
-        /// The path of the directory to navigate to.
-        /// </param>
-        /// 
+        /// <param name="path">The path of the directory to navigate to.</param>
         /// <exception cref="DirectoryNotFoundException">
         /// <paramref name="path"/> is not a valid folder.
         /// </exception>
@@ -216,26 +200,18 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Navigates to the specified standard location.
         /// </summary>
-        /// 
-        /// <param name="location">
-        /// The <see cref="Environment.SpecialFolder"/> to which to navigate.
-        /// </param>
-        /// 
+        /// <param name="location">The <see cref="Environment.SpecialFolder"/> to which to navigate.</param>
         /// <remarks>
-        /// Standard locations are virtual folders which may be located in 
-        /// different places in different versions of Windows. For example 
-        /// the "My Documents" folder is normally located at C:\My Documents 
-        /// on Windows 98, but is located in the user's "Documents and 
-        /// Settings" folder in Windows XP. Using a standard 
-        /// <see cref="Environment.SpecialFolder"/> to refer to such folders 
-        /// ensures that your application will behave correctly on all 
-        /// versions of Windows.
+        /// Standard locations are virtual folders which may be located in different places in
+        /// different versions of Windows. For example the "My Documents" folder is normally located
+        /// at C:\My Documents on Windows 98, but is located in the user's "Documents and Settings"
+        /// folder in Windows XP. Using a standard <see cref="Environment.SpecialFolder"/> to refer
+        /// to such folders ensures that your application will behave correctly on all versions of Windows.
         /// </remarks>
         public void Navigate(Environment.SpecialFolder location)
         {
-
-            // CSIDL_MYDOCUMENTS was introduced in Windows XP but doesn't work 
-            // even on that platform. Use CSIDL_PERSONAL instead.
+            // CSIDL_MYDOCUMENTS was introduced in Windows XP but doesn't work even on that
+            // platform. Use CSIDL_PERSONAL instead.
             if (location == Environment.SpecialFolder.MyDocuments)
             {
                 location = Environment.SpecialFolder.Personal;
@@ -245,28 +221,22 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Navigates the <see cref="ShellView"/> control to the previous folder 
-        /// in the navigation history. 
+        /// Navigates the <see cref="ShellView"/> control to the previous folder in the navigation history.
         /// </summary>
-        /// 
         /// <remarks>
         /// <para>
-        /// The WebBrowser control maintains a history list of all the folders
-        /// visited during a session. You can use the <see cref="NavigateBack"/>
-        /// method to implement a <b>Back</b> button similar to the one in 
-        /// Windows Explorer, which will allow your users to return to a 
-        /// previous folder in the navigation history. 
+        /// The WebBrowser control maintains a history list of all the folders visited during a
+        /// session. You can use the <see cref="NavigateBack"/> method to implement a <b>Back</b>
+        /// button similar to the one in Windows Explorer, which will allow your users to return to
+        /// a previous folder in the navigation history.
         /// </para>
-        /// 
         /// <para>
-        /// Use the <see cref="CanNavigateBack"/> property to determine whether 
-        /// the navigation history is available and contains a previous page. 
-        /// This property is useful, for example, to change the enabled state 
-        /// of a Back button when the ShellView control navigates to or leaves 
-        /// the beginning of the navigation history.
+        /// Use the <see cref="CanNavigateBack"/> property to determine whether the navigation
+        /// history is available and contains a previous page. This property is useful, for example,
+        /// to change the enabled state of a Back button when the ShellView control navigates to or
+        /// leaves the beginning of the navigation history.
         /// </para>
         /// </remarks>
-        /// 
         /// <exception cref="InvalidOperationException">
         /// There is no history to navigate backwards through.
         /// </exception>
@@ -278,25 +248,18 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Navigates the <see cref="ShellView"/> control backwards to the 
-        /// requested folder in the navigation history. 
+        /// Navigates the <see cref="ShellView"/> control backwards to the requested folder in the
+        /// navigation history.
         /// </summary>
-        /// 
         /// <remarks>
-        /// The WebBrowser control maintains a history list of all the folders
-        /// visited during a session. You can use the <see cref="NavigateBack"/>
-        /// method to implement a drop-down menu on a <b>Back</b> button similar 
-        /// to the one in Windows Explorer, which will allow your users to return 
-        /// to a previous folder in the navigation history. 
+        /// The WebBrowser control maintains a history list of all the folders visited during a
+        /// session. You can use the <see cref="NavigateBack"/> method to implement a drop-down menu
+        /// on a <b>Back</b> button similar to the one in Windows Explorer, which will allow your
+        /// users to return to a previous folder in the navigation history.
         /// </remarks>
-        /// 
-        /// <param name="folder">
-        /// The folder to navigate to.
-        /// </param>
-        /// 
+        /// <param name="folder">The folder to navigate to.</param>
         /// <exception cref="Exception">
-        /// The requested folder is not present in the 
-        /// <see cref="ShellView"/>'s 'back' history.
+        /// The requested folder is not present in the <see cref="ShellView"/>'s 'back' history.
         /// </exception>
         public void NavigateBack(ShellItem folder)
         {
@@ -307,29 +270,22 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Navigates the <see cref="ShellView"/> control to the next folder 
-        /// in the navigation history. 
+        /// Navigates the <see cref="ShellView"/> control to the next folder in the navigation history.
         /// </summary>
-        /// 
         /// <remarks>
         /// <para>
-        /// The WebBrowser control maintains a history list of all the folders
-        /// visited during a session. You can use the <see cref="NavigateForward"/> 
-        /// method to implement a <b>Forward</b> button similar to the one 
-        /// in Windows Explorer, allowing your users to return to the next 
-        /// folder in the navigation history after navigating backward.
+        /// The WebBrowser control maintains a history list of all the folders visited during a
+        /// session. You can use the <see cref="NavigateForward"/> method to implement a
+        /// <b>Forward</b> button similar to the one in Windows Explorer, allowing your users to
+        /// return to the next folder in the navigation history after navigating backward.
         /// </para>
-        /// 
         /// <para>
-        /// Use the <see cref="CanNavigateForward"/> property to determine 
-        /// whether the navigation history is available and contains a folder 
-        /// located after the current one.  This property is useful, for 
-        /// example, to change the enabled state of a <b>Forward</b> button 
-        /// when the ShellView control navigates to or leaves the end of the 
-        /// navigation history.
+        /// Use the <see cref="CanNavigateForward"/> property to determine whether the navigation
+        /// history is available and contains a folder located after the current one. This property
+        /// is useful, for example, to change the enabled state of a <b>Forward</b> button when the
+        /// ShellView control navigates to or leaves the end of the navigation history.
         /// </para>
         /// </remarks>
-        /// 
         /// <exception cref="InvalidOperationException">
         /// There is no history to navigate forwards through.
         /// </exception>
@@ -341,26 +297,18 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Navigates the <see cref="ShellView"/> control forwards to the 
-        /// requested folder in the navigation history. 
+        /// Navigates the <see cref="ShellView"/> control forwards to the requested folder in the
+        /// navigation history.
         /// </summary>
-        /// 
         /// <remarks>
-        /// The WebBrowser control maintains a history list of all the folders
-        /// visited during a session. You can use the 
-        /// <see cref="NavigateForward"/> method to implement a drop-down menu 
-        /// on a <b>Forward</b> button similar to the one in Windows Explorer, 
-        /// which will allow your users to return to a folder in the 'forward'
-        /// navigation history. 
+        /// The WebBrowser control maintains a history list of all the folders visited during a
+        /// session. You can use the <see cref="NavigateForward"/> method to implement a drop-down
+        /// menu on a <b>Forward</b> button similar to the one in Windows Explorer, which will allow
+        /// your users to return to a folder in the 'forward' navigation history.
         /// </remarks>
-        /// 
-        /// <param name="folder">
-        /// The folder to navigate to.
-        /// </param>
-        /// 
+        /// <param name="folder">The folder to navigate to.</param>
         /// <exception cref="Exception">
-        /// The requested folder is not present in the 
-        /// <see cref="ShellView"/>'s 'forward' history.
+        /// The requested folder is not present in the <see cref="ShellView"/>'s 'forward' history.
         /// </exception>
         public void NavigateForward(ShellItem folder)
         {
@@ -379,19 +327,15 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Navigates to the folder currently selected in the 
-        /// <see cref="ShellView"/>.
+        /// Navigates to the folder currently selected in the <see cref="ShellView"/>.
         /// </summary>
-        /// 
         /// <remarks>
-        /// If the <see cref="ShellView"/>'s <see cref="MultiSelect"/>
-        /// property is set, and more than one item is selected in the
-        /// ShellView, the first Folder found will be navigated to.
+        /// If the <see cref="ShellView"/>'s <see cref="MultiSelect"/> property is set, and more
+        /// than one item is selected in the ShellView, the first Folder found will be navigated to.
         /// </remarks>
-        /// 
         /// <returns>
-        /// <see langword="true"/> if a selected folder could be
-        /// navigated to, <see langword="false"/> otherwise.
+        /// <see langword="true"/> if a selected folder could be navigated to, <see
+        /// langword="false"/> otherwise.
         /// </returns>
         public bool NavigateSelectedFolder()
         {
@@ -430,8 +374,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Begins a rename on the item currently selected in the 
-        /// <see cref="ShellView"/>.
+        /// Begins a rename on the item currently selected in the <see cref="ShellView"/>.
         /// </summary>
         public void RenameSelectedItem()
         {
@@ -445,8 +388,8 @@ namespace GongSolutions.Shell
         /// <returns>Width in pixel</returns>
         public int GetColumnWidth(int column)
         {
-            IntPtr wnd = User32.GetWindow(m_ShellViewWindow,GetWindow_Cmd.GW_CHILD);// Get listview
-            return User32.SendMessage(wnd, MSG.LVM_GETCOLUMNWIDTH,column,0);
+            IntPtr wnd = User32.GetWindow(m_ShellViewWindow, GetWindow_Cmd.GW_CHILD);// Get listview
+            return User32.SendMessage(wnd, MSG.LVM_GETCOLUMNWIDTH, column, 0);
         }
 
         /// <summary>
@@ -475,8 +418,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets a value indicating whether a new folder can be created in
-        /// the folder currently being browsed by th <see cref="ShellView"/>.
+        /// Gets a value indicating whether a new folder can be created in the folder currently
+        /// being browsed by th <see cref="ShellView"/>.
         /// </summary>
         [Browsable(false)]
         public bool CanCreateFolder
@@ -488,9 +431,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets a value indicating whether a previous page in navigation 
-        /// history is available, which allows the <see cref="NavigateBack"/> 
-        /// method to succeed. 
+        /// Gets a value indicating whether a previous page in navigation history is available,
+        /// which allows the <see cref="NavigateBack"/> method to succeed.
         /// </summary>
         [Browsable(false)]
         public bool CanNavigateBack
@@ -499,9 +441,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets a value indicating whether a subsequent page in navigation 
-        /// history is available, which allows the <see cref="NavigateForward"/> 
-        /// method to succeed. 
+        /// Gets a value indicating whether a subsequent page in navigation history is available,
+        /// which allows the <see cref="NavigateForward"/> method to succeed.
         /// </summary>
         [Browsable(false)]
         public bool CanNavigateForward
@@ -510,9 +451,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets a value indicating whether the folder currently being browsed
-        /// by the <see cref="ShellView"/> has parent folder which can be
-        /// navigated to by calling <see cref="NavigateParent"/>.
+        /// Gets a value indicating whether the folder currently being browsed by the <see
+        /// cref="ShellView"/> has parent folder which can be navigated to by calling <see cref="NavigateParent"/>.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -534,8 +474,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a <see cref="ShellItem"/> describing the folder 
-        /// currently being browsed by the <see cref="ShellView"/>.
+        /// Gets/sets a <see cref="ShellItem"/> describing the folder currently being browsed by the
+        /// <see cref="ShellView"/>.
         /// </summary>
         [Editor(typeof(ShellItemEditor), typeof(UITypeEditor))]
         public ShellItem CurrentFolder
@@ -561,14 +501,11 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets a list of the items currently selected in the 
-        /// <see cref="ShellView"/>
+        /// Gets a list of the items currently selected in the <see cref="ShellView"/>
         /// </summary>
-        /// 
         /// <value>
-        /// A <see cref="ShellItem"/> array detailing the items currently 
-        /// selected in the control. If no items are currently selected, 
-        /// an empty array is returned. 
+        /// A <see cref="ShellItem"/> array detailing the items currently selected in the control.
+        /// If no items are currently selected, an empty array is returned.
         /// </value>
         [Browsable(false)]
         public ShellItem[] SelectedItems
@@ -614,8 +551,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a value indicating whether multiple items can be selected
-        /// by the user.
+        /// Gets/sets a value indicating whether multiple items can be selected by the user.
         /// </summary>
         [DefaultValue(true), Category("Behaviour")]
         public bool MultiSelect
@@ -630,20 +566,16 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a value indicating whether a "WebView" is displayed on
-        /// the left of the <see cref="ShellView"/> control.
+        /// Gets/sets a value indicating whether a "WebView" is displayed on the left of the <see
+        /// cref="ShellView"/> control.
         /// </summary>
-        /// 
         /// <remarks>
-        /// The WebView is a strip of HTML that appears to the left of a
-        /// Windows Explorer window when the window has no Explorer Bar.
-        /// It displays general system tasks and locations, as well as
-        /// information about the items selected in the window.
-        /// 
+        /// The WebView is a strip of HTML that appears to the left of a Windows Explorer window
+        /// when the window has no Explorer Bar. It displays general system tasks and locations, as
+        /// well as information about the items selected in the window.
         /// <para>
-        /// <b>Important:</b> When <see cref="ShowWebView"/> is set to 
-        /// <see langref="true"/>, the <see cref="SelectionChanged"/>
-        /// event will not occur. This is due to a limitation in the 
+        /// <b>Important:</b> When <see cref="ShowWebView"/> is set to <see langref="true"/>, the
+        /// <see cref="SelectionChanged"/> event will not occur. This is due to a limitation in the
         /// underlying windows control.
         /// </para>
         /// </remarks>
@@ -664,8 +596,8 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets/sets a <see cref="C:StatusBar"/> control that the 
-        /// <see cref="ShellView"/> should use to display folder details.
+        /// Gets/sets a <see cref="C:StatusBar"/> control that the <see cref="ShellView"/> should
+        /// use to display folder details.
         /// </summary>
         public StatusBar StatusBar
         {
@@ -674,7 +606,7 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Gets or sets how items are displayed in the control. 
+        /// Gets or sets how items are displayed in the control.
         /// </summary>
         [DefaultValue(ShellViewStyle.LargeIcon), Category("Appearance")]
         public ShellViewStyle View
@@ -689,38 +621,31 @@ namespace GongSolutions.Shell
         }
 
         /// <summary>
-        /// Occurs when the <see cref="ShellView"/> control wants to know
-        /// if it should include an item in its view.
+        /// Occurs when the <see cref="ShellView"/> control wants to know if it should include an
+        /// item in its view.
         /// </summary>
-        /// 
         /// <remarks>
-        /// This event allows the items displayed in the <see cref="ShellView"/>
-        /// control to be filtered. You may want to to only list files with
-        /// a certain extension, for example.
+        /// This event allows the items displayed in the <see cref="ShellView"/> control to be
+        /// filtered. You may want to to only list files with a certain extension, for example.
         /// </remarks>
         public event FilterItemEventHandler FilterItem;
 
         /// <summary>
-        /// Occurs when the <see cref="ShellView"/> control navigates to a 
-        /// new folder.
+        /// Occurs when the <see cref="ShellView"/> control navigates to a new folder.
         /// </summary>
         public event EventHandler Navigated;
 
         /// <summary>
-        /// Occurs when the <see cref="ShellView"/> control is about to 
-        /// navigate to a new folder.
+        /// Occurs when the <see cref="ShellView"/> control is about to navigate to a new folder.
         /// </summary>
         public event NavigatingEventHandler Navigating;
 
         /// <summary>
-        /// Occurs when the <see cref="ShellView"/>'s current selection 
-        /// changes.
+        /// Occurs when the <see cref="ShellView"/>'s current selection changes.
         /// </summary>
-        /// 
         /// <remarks>
-        /// <b>Important:</b> When <see cref="ShowWebView"/> is set to 
-        /// <see langref="true"/>, this event will not occur. This is due to 
-        /// a limitation in the underlying windows control.
+        /// <b>Important:</b> When <see cref="ShowWebView"/> is set to <see langref="true"/>, this
+        /// event will not occur. This is due to a limitation in the underlying windows control.
         /// </remarks>
         public event EventHandler SelectionChanged;
 
@@ -756,7 +681,7 @@ namespace GongSolutions.Shell
             set { base.BackgroundImageLayout = value; }
         }
 
-        #endregion
+        #endregion Hidden Inherited Properties
 
         #region INotifyPropertyChanged Members
 
@@ -766,12 +691,11 @@ namespace GongSolutions.Shell
             remove { m_PropertyChanged -= value; }
         }
 
-        #endregion
+        #endregion INotifyPropertyChanged Members
 
         /// <summary>
         /// Overrides <see cref="Control.Dispose(bool)"/>
         /// </summary>
-        /// 
         /// <param name="disposing"/>
         protected override void Dispose(bool disposing)
         {
@@ -799,7 +723,6 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Overrides <see cref="Control.OnPreviewKeyDown"/>.
         /// </summary>
-        /// 
         /// <param name="e"/>
         /// <returns/>
         protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
@@ -822,7 +745,6 @@ namespace GongSolutions.Shell
         /// <summary>
         /// Overrides <see cref="Control.OnResize"/>.
         /// </summary>
-        /// 
         /// <param name="eventargs"/>
         protected override void OnResize(EventArgs eventargs)
         {
@@ -839,10 +761,9 @@ namespace GongSolutions.Shell
         {
             const int CWM_GETISHELLBROWSER = 0x407;
 
-            // Windows 9x sends the CWM_GETISHELLBROWSER message and expects
-            // the IShellBrowser for the window to be returned or an Access
-            // Violation occurs. This is pseudo-documented in knowledge base 
-            // article Q157247.
+            // Windows 9x sends the CWM_GETISHELLBROWSER message and expects the IShellBrowser for
+            // the window to be returned or an Access Violation occurs. This is pseudo-documented in
+            // knowledge base article Q157247.
             if (m.Msg == CWM_GETISHELLBROWSER)
             {
                 m.Result = Marshal.GetComInterfaceForObject(m_Browser,
@@ -887,7 +808,7 @@ namespace GongSolutions.Shell
             get { return m_CurrentFolder; }
         }
 
-        void CreateShellView()
+        private void CreateShellView()
         {
             IShellView previous = m_ComInterface;
             Rectangle bounds = ClientRectangle;
@@ -909,8 +830,7 @@ namespace GongSolutions.Shell
                 folderSettings.fFlags |= FOLDERFLAGS.SINGLESEL;
             }
 
-            // Tell the IShellView object to create a view window and
-            // activate it.
+            // Tell the IShellView object to create a view window and activate it.
             try
             {
                 m_ComInterface.CreateViewWindow(previous, ref folderSettings,
@@ -919,10 +839,9 @@ namespace GongSolutions.Shell
             }
             catch (COMException ex)
             {
-                // If the operation was cancelled by the user (for example
-                // because an empty removable media drive was selected, 
-                // then "Cancel" pressed in the resulting dialog) convert
-                // the exception into something more meaningfil.
+                // If the operation was cancelled by the user (for example because an empty
+                // removable media drive was selected, then "Cancel" pressed in the resulting
+                // dialog) convert the exception into something more meaningfil.
                 if (ex.ErrorCode == unchecked((int)0x800704C7U))
                 {
                     throw new UserAbortException(ex);
@@ -931,8 +850,7 @@ namespace GongSolutions.Shell
 
             m_ComInterface.UIActivate(1);
 
-            // Disable the window if in design mode, so that user input is
-            // passed onto the designer.
+            // Disable the window if in design mode, so that user input is passed onto the designer.
             if (DesignMode)
             {
                 User32.EnableWindow(m_ShellViewWindow, false);
@@ -942,7 +860,7 @@ namespace GongSolutions.Shell
             if (previous != null) previous.DestroyViewWindow();
         }
 
-        void RecreateShellView()
+        private void RecreateShellView()
         {
             if (m_ComInterface != null)
             {
@@ -981,7 +899,7 @@ namespace GongSolutions.Shell
             return true;
         }
 
-        ComTypes.IDataObject GetSelectionDataObject()
+        private ComTypes.IDataObject GetSelectionDataObject()
         {
             IntPtr result;
 
@@ -1023,7 +941,7 @@ namespace GongSolutions.Shell
             return m_Browser;
         }
 
-        void OnNavigated()
+        private void OnNavigated()
         {
             if (Navigated != null)
             {
@@ -1048,7 +966,7 @@ namespace GongSolutions.Shell
         [DllImport("kernel32.dll")]
         static extern IntPtr GlobalFree(IntPtr hMem);
 
-        bool m_MultiSelect;
+        private bool m_MultiSelect;
         ShellHistory m_History;
         ShellBrowser m_Browser;
         ShellItem m_CurrentFolder;
@@ -1065,21 +983,16 @@ namespace GongSolutions.Shell
     public class FilterItemEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilterItemEventArgs"/>
-        /// class.
+        /// Initializes a new instance of the <see cref="FilterItemEventArgs"/> class.
         /// </summary>
-        /// 
-        /// <param name="item">
-        /// The item to be filtered.
-        /// </param>
+        /// <param name="item">The item to be filtered.</param>
         internal FilterItemEventArgs(ShellItem item)
         {
             m_Item = item;
         }
 
         /// <summary>
-        /// Gets/sets a value which will determine whether the item will be
-        /// included in the <see cref="ShellView"/>.
+        /// Gets/sets a value which will determine whether the item will be included in the <see cref="ShellView"/>.
         /// </summary>
         public bool Include
         {
@@ -1095,32 +1008,26 @@ namespace GongSolutions.Shell
             get { return m_Item; }
         }
 
-        ShellItem m_Item;
+        private ShellItem m_Item;
         bool m_Include = true;
     }
 
     /// <summary>
-    /// Provides information for the <see cref="ShellView.Navigating"/>
-    /// event.
+    /// Provides information for the <see cref="ShellView.Navigating"/> event.
     /// </summary>
     public class NavigatingEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NavigatingEventArgs"/>
-        /// class.
+        /// Initializes a new instance of the <see cref="NavigatingEventArgs"/> class.
         /// </summary>
-        /// 
-        /// <param name="folder">
-        /// The folder being navigated to.
-        /// </param>
+        /// <param name="folder">The folder being navigated to.</param>
         public NavigatingEventArgs(ShellItem folder)
         {
             m_Folder = folder;
         }
 
         /// <summary>
-        /// Gets/sets a value indicating whether the navigation should be
-        /// cancelled.
+        /// Gets/sets a value indicating whether the navigation should be cancelled.
         /// </summary>
         public bool Cancel
         {
@@ -1137,8 +1044,8 @@ namespace GongSolutions.Shell
             set { m_Folder = value; }
         }
 
-        bool m_Cancel;
-        ShellItem m_Folder;
+        private bool m_Cancel;
+        private ShellItem m_Folder;
     }
 
     /// <summary>
@@ -1146,15 +1053,10 @@ namespace GongSolutions.Shell
     /// </summary>
     public class UserAbortException : ExternalException
     {
-
         /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="UserAbortException"/> class.
+        /// Initializes a new instance of the <see cref="UserAbortException"/> class.
         /// </summary>
-        /// 
-        /// <param name="e">
-        /// The inner exception.
-        /// </param>
+        /// <param name="e">The inner exception.</param>
         public UserAbortException(Exception e)
             : base("User aborted", e)
         {
@@ -1168,8 +1070,7 @@ namespace GongSolutions.Shell
         FilterItemEventArgs e);
 
     /// <summary>
-    /// Represents the method that will handle the 
-    /// <see cref="ShellView.Navigating"/> event.
+    /// Represents the method that will handle the <see cref="ShellView.Navigating"/> event.
     /// </summary>
     public delegate void NavigatingEventHandler(object sender,
         NavigatingEventArgs e);

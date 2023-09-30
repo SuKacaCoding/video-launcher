@@ -48,34 +48,47 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         HResult GetWindow(out IntPtr phwnd);
+
         [PreserveSig]
         HResult ContextSensitiveHelp(bool fEnterMode);
+
         [PreserveSig]
         HResult InsertMenusSB(IntPtr IntPtrShared, IntPtr lpMenuWidths);
+
         [PreserveSig]
         HResult SetMenuSB(IntPtr IntPtrShared, IntPtr holemenuRes,
                       IntPtr IntPtrActiveObject);
+
         [PreserveSig]
         HResult RemoveMenusSB(IntPtr IntPtrShared);
+
         [PreserveSig]
         HResult SetStatusTextSB(IntPtr pszStatusText);
+
         [PreserveSig]
         HResult EnableModelessSB(bool fEnable);
+
         [PreserveSig]
         HResult TranslateAcceleratorSB(IntPtr pmsg, ushort wID);
 
         [PreserveSig]
         HResult BrowseObject(IntPtr pidl, SBSP wFlags);
+
         [PreserveSig]
         HResult GetViewStateStream(uint grfMode, IntPtr ppStrm);
+
         [PreserveSig]
         HResult GetControlWindow(FCW id, out IntPtr lpIntPtr);
+
         [PreserveSig]
         HResult SendControlMsg(FCW id, MSG uMsg, uint wParam, uint lParam, IntPtr pret);
+
         [PreserveSig]
         HResult QueryActiveShellView(out IShellView ppshv);
+
         [PreserveSig]
         HResult OnViewWindowActive(IShellView ppshv);
+
         [PreserveSig]
         HResult SetToolbarItems(IntPtr lpButtons, uint nButtons, uint uFlags);
     }

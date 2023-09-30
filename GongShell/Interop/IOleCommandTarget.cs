@@ -11,6 +11,7 @@ namespace GongSolutions.Shell.Interop
         public uint cmdtextf;
         public uint cwActual;
         public uint cwBuf;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)]
         public char rgwz;
     }
@@ -28,9 +29,10 @@ namespace GongSolutions.Shell.Interop
     public interface IOleCommandTarget
     {
         void QueryStatus(ref Guid pguidCmdGroup, UInt32 cCmds,
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] 
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]
             OLECMD[] prgCmds,
             ref OLECMDTEXT CmdText);
+
         void Exec(ref Guid pguidCmdGroup, uint nCmdId, uint nCmdExecOpt,
                   ref object pvaIn, ref object pvaOut);
     }

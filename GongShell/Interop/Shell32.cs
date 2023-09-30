@@ -6,7 +6,6 @@ using System.Text;
 
 namespace GongSolutions.Shell.Interop
 {
-
     public enum CSIDL
     {
         DESKTOP = 0x0000,
@@ -213,7 +212,7 @@ namespace GongSolutions.Shell.Interop
     }
 
     [Flags]
-    enum SHGFI
+    internal enum SHGFI
     {
         ICON = 0x000000100,
         DISPLAYNAME = 0x000000200,
@@ -304,8 +303,10 @@ namespace GongSolutions.Shell.Interop
         public IntPtr hIcon;
         public int iIcon;
         public uint dwAttributes;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
         public string szDisplayName;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
         public string szTypeName;
     }
@@ -321,17 +322,21 @@ namespace GongSolutions.Shell.Interop
     {
         [FieldOffset(0)]
         public UInt32 uType;
+
         [FieldOffset(4)]
         public IntPtr pOleStr;
+
         [FieldOffset(4)]
         public IntPtr pStr;
+
         [FieldOffset(4)]
         public UInt32 uOffset;
+
         [FieldOffset(4)]
         public IntPtr cStr;
     }
 
-    class Shell32
+    internal class Shell32
     {
         [DllImport("shell32.dll", EntryPoint = "#660")]
         public static extern bool FileIconInit(bool bFullInit);

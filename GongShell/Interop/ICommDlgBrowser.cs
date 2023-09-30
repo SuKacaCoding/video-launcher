@@ -21,8 +21,10 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         HResult OnDefaultCommand(IShellView ppshv);
+
         [PreserveSig]
         HResult OnStateChange(IShellView ppshv, CDBOSC uChange);
+
         [PreserveSig]
         HResult IncludeObject(IShellView ppshv, IntPtr pidl);
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GongSolutions.Shell.Interop.VistaBridge
 {
-    class ShellItemImpl : IDisposable, IShellItem
+    internal class ShellItemImpl : IDisposable, IShellItem
     {
         public ShellItemImpl(IntPtr pidl, bool owner)
         {
@@ -118,7 +118,7 @@ namespace GongSolutions.Shell.Interop.VistaBridge
             Shell32.ILFree(m_Pidl);
         }
 
-        ShellItemImpl GetParent()
+        private ShellItemImpl GetParent()
         {
             IntPtr pidl = Shell32.ILClone(m_Pidl);
 
@@ -132,7 +132,7 @@ namespace GongSolutions.Shell.Interop.VistaBridge
             }
         }
 
-        IShellFolder GetIShellFolder()
+        private IShellFolder GetIShellFolder()
         {
             IShellFolder desktop = Shell32.SHGetDesktopFolder();
             IntPtr desktopPidl;
@@ -154,6 +154,6 @@ namespace GongSolutions.Shell.Interop.VistaBridge
             }
         }
 
-        IntPtr m_Pidl;
+        private IntPtr m_Pidl;
     }
 }
