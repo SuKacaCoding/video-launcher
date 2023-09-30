@@ -10,12 +10,17 @@ public partial class NetworkView : UserControl
     public NetworkView()
     {
         InitializeComponent();
+
+        _viewModel = (NetworkViewModel)DataContext;
     }
 
     public async Task PrepareAsync()
     {
         ListComputerShares.FocusOnSelectionOrItself();
 
-        await ((NetworkViewModel)DataContext).RefreshComputerSharesCommand.ExecuteAsync(null);
+        if (_viewModel.RefreshComputerSharesCommand.CanExecute(null))
+            await _viewModel.RefreshComputerSharesCommand.ExecuteAsync(null);
     }
+
+    private readonly NetworkViewModel _viewModel;
 }
