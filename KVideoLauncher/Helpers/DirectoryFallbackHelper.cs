@@ -15,7 +15,7 @@ public static class DirectoryFallbackHelper
                 (message: "mustn't be an existing directory path.", paramName: nameof(directoryPath));
         }
 
-        while (!Path.IsPathRooted(directoryPath))
+        while (!directoryPath.IsRootPath())
         {
             directoryPath = Path.Join(directoryPath, path2: "..");
             if (await directoryPath.DirectoryExistsAsync())

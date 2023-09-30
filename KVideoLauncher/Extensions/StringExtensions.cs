@@ -8,4 +8,6 @@ public static class StringExtensions
     public static Task<bool> DirectoryExistsAsync(this string? path) => Task.Run(() => Directory.Exists(path));
 
     public static Task<bool> FileExistsAsync(this string? path) => Task.Run(() => File.Exists(path));
+
+    public static bool IsRootPath(this string? path) => Path.GetPathRoot(path) == path;
 }

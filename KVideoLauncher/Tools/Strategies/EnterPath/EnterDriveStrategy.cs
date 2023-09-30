@@ -14,7 +14,7 @@ public class EnterDriveStrategy : IEnterPathStrategy
     {
         if (enterPath.Path is null)
             throw new ArgumentException(message: ".Path mustn't be null.", paramName: nameof(enterPath));
-        if (!Path.IsPathRooted(enterPath.Path))
+        if (!enterPath.Path.IsRootPath())
             throw new ArgumentException(message: ".Path must be a rooted path.", paramName: nameof(enterPath));
 
         string normalizedDrivePath = Path.GetFullPath(enterPath.Path);
