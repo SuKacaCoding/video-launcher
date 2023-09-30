@@ -116,9 +116,9 @@
   <data name="Frequent" xml:space="preserve">
     <value>经常访问：</value>
   </data>
-  <data name="NetworkSmb" xml:space="preserve">
-        <value>网上邻居（SMB）</value>
-    </data>
+  <data name="Network" xml:space="preserve">
+    <value>网上邻居</value>
+  </data>
   <data name="NextPlaylist" xml:space="preserve">
     <value>下一个播放列表</value>
   </data>
@@ -167,8 +167,8 @@
   <data name="MakeSurePlayCommandIsCorrect" xml:space="preserve">
     <value>请确保您在设置文件中所配置的播放命令是正确的。</value>
   </data>
-  <data name="ToggleNetworkSmb" xml:space="preserve">
-    <value>网上邻居（SMB）...</value>
+  <data name="ToggleNetwork" xml:space="preserve">
+    <value>网上邻居...</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>确定</value>

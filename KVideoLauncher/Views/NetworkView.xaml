@@ -22,7 +22,7 @@
 
         <TextBlock Grid.Row="0"
                    Style="{StaticResource TitleTextBlockStyle}"
-                   Text="{x:Static l:Labels.NetworkSmb}" />
+                   Text="{x:Static l:Labels.Network}" />
 
         <ListBox Grid.Row="2" />
 

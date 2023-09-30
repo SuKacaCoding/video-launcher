@@ -157,7 +157,7 @@
                 <ToggleButton x:Name="TglBtnNetwork"
                               Grid.Row="6"
                               HorizontalAlignment="Stretch"
-                              Content="{x:Static l:Labels.ToggleNetworkSmb}" />
+                              Content="{x:Static l:Labels.ToggleNetwork}" />
             </Grid>
 
             <Grid Grid.Row="0" Grid.Column="2">

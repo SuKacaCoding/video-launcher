@@ -137,8 +137,8 @@
     <data name="Frequent" xml:space="preserve">
     <value>Frequent:</value>
   </data>
-    <data name="NetworkSmb" xml:space="preserve">
-        <value>Network (SMB)</value>
+    <data name="Network" xml:space="preserve">
+      <value>Network</value>
     </data>
     <data name="NextPlaylist" xml:space="preserve">
     <value>Next playlist</value>
@@ -188,9 +188,9 @@
     <data name="MakeSurePlayCommandIsCorrect" xml:space="preserve">
     <value>Please make sure that the play command you have configured in the settings file is correct.</value>
   </data>
-    <data name="ToggleNetworkSmb" xml:space="preserve">
-    <value>Network (SMB)...</value>
-  </data>
+    <data name="ToggleNetwork" xml:space="preserve">
+      <value>Network...</value>
+    </data>
     <data name="OK" xml:space="preserve">
         <value>OK</value>
     </data>
