@@ -18,7 +18,7 @@ public partial class NetworkView : UserControl
     {
         ListComputerShares.FocusOnSelectionOrItself();
 
-        if (_viewModel.RefreshComputerSharesCommand.CanExecute(null))
+        if (_viewModel.RefreshComputerSharesCommand.CanExecute(null) && ListComputerShares.Items.Count == 0)
             await _viewModel.RefreshComputerSharesCommand.ExecuteAsync(null);
     }
 
