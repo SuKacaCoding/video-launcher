@@ -1,10 +1,11 @@
 ﻿<UserControl x:Class="KVideoLauncher.Views.NetworkView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
              xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
+             d:Background="White"
              d:DesignHeight="500"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -24,7 +25,17 @@
                    Style="{StaticResource TitleTextBlockStyle}"
                    Text="{x:Static l:Labels.Network}" />
 
-        <ListBox Grid.Row="2" />
+        <ListBox x:Name="ListComputerShares"
+                 Grid.Row="2"
+                 ItemsSource="{Binding ComputerShares}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="5"
+                               FontSize="{StaticResource ListBoxItemTextFontSize}"
+                               Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -34,6 +45,7 @@
 
             <Button Grid.Column="0"
                     HorizontalAlignment="Left"
+                    Command="{Binding RefreshComputerSharesCommand}"
                     Content="&#xeafd;"
                     ContentTemplate="{StaticResource IconFontButtonTemplate}" />
             <Button Grid.Column="1"

@@ -129,11 +129,6 @@ public partial class MainWindow : Window
         FocusedListBoxIndex = 0;
     }
 
-    private static void FocusOnListBoxSelection(ListBox listBox)
-    {
-        (listBox.ItemContainerGenerator.ContainerFromIndex(listBox.SelectedIndex) as FrameworkElement)?.Focus();
-    }
-
     private void CommonMoveFocusedListBoxSelection(int offset)
     {
         int itemsCount = FocusedListBox.Items.Count;
@@ -145,7 +140,17 @@ public partial class MainWindow : Window
         targetSelectedIndex = targetSelectedIndex.MathMod(itemsCount);
 
         FocusedListBox.SelectedIndex = targetSelectedIndex;
-        FocusOnListBoxSelection(FocusedListBox);
+        FocusedListBox.FocusOnSelection();
+    }
+
+    private void DrawerClosed(object sender, RoutedEventArgs e)
+    {
+        FocusedListBox.FocusOnSelectionOrItself();
+    }
+
+    private async void DrawerOpened(object sender, RoutedEventArgs e)
+    {
+        await MyNetworkView.PrepareAsync();
     }
 
     private int FocusOnListBox(ListBox listBox)
@@ -154,10 +159,7 @@ public partial class MainWindow : Window
         if (indexOfListBox == -1)
             return -1;
 
-        if (listBox.SelectedIndex == -1)
-            listBox.Focus();
-        else
-            FocusOnListBoxSelection(listBox);
+        listBox.FocusOnSelectionOrItself();
 
         foreach (var column in _widthAdjustableColumnByListBox.Values)
             column.Width = GeneralColumnWidth;

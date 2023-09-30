@@ -1,12 +1,12 @@
 ﻿<hc:Window x:Class="KVideoLauncher.Views.MainWindow"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-           xmlns:hc="https://handyorg.github.io/handycontrol"
-           xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-           xmlns:v="clr-namespace:KVideoLauncher.Views"
+           xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
            xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
+           xmlns:v="clr-namespace:KVideoLauncher.Views"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
            Title="KVideoLauncher"
            d:DesignHeight="720"
            d:DesignWidth="1280"
@@ -409,13 +409,15 @@
             </Grid>
         </Grid>
 
-        <hc:Drawer Dock="Left"
+        <hc:Drawer Closed="DrawerClosed"
+                   Dock="Left"
                    IsOpen="{Binding ElementName=TglBtnNetwork, Path=IsChecked}"
                    MaskCanClose="True"
+                   Opened="DrawerOpened"
                    ShowMask="True"
                    ShowMode="Push">
             <Border Width="500" Background="{DynamicResource RegionBrush}">
-                <v:NetworkView />
+                <v:NetworkView x:Name="MyNetworkView" />
             </Border>
         </hc:Drawer>
     </hc:SimplePanel>
