@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using HandyControl.Tools;
+using KVideoLauncher.Data;
 using KVideoLauncher.Extensions;
 using KVideoLauncher.Helpers;
 using KVideoLauncher.Properties;
+using KVideoLauncher.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -45,6 +47,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        _viewModel = (MainWindowViewModel)DataContext;
 
         #region Apply Acrylic effect
 
@@ -204,6 +208,15 @@ public partial class MainWindow : Window
         FocusedListBoxIndex++;
     }
 
+    private void MyNetworkViewShareSelected(object? sender, ShareSelectedEventArgs e)
+    {
+        DrawerLeft.IsOpen = false;
+
+        IAsyncRelayCommand<string?> changeDriveCommand = _viewModel.ChangeDriveCommand;
+        if (changeDriveCommand.CanExecute(null))
+            changeDriveCommand.ExecuteAsync(e.ComputerShare);
+    }
+
     [RelayCommand]
     private void PreciselyMoveFocusedListBoxSelectionDown()
     {
@@ -245,6 +258,7 @@ public partial class MainWindow : Window
     }
 
     private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;
+    private readonly MainWindowViewModel _viewModel;
     private readonly ReadOnlyDictionary<ListBox, ColumnDefinition> _widthAdjustableColumnByListBox;
 
     private int _focusedListBoxIndex;

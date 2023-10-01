@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:KVideoLauncher.Properties.Lang"
              xmlns:vm="clr-namespace:KVideoLauncher.ViewModels"
+             xmlns:v="clr-namespace:KVideoLauncher.Views"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              d:Background="White"
              d:DesignHeight="500"
@@ -13,6 +14,13 @@
     <UserControl.DataContext>
         <vm:NetworkViewModel />
     </UserControl.DataContext>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding RefreshComputerSharesCommand}" Gesture="CTRL+R" />
+        <KeyBinding Command="v:NetworkView.OkCommand" Gesture="CTRL+ENTER" />
+    </UserControl.InputBindings>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="v:NetworkView.OkCommand" Executed="OkCommandExecuted" />
+    </UserControl.CommandBindings>
     <Grid Margin="{StaticResource MainMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -53,6 +61,7 @@
                 <hc:LoadingCircle IsRunning="{Binding IsLoadingComputerShares}" Visibility="{Binding LoadingComputerSharesVisibility}" />
             </StackPanel>
             <Button Grid.Column="1"
+                    Command="v:NetworkView.OkCommand"
                     Content="{x:Static l:Labels.OK}"
                     Style="{StaticResource ButtonPrimary}" />
         </Grid>

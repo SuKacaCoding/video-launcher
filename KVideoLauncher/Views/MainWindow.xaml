@@ -418,7 +418,7 @@
                    ShowMask="True"
                    ShowMode="Push">
             <Border Width="500" Background="{DynamicResource RegionBrush}">
-                <v:NetworkView x:Name="MyNetworkView" />
+                <v:NetworkView x:Name="MyNetworkView" ShareSelected="MyNetworkViewShareSelected" />
             </Border>
         </hc:Drawer>
     </hc:SimplePanel>
