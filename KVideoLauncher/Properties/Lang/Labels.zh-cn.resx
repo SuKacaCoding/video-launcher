@@ -173,4 +173,7 @@
   <data name="OK" xml:space="preserve">
     <value>确定</value>
   </data>
+  <data name="StartupCommandSuccessfullyExecuted" xml:space="preserve">
+    <value>启动时命令已经成功执行。</value>
+  </data>
 </root>

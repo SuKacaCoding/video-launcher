@@ -26,6 +26,10 @@ public class SettingsModel
 
     #region Setting properties for users to customize
 
+    public string? StartupCommand { get; init; }
+
+    public string? ExitCommand { get; init; }
+
     public IEnumerable<DirectoryDisplayingInfo> PinnedDirectories { get; init; } =
         Enumerable.Empty<DirectoryDisplayingInfo>();
 

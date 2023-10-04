@@ -90,6 +90,7 @@ public partial class MainWindowViewModel : ObservableObject
     private async Task ExitAsync()
     {
         await SaveSettingsAsync();
+        await ExecuteExitCommand();
 
         Application.Current.Shutdown();
     }
@@ -113,22 +114,14 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task InitializeDataAsync()
     {
-        var settings = await _settings;
+        await _settings;
 
         RefreshDrives();
-
-        _pinnedDirectories.AddRange
+        await Task.WhenAll
         (
-            (await settings.PinnedDirectories
-                .WhereAsync(info => info.Directory.DirectoryExistsAsync()))
-            .Take(PinnedDirectoriesMaxCount)
-            .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
+            InitializePinnedDirectoriesAsync(),
+            ExecuteStartupCommand()
         );
-        await UpdateFrequentDirectoriesAsync();
-
-        foreach (IEnumerable<FileDisplayingInfo> playlist in settings.HistoricalPlaylists)
-            _historicalPlaylists.Add(playlist.ToList());
-        CreatePlaylist();
     }
 
     [RelayCommand]
@@ -422,6 +415,49 @@ public partial class MainWindowViewModel : ObservableObject
         Growl.InfoGlobal(Labels.TargetDirectoryDoesNotExist);
     }
 
+    private async Task ExecuteExitCommand()
+    {
+        var settings = await _settings;
+        string? command = settings.ExitCommand;
+        if (command is null)
+            return;
+
+        var processStartInfo = new ProcessStartInfo(command);
+        try
+        {
+            var process = Process.Start(processStartInfo);
+            if (process is { })
+                await process.WaitForExitAsync();
+        }
+        catch (Win32Exception ex)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
+    }
+
+    private async Task ExecuteStartupCommand()
+    {
+        var settings = await _settings;
+        string? command = settings.StartupCommand;
+        if (command is null)
+            return;
+
+        var processStartInfo = new ProcessStartInfo(command);
+        try
+        {
+            var process = Process.Start(processStartInfo);
+            if (process is { })
+            {
+                await process.WaitForExitAsync();
+                Growl.InfoGlobal(Labels.StartupCommandSuccessfullyExecuted);
+            }
+        }
+        catch (Win32Exception ex)
+        {
+            ExceptionDisplayingHelper.Display(ex);
+        }
+    }
+
     private async Task<PriorityQueue<string, int>> GetMaxPriorityQueueFromPathEntryFrequenciesAsync()
     {
         var settings = await _settings;
@@ -434,6 +470,24 @@ public partial class MainWindowViewModel : ObservableObject
         }
 
         return priorityQueue;
+    }
+
+    private async Task InitializePinnedDirectoriesAsync()
+    {
+        var settings = await _settings;
+
+        _pinnedDirectories.AddRange
+        (
+            (await settings.PinnedDirectories
+                .WhereAsync(info => info.Directory.DirectoryExistsAsync()))
+            .Take(PinnedDirectoriesMaxCount)
+            .Select(info => new FrequentDirectoryDisplayingInfo(info.DisplayName, info.Directory, isPinned: true))
+        );
+        await UpdateFrequentDirectoriesAsync();
+
+        foreach (IEnumerable<FileDisplayingInfo> playlist in settings.HistoricalPlaylists)
+            _historicalPlaylists.Add(playlist.ToList());
+        CreatePlaylist();
     }
 
     private bool InsertIntoCurrentPlaylistCore(int index, FileDisplayingInfo info)

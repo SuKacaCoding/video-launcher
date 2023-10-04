@@ -194,4 +194,7 @@
     <data name="OK" xml:space="preserve">
         <value>OK</value>
     </data>
+    <data name="StartupCommandSuccessfullyExecuted" xml:space="preserve">
+      <value>The startup command has been successfully executed.</value>
+    </data>
 </root>

@@ -259,6 +259,15 @@ namespace KVideoLauncher.Properties.Lang {
         }
         
         /// <summary>
+        ///   查找类似 The startup command has been successfully executed. 的本地化字符串。
+        /// </summary>
+        public static string StartupCommandSuccessfullyExecuted {
+            get {
+                return ResourceManager.GetString("StartupCommandSuccessfullyExecuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The target directory doesn&apos;t exist. 的本地化字符串。
         /// </summary>
         public static string TargetDirectoryDoesNotExist {

@@ -17,7 +17,7 @@ public class SingleInstanceApplicationWrapper : WindowsFormsApplicationBase
     protected override void OnStartupNextInstance(StartupNextInstanceEventArgs e)
     {
         base.OnStartupNextInstance(e);
-        _app?.Activate();
+        _app!.Activate();
     }
 
     private App? _app;

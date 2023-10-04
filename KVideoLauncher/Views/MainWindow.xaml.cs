@@ -39,11 +39,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private const int ListBoxWideMoveOffset = 5;
-
-    private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
-    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
-
     public MainWindow()
     {
         InitializeComponent();
@@ -192,8 +187,6 @@ public partial class MainWindow : Window
     {
         Settings.Default.WindowPosition = RestoreBounds.ToString(CultureInfo.InvariantCulture);
         Settings.Default.Save();
-
-        e.Cancel = true;
     }
 
     [RelayCommand]
@@ -257,6 +250,10 @@ public partial class MainWindow : Window
         }
     }
 
+    private const int ListBoxWideMoveOffset = 5;
+
+    private static readonly GridLength GeneralColumnWidth = new(value: 1, GridUnitType.Star);
+    private static readonly GridLength SelectedColumnWidth = new(value: 3, GridUnitType.Star);
     private readonly ReadOnlyCollection<ListBox> _focusableListBoxes;
     private readonly MainWindowViewModel _viewModel;
     private readonly ReadOnlyDictionary<ListBox, ColumnDefinition> _widthAdjustableColumnByListBox;
